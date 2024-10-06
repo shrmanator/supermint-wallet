@@ -63,7 +63,7 @@ export function useWalletAuth() {
         const result = await thirdwebLinkWalletAndClaimNFT({
           email,
           walletAddress,
-          nftClaimToken: "DEPRECATED_VALUE", // Replace with actual token or fetch it dynamically
+          nftClaimToken: "DEPRECATED_VALUE",
         });
 
         if (isNFTClaimResult(result)) {
