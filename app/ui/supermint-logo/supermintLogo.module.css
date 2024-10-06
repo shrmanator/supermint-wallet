@@ -16,24 +16,82 @@
 }
 
 .supermintText {
-  font-family: var(--font-dancing-script), cursive;  /* Use the CSS variable */
+  font-family: var(--font-dancing-script), cursive;
   font-weight: 700;
-  color: #fff;
-  text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff,
-    0 0 42px #b38bfc, 0 0 82px #b38bfc, 0 0 92px #b38bfc,
-    0 0 102px #b38bfc, 0 0 151px #b38bfc;
+  color: var(--supermint-text-color);
+  text-shadow: var(--supermint-text-shadow);
   animation: pulsate 1.5s infinite alternate;
 }
 
 @keyframes pulsate {
   100% {
-    text-shadow: 0 0 4px #fff, 0 0 11px #fff, 0 0 19px #fff,
-      0 0 40px #b38bfc, 0 0 80px #b38bfc, 0 0 90px #b38bfc,
-      0 0 100px #b38bfc, 0 0 150px #b38bfc;
+    text-shadow: var(--supermint-text-shadow-strong);
   }
   0% {
-    text-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 0 6px #fff,
-      0 0 10px #b38bfc, 0 0 45px #b38bfc, 0 0 55px #b38bfc,
-      0 0 70px #b38bfc, 0 0 80px #b38bfc;
+    text-shadow: var(--supermint-text-shadow-weak);
   }
+}
+
+.lightMode {
+  --supermint-text-color: #6b21a8;
+  --supermint-glow-color: #b38bfc;
+  --supermint-text-shadow: 
+    0 0 1px #6b21a8,
+    0 0 2px #6b21a8,
+    0 0 3px #6b21a8,
+    0 0 4px var(--supermint-glow-color),
+    0 0 7px var(--supermint-glow-color),
+    0 0 8px var(--supermint-glow-color),
+    0 0 10px var(--supermint-glow-color),
+    0 0 15px var(--supermint-glow-color);
+  --supermint-text-shadow-strong: 
+    0 0 2px #6b21a8,
+    0 0 3px #6b21a8,
+    0 0 4px #6b21a8,
+    0 0 5px var(--supermint-glow-color),
+    0 0 8px var(--supermint-glow-color),
+    0 0 9px var(--supermint-glow-color),
+    0 0 11px var(--supermint-glow-color),
+    0 0 16px var(--supermint-glow-color);
+  --supermint-text-shadow-weak: 
+    0 0 1px #6b21a8,
+    0 0 2px #6b21a8,
+    0 0 3px #6b21a8,
+    0 0 3px var(--supermint-glow-color),
+    0 0 5px var(--supermint-glow-color),
+    0 0 6px var(--supermint-glow-color),
+    0 0 7px var(--supermint-glow-color),
+    0 0 8px var(--supermint-glow-color);
+}
+
+.darkMode {
+  --supermint-text-color: #fff;
+  --supermint-glow-color: #b38bfc;
+  --supermint-text-shadow: 
+    0 0 7px #fff, 
+    0 0 10px #fff, 
+    0 0 21px #fff,
+    0 0 42px var(--supermint-glow-color), 
+    0 0 82px var(--supermint-glow-color), 
+    0 0 92px var(--supermint-glow-color),
+    0 0 102px var(--supermint-glow-color), 
+    0 0 151px var(--supermint-glow-color);
+  --supermint-text-shadow-strong: 
+    0 0 4px #fff, 
+    0 0 11px #fff, 
+    0 0 19px #fff,
+    0 0 40px var(--supermint-glow-color), 
+    0 0 80px var(--supermint-glow-color), 
+    0 0 90px var(--supermint-glow-color),
+    0 0 100px var(--supermint-glow-color), 
+    0 0 150px var(--supermint-glow-color);
+  --supermint-text-shadow-weak: 
+    0 0 2px #fff, 
+    0 0 4px #fff, 
+    0 0 6px #fff,
+    0 0 10px var(--supermint-glow-color), 
+    0 0 45px var(--supermint-glow-color), 
+    0 0 55px var(--supermint-glow-color),
+    0 0 70px var(--supermint-glow-color), 
+    0 0 80px var(--supermint-glow-color);
 }

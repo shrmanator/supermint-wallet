@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { useTheme } from "next-themes";
 import styles from "./SuperMintLogo.module.css";
 
 interface SuperMintLogoProps {
@@ -15,15 +16,34 @@ const SuperMintLogo: React.FC<SuperMintLogoProps> = ({
   showIcon = true,
   iconSize = "45px",
 }) => {
+  const { resolvedTheme } = useTheme();
+  const [logoSrc, setLogoSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadLogo = async () => {
+      const { WhiteSuperMintLogo, BlackSuperMintLogo } = await import(
+        "@/public/base64/supermint-logoS"
+      );
+      setLogoSrc(
+        resolvedTheme === "dark" ? WhiteSuperMintLogo : BlackSuperMintLogo
+      );
+    };
+    loadLogo();
+  }, [resolvedTheme]);
+
   return (
-    <div className={styles.logoContainer}>
-      {showIcon && (
+    <div
+      className={`${styles.logoContainer} ${
+        resolvedTheme === "dark" ? styles.dark : styles.light
+      }`}
+    >
+      {showIcon && logoSrc && (
         <div
           className={styles.iconWrapper}
           style={{ width: iconSize, height: iconSize }}
         >
           <Image
-            src="/images/supermint-logo.png"
+            src={logoSrc}
             alt="SuperMint Logo"
             width={150}
             height={150}
