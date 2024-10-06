@@ -3,8 +3,8 @@ import { Inter, Dancing_Script } from "next/font/google";
 import { ThirdwebProvider } from "thirdweb/react";
 import "@/app/ui/global.css";
 import { cn } from "@/app/lib/utils";
-import WalletLayout from "@/app/layouts/wallet-layout";
 import { ThemeProvider } from "@/app/ui/theme-provider";
+import WalletLayout from "@/app/layouts/WalletLayout";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const dancingScript = Dancing_Script({

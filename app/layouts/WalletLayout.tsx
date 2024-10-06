@@ -1,12 +1,11 @@
-// app/layouts/WalletLayout.tsx
 "use client";
 import React from "react";
 import { ConnectButton } from "thirdweb/react";
 import { inAppWallet } from "thirdweb/wallets";
 import { polygon } from "thirdweb/chains";
 import { client } from "@/app/lib/thirdweb/client";
-import SuperMintLogo from "@/app/ui/supermint-logo/supermintLogo";
 import { useWalletAuth } from "@/app/hooks/use-wallet-auth";
+import SuperMintLogo from "@/app/ui/supermint-logo/SuperMintLogo";
 
 // Wraps pages that require wallet functionality.
 const wallets = [
