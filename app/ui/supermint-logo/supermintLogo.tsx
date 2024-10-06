@@ -41,7 +41,7 @@ const SuperMintLogo: React.FC<SuperMintLogoProps> = ({
   useEffect(() => {
     const loadLogo = async () => {
       const { WhiteSuperMintLogo, BlackSuperMintLogo } = await import(
-        "@/public/base64/supermint-logoS"
+        "@/public/base64/supermint-logos"
       );
       setLogoSrc(
         resolvedTheme === "dark" ? WhiteSuperMintLogo : BlackSuperMintLogo

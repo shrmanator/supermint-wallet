@@ -1,18 +1,11 @@
 "use client";
-import React, { useEffect, useState, useCallback } from "react";
-import { ConnectButton, useActiveAccount } from "thirdweb/react";
+import React from "react";
+import { ConnectButton } from "thirdweb/react";
 import { inAppWallet } from "thirdweb/wallets";
 import { polygon } from "thirdweb/chains";
-import { getUserEmail } from "thirdweb/wallets/in-app";
-import { client } from "app/lib/thirdweb/client";
-import {
-  generatePayload,
-  isLoggedIn,
-  login,
-  logout,
-} from "app/actions/thirdweb-login";
-import { thirdwebLinkWalletAndClaimNFT } from "app/lib/supermint/nftService";
-import SuperMintLogo from "./ui/supermint-logo/supermintLogo";
+import { client } from "@/app/lib/thirdweb/client";
+import SuperMintLogo from "@/app/ui/supermint-logo/supermintLogo";
+import { useWalletAuth } from "@/app/hooks/use-wallet-auth";
 
 const wallets = [
   inAppWallet({
@@ -27,102 +20,16 @@ export default function WalletProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [userEmail, setUserEmail] = useState<string | undefined>();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [nftClaimResult, setNftClaimResult] = useState<any>(null);
-  const [claimError, setClaimError] = useState<string | null>(null);
-  const account = useActiveAccount();
-
-  const fetchUserEmail = useCallback(async () => {
-    try {
-      const email = await getUserEmail({ client });
-      setUserEmail(email);
-      console.log("User's email:", email);
-      return email;
-    } catch (error) {
-      console.error("Error fetching user email:", error);
-      return undefined;
-    }
-  }, []);
-
-  const checkAuthStatus = useCallback(async () => {
-    const loggedIn = await isLoggedIn();
-    setIsAuthenticated(loggedIn);
-    return loggedIn;
-  }, []);
-
-  const handleLinkWalletAndClaimNFT = useCallback(
-    async (email: string, walletAddress: string) => {
-      try {
-        setClaimError(null);
-        const result = await thirdwebLinkWalletAndClaimNFT({
-          email,
-          walletAddress,
-          nftClaimToken: "YOUR_NFT_CLAIM_TOKEN", // Replace with actual token or fetch it dynamically
-        });
-        setNftClaimResult(result);
-        console.log("NFT claim result:", result);
-      } catch (error) {
-        console.error("Failed to link wallet and claim NFT:", error);
-        setClaimError(error instanceof Error ? error.message : String(error));
-      }
-    },
-    []
-  );
-
-  const handleDoLogin = useCallback(
-    async (params: any) => {
-      console.log("Logging in!");
-      try {
-        await login(params);
-        const isLoggedIn = await checkAuthStatus();
-        if (isLoggedIn) {
-          const email = await fetchUserEmail();
-          if (email && account) {
-            await handleLinkWalletAndClaimNFT(email, account.address);
-          } else {
-            console.log("Email or wallet address not available for NFT claim");
-          }
-        }
-      } catch (error) {
-        console.error("Login error:", error);
-      }
-    },
-    [checkAuthStatus, fetchUserEmail, account, handleLinkWalletAndClaimNFT]
-  );
-
-  useEffect(() => {
-    const initializeAuth = async () => {
-      const isLoggedIn = await checkAuthStatus();
-      if (isLoggedIn) {
-        const email = await fetchUserEmail();
-        if (email && account) {
-          await handleLinkWalletAndClaimNFT(email, account.address);
-        }
-      }
-    };
-
-    initializeAuth();
-  }, [checkAuthStatus, fetchUserEmail, account, handleLinkWalletAndClaimNFT]);
-
-  const handleIsLoggedIn = useCallback(async (address: string) => {
-    console.log("Checking if logged in!", { address });
-    return await isLoggedIn();
-  }, []);
-
-  const handleGetLoginPayload = useCallback(
-    async ({ address }: { address: string }) => generatePayload({ address }),
-    []
-  );
-
-  const handleDoLogout = useCallback(async () => {
-    console.log("Logging out!");
-    await logout();
-    setUserEmail(undefined);
-    setIsAuthenticated(false);
-    setNftClaimResult(null);
-    setClaimError(null);
-  }, []);
+  const {
+    userEmail,
+    nftClaimResult,
+    claimError,
+    account,
+    handleDoLogin,
+    handleIsLoggedIn,
+    handleGetLoginPayload,
+    handleDoLogout,
+  } = useWalletAuth();
 
   return (
     <div className="flex flex-col min-h-screen">
