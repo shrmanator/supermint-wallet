@@ -2,7 +2,7 @@
 import { VerifyLoginPayloadParams, createAuth } from "thirdweb/auth";
 import { privateKeyAccount } from "thirdweb/wallets";
 import { cookies } from "next/headers";
-import { client } from "lib/thirdweb/client";
+import { client } from "app/lib/thirdweb/client";
 
 const privateKey = process.env.THIRDWEB_ADMIN_PRIVATE_KEY || "";
 

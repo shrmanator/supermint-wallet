@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Inter, Dancing_Script } from "next/font/google";
-import "./globals.css";
+import "@/app/ui/global.css";
 import { ThirdwebProvider } from "thirdweb/react";
-import WalletLayout from "./components/WalletLayout";
-import { cn } from "lib/utils";
+import { cn } from "@/app/lib/utils";
+import { ThemeProvider } from "@/app/ui/theme-provider";
+import WalletProvider from "@/app/WalletProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const dancingScript = Dancing_Script({
@@ -20,23 +21,28 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html
-      lang="en"
-      className={cn("dark", inter.variable, dancingScript.variable)}
-    >
+    <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
-          inter.className
+          inter.variable,
+          dancingScript.variable
         )}
       >
-        <ThirdwebProvider>
-          <WalletLayout>{children}</WalletLayout>
-        </ThirdwebProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ThirdwebProvider>
+            <WalletProvider>{children}</WalletProvider>
+          </ThirdwebProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

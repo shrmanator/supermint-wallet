@@ -12,7 +12,7 @@ export const thirdwebLinkWalletAndClaimNFT = async ({
   email,
   walletAddress,
   nftClaimToken,
-}: ThirdwebLinkWalletAndClaimNFTParams): Promise<any> => {
+}: ThirdwebLinkWalletAndClaimNFTParams): Promise<unknown> => {
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/thirdweb/link-wallet-and-process-all-claims`,

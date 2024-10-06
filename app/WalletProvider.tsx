@@ -4,15 +4,15 @@ import { ConnectButton, useActiveAccount } from "thirdweb/react";
 import { inAppWallet } from "thirdweb/wallets";
 import { polygon } from "thirdweb/chains";
 import { getUserEmail } from "thirdweb/wallets/in-app";
-import { client } from "lib/thirdweb/client";
+import { client } from "app/lib/thirdweb/client";
 import {
   generatePayload,
   isLoggedIn,
   login,
   logout,
 } from "app/actions/thirdweb-login";
-import { thirdwebLinkWalletAndClaimNFT } from "lib/supermint/nftService";
-import SuperMintLogo from "./supermint-logo/supermintLogo";
+import { thirdwebLinkWalletAndClaimNFT } from "app/lib/supermint/nftService";
+import SuperMintLogo from "./ui/supermint-logo/supermintLogo";
 
 const wallets = [
   inAppWallet({
@@ -22,7 +22,7 @@ const wallets = [
   }),
 ];
 
-export default function WalletV2Layout({
+export default function WalletProvider({
   children,
 }: {
   children: React.ReactNode;
