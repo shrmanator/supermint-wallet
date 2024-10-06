@@ -170,7 +170,7 @@ export default function WalletV2Layout({
       </main>
       <footer className="border-t py-4">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} SuperMint Wallet V2
+          © {new Date().getFullYear()} SuperMint Wallet
         </div>
       </footer>
     </div>

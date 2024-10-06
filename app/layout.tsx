@@ -13,7 +13,7 @@ const dancingScript = Dancing_Script({
 });
 
 export const metadata: Metadata = {
-  title: "SuperMint Wallet V2",
+  title: "SuperMint Wallet",
   description:
     "Transforming donations into collectible digital assets. SuperMint lets charities reward donors with unique NFTs, driving engagement and impact through cutting-edge blockchain technology.",
 };
