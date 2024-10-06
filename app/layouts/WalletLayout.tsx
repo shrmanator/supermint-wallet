@@ -5,7 +5,7 @@ import { inAppWallet } from "thirdweb/wallets";
 import { polygon } from "thirdweb/chains";
 import { client } from "@/app/lib/thirdweb/client";
 import { useWalletAuth } from "@/app/hooks/use-wallet-auth";
-import SuperMintLogo from "../ui/supermint-logo/SuperMintLogo";
+import SuperMintLogo from "../ui/SuperMintLogo";
 
 // Wraps pages that require wallet functionality.
 const wallets = [
