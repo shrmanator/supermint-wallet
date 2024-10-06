@@ -9,11 +9,32 @@ import {
   logout,
 } from "app/actions/thirdweb-login";
 import { thirdwebLinkWalletAndClaimNFT } from "app/lib/supermint/nftService";
+import { VerifyLoginPayloadParams } from "thirdweb/auth";
+
+// Define an interface for the NFT claim result
+interface NFTClaimResult {
+  success: boolean;
+  tokenId?: string;
+  transactionHash?: string;
+  // Add other relevant properties
+}
+
+// Type guard function to check if a value is an NFTClaimResult
+function isNFTClaimResult(value: unknown): value is NFTClaimResult {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "success" in value &&
+    typeof (value as NFTClaimResult).success === "boolean"
+  );
+}
 
 export function useWalletAuth() {
   const [userEmail, setUserEmail] = useState<string | undefined>();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [nftClaimResult, setNftClaimResult] = useState<any>(null);
+  const [nftClaimResult, setNftClaimResult] = useState<NFTClaimResult | null>(
+    null
+  );
   const [claimError, setClaimError] = useState<string | null>(null);
   const account = useActiveAccount();
 
@@ -44,8 +65,14 @@ export function useWalletAuth() {
           walletAddress,
           nftClaimToken: "DEPRECATED_VALUE", // Replace with actual token or fetch it dynamically
         });
-        setNftClaimResult(result);
-        console.log("NFT claim result:", result);
+
+        if (isNFTClaimResult(result)) {
+          setNftClaimResult(result);
+          console.log("NFT claim result:", result);
+        } else {
+          console.error("Unexpected NFT claim result structure:", result);
+          setClaimError("Unexpected NFT claim result structure");
+        }
       } catch (error) {
         console.error("Failed to link wallet and claim NFT:", error);
         setClaimError(error instanceof Error ? error.message : String(error));
@@ -55,7 +82,7 @@ export function useWalletAuth() {
   );
 
   const handleDoLogin = useCallback(
-    async (params: any) => {
+    async (params: VerifyLoginPayloadParams) => {
       console.log("Logging in!");
       try {
         await login(params);
