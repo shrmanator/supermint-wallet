@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Inter, Dancing_Script } from "next/font/google";
-import "@/app/ui/global.css";
 import { ThirdwebProvider } from "thirdweb/react";
+import "@/app/ui/global.css";
 import { cn } from "@/app/lib/utils";
+import WalletLayout from "@/app/layouts/wallet-layout";
 import { ThemeProvider } from "@/app/ui/theme-provider";
-import WalletProvider from "@/app/WalletProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const dancingScript = Dancing_Script({
@@ -40,7 +40,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ThirdwebProvider>
-            <WalletProvider>{children}</WalletProvider>
+            <WalletLayout>{children}</WalletLayout>
           </ThirdwebProvider>
         </ThemeProvider>
       </body>
