@@ -11,7 +11,6 @@ import {
 import { thirdwebLinkWalletAndClaimNFT } from "app/lib/supermint/nftService";
 import { VerifyLoginPayloadParams } from "thirdweb/auth";
 
-// Updated interface for the NFT claim result
 interface NFTClaimResult {
   statusCode: number;
   message: string;
@@ -21,26 +20,6 @@ interface NFTClaimResult {
   };
 }
 
-/**
- * Checks if the provided value is a valid `NFTClaimResult` object.
- *
- * An `NFTClaimResult` object has the following structure:
- *
- * {
- *   statusCode: number;
- *   message: string;
- *   data?: {
- *     success: boolean;
- *     message: string;
- *   };
- * }
- *
- *
- * This function ensures that the provided value has the expected shape and types for an `NFTClaimResult`.
- *
- * @param value The value to check.
- * @returns `true` if the value is a valid `NFTClaimResult`, `false` otherwise.
- */
 function isNFTClaimResult(value: unknown): value is NFTClaimResult {
   return (
     typeof value === "object" &&
@@ -86,73 +65,71 @@ export function useWalletAuth() {
     async (email: string, walletAddress: string) => {
       try {
         setClaimError(null);
+
         const result = await thirdwebLinkWalletAndClaimNFT({
           email,
           walletAddress,
           nftClaimToken: "DEPRECATED_VALUE",
         });
 
-        if (isNFTClaimResult(result)) {
-          setNftClaimResult(result);
-          console.log("NFT claim result:", result);
-
-          if (result.statusCode === 200) {
-            if (result.data?.success) {
-              console.log("NFT claim successful:", result.data.message);
-            } else if (result.data) {
-              console.log(
-                "Wallet linked, but no NFT claimed:",
-                result.data.message
-              );
-              setClaimError(result.data.message);
-            } else {
-              console.log("Wallet linked:", result.message);
-            }
-          } else {
-            console.error("Error in NFT claim:", result.message);
-            setClaimError(result.message);
-          }
-        } else {
+        if (!isNFTClaimResult(result)) {
           console.error("Unexpected NFT claim result structure:", result);
           setClaimError("Unexpected NFT claim result structure");
+          return;
+        }
+
+        setNftClaimResult(result);
+        console.log("NFT claim result:", result);
+
+        if (result.statusCode !== 200) {
+          console.error("Error in NFT claim:", result.message);
+          setClaimError(result.message);
+          return;
+        }
+
+        const { data } = result;
+
+        if (data?.success) {
+          console.log("NFT claim successful:", data.message);
+        } else if (data) {
+          console.log("Wallet linked, but no NFT claimed:", data.message);
+          setClaimError(data.message);
+        } else {
+          console.log("Wallet linked:", result.message);
         }
       } catch (error) {
-        console.error("Failed to link wallet and claim NFT:", error);
-        setClaimError(error instanceof Error ? error.message : String(error));
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
+        console.error("Failed to link wallet and claim NFT:", errorMessage);
+        setClaimError(errorMessage);
       }
     },
-    []
+    [setClaimError, setNftClaimResult]
   );
+
+  const authenticateAndClaimNFT = useCallback(async () => {
+    const loggedIn = await checkAuthStatus();
+    if (loggedIn) {
+      const email = await fetchUserEmail();
+      if (email && account) {
+        await handleLinkWalletAndClaimNFT(email, account.address);
+      } else {
+        console.log("Email or wallet address not available for NFT claim");
+      }
+    }
+  }, [checkAuthStatus, fetchUserEmail, account, handleLinkWalletAndClaimNFT]);
 
   const handleDoLogin = useCallback(
     async (params: VerifyLoginPayloadParams) => {
       console.log("Logging in!");
       try {
         await login(params);
-        const isLoggedIn = await checkAuthStatus();
-        if (isLoggedIn) {
-          const email = await fetchUserEmail();
-          if (email && account) {
-            await handleLinkWalletAndClaimNFT(email, account.address);
-          } else {
-            console.log("Email or wallet address not available for NFT claim");
-          }
-        }
+        await authenticateAndClaimNFT();
       } catch (error) {
         console.error("Login error:", error);
       }
     },
-    [checkAuthStatus, fetchUserEmail, account, handleLinkWalletAndClaimNFT]
-  );
-
-  const handleIsLoggedIn = useCallback(async (address: string) => {
-    console.log("Checking if logged in!", { address });
-    return await isLoggedIn();
-  }, []);
-
-  const handleGetLoginPayload = useCallback(
-    async ({ address }: { address: string }) => generatePayload({ address }),
-    []
+    [authenticateAndClaimNFT]
   );
 
   const handleDoLogout = useCallback(async () => {
@@ -165,18 +142,8 @@ export function useWalletAuth() {
   }, []);
 
   useEffect(() => {
-    const initializeAuth = async () => {
-      const isLoggedIn = await checkAuthStatus();
-      if (isLoggedIn) {
-        const email = await fetchUserEmail();
-        if (email && account) {
-          await handleLinkWalletAndClaimNFT(email, account.address);
-        }
-      }
-    };
-
-    initializeAuth();
-  }, [checkAuthStatus, fetchUserEmail, account, handleLinkWalletAndClaimNFT]);
+    authenticateAndClaimNFT();
+  }, [authenticateAndClaimNFT]);
 
   return {
     userEmail,
@@ -185,8 +152,8 @@ export function useWalletAuth() {
     claimError,
     account,
     handleDoLogin,
-    handleIsLoggedIn,
-    handleGetLoginPayload,
+    isLoggedIn,
+    generatePayload,
     handleDoLogout,
   };
 }

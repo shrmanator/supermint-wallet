@@ -27,8 +27,8 @@ export default function WalletLayout({
     claimError,
     account,
     handleDoLogin,
-    handleIsLoggedIn,
-    handleGetLoginPayload,
+    isLoggedIn,
+    generatePayload,
     handleDoLogout,
   } = useWalletAuth();
 
@@ -51,9 +51,9 @@ export default function WalletLayout({
                 showThirdwebBranding: false,
               }}
               auth={{
-                isLoggedIn: handleIsLoggedIn,
+                isLoggedIn: isLoggedIn,
                 doLogin: handleDoLogin,
-                getLoginPayload: handleGetLoginPayload,
+                getLoginPayload: generatePayload,
                 doLogout: handleDoLogout,
               }}
             />
