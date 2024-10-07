@@ -1,10 +1,11 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Inter, Dancing_Script } from "next/font/google";
 import { ThirdwebProvider } from "thirdweb/react";
 import "@/app/ui/global.css";
 import { cn } from "@/app/lib/utils";
 import { ThemeProvider } from "@/app/ui/theme-provider";
-import WalletLayout from "@/app/layouts/WalletLayout";
+import { WalletWrapper } from "./wallet-wrapper";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 
@@ -43,7 +44,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ThirdwebProvider>
-            <WalletLayout>{children}</WalletLayout>
+            <WalletWrapper>{children}</WalletWrapper>
           </ThirdwebProvider>
         </ThemeProvider>
         <SpeedInsights />
