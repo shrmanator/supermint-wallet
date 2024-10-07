@@ -11,21 +11,47 @@ import {
 import { thirdwebLinkWalletAndClaimNFT } from "app/lib/supermint/nftService";
 import { VerifyLoginPayloadParams } from "thirdweb/auth";
 
-// Define an interface for the NFT claim result
+// Updated interface for the NFT claim result
 interface NFTClaimResult {
-  success: boolean;
-  tokenId?: string;
-  transactionHash?: string;
-  // Add other relevant properties
+  statusCode: number;
+  message: string;
+  data?: {
+    success: boolean;
+    message: string;
+  };
 }
 
-// Type guard function to check if a value is an NFTClaimResult
+/**
+ * Checks if the provided value is a valid `NFTClaimResult` object.
+ *
+ * An `NFTClaimResult` object has the following structure:
+ *
+ * {
+ *   statusCode: number;
+ *   message: string;
+ *   data?: {
+ *     success: boolean;
+ *     message: string;
+ *   };
+ * }
+ *
+ *
+ * This function ensures that the provided value has the expected shape and types for an `NFTClaimResult`.
+ *
+ * @param value The value to check.
+ * @returns `true` if the value is a valid `NFTClaimResult`, `false` otherwise.
+ */
 function isNFTClaimResult(value: unknown): value is NFTClaimResult {
   return (
     typeof value === "object" &&
     value !== null &&
-    "success" in value &&
-    typeof (value as NFTClaimResult).success === "boolean"
+    "statusCode" in value &&
+    "message" in value &&
+    (!("data" in value) ||
+      (typeof (value as NFTClaimResult).data === "object" &&
+        (value as NFTClaimResult).data !== null &&
+        "success" in ((value as NFTClaimResult).data ?? {}) &&
+        "message" in ((value as NFTClaimResult).data ?? {})))
   );
 }
 
@@ -69,6 +95,23 @@ export function useWalletAuth() {
         if (isNFTClaimResult(result)) {
           setNftClaimResult(result);
           console.log("NFT claim result:", result);
+
+          if (result.statusCode === 200) {
+            if (result.data?.success) {
+              console.log("NFT claim successful:", result.data.message);
+            } else if (result.data) {
+              console.log(
+                "Wallet linked, but no NFT claimed:",
+                result.data.message
+              );
+              setClaimError(result.data.message);
+            } else {
+              console.log("Wallet linked:", result.message);
+            }
+          } else {
+            console.error("Error in NFT claim:", result.message);
+            setClaimError(result.message);
+          }
         } else {
           console.error("Unexpected NFT claim result structure:", result);
           setClaimError("Unexpected NFT claim result structure");
