@@ -5,7 +5,13 @@ import useSWR from "swr";
 import axios from "axios";
 import { useEffect } from "react";
 import { client } from "@/lib/thirdweb/client";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
@@ -44,7 +50,9 @@ export default function WalletPage() {
           ))}
         </div>
       ) : nftsError ? (
-        <p className="text-xl text-red-500">Error: {nftsError.message || "Failed to fetch NFTs"}</p>
+        <p className="text-xl text-red-500">
+          Error: {nftsError.message || "Failed to fetch NFTs"}
+        </p>
       ) : nftsData?.ownedNfts && nftsData.ownedNfts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {nftsData.ownedNfts.map((nft: any) => (
@@ -53,10 +61,14 @@ export default function WalletPage() {
                 <div className="relative w-full pt-[100%]">
                   <MediaRenderer
                     client={client}
-                    src={nft.image?.cachedUrl || nft.image?.originalUrl || nft.tokenUri}
+                    src={
+                      nft.image?.cachedUrl ||
+                      nft.image?.originalUrl ||
+                      nft.tokenUri
+                    }
                     alt={nft.name || `NFT #${nft.tokenId}`}
                     mimeType={nft.image?.contentType}
-                    controls={nft.image?.contentType?.startsWith('video')}
+                    controls={nft.image?.contentType?.startsWith("video")}
                     className="absolute inset-0 w-full h-full object-cover"
                   />
                 </div>
