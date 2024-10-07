@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import { Inter, Dancing_Script } from "next/font/google";
 import { ThirdwebProvider } from "thirdweb/react";
-import "@/app/ui/global.css";
+import "@/components/ui/global.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { WalletWrapper } from "./wallet-wrapper";
