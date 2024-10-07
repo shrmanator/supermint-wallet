@@ -6,6 +6,7 @@ import { cn } from "@/app/lib/utils";
 import { ThemeProvider } from "@/app/ui/theme-provider";
 import WalletLayout from "@/app/layouts/WalletLayout";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const dancingScript = Dancing_Script({
@@ -46,6 +47,7 @@ export default function RootLayout({
           </ThirdwebProvider>
         </ThemeProvider>
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
