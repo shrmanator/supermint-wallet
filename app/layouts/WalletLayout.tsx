@@ -1,13 +1,13 @@
 "use client";
-
 import React from "react";
 import { ConnectButton } from "thirdweb/react";
 import { inAppWallet } from "thirdweb/wallets";
 import { polygon } from "thirdweb/chains";
 import { client } from "@/lib/thirdweb/client";
 import { useWalletAuth } from "@/app/hooks/use-wallet-auth";
-import SuperMintLogo from "@/components/ui/SuperMintLogo";
+import SuperMintLogo from "../../components/ui/SuperMintLogo";
 
+// Wraps pages that require wallet functionality.
 const wallets = [
   inAppWallet({
     auth: {
@@ -16,12 +16,12 @@ const wallets = [
   }),
 ];
 
-export function WalletWrapper({ children }: { children: React.ReactNode }) {
+export default function WalletLayout({}: { children: React.ReactNode }) {
   const { handleDoLogin, isLoggedIn, generatePayload, handleDoLogout } =
     useWalletAuth();
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <header className="border-b">
         <div className="container mx-auto px-4">
           <nav className="flex items-center justify-between h-16">
@@ -48,12 +48,11 @@ export function WalletWrapper({ children }: { children: React.ReactNode }) {
           </nav>
         </div>
       </header>
-      <main className="flex-grow">{children}</main>
       <footer className="border-t py-4">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
           © {new Date().getFullYear()} SuperMint Wallet
         </div>
       </footer>
-    </>
+    </div>
   );
 }
