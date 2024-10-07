@@ -16,7 +16,7 @@ export default function WalletPage() {
     error: nftsError,
     isLoading: isNftsLoading,
   } = useSWR(
-    account?.address ? `/api?owner=${account.address}` : null,
+    account?.address ? `/api/nfts?owner=${account.address}` : null,
     fetcher
   );
 
