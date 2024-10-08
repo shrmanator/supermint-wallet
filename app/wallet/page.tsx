@@ -5,7 +5,7 @@ import useSWR from "swr";
 import axios from "axios";
 import { useEffect } from "react";
 import { NftResponse } from "@/types/alchemy/nft-types";
-import NftCard from "@/components/nft-card";
+import NftSetDisplay from "@/components/nft-set-display/nft-set-display";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
@@ -33,11 +33,7 @@ export default function WalletPage() {
       ) : !nftsData ? (
         <p className="text-xl">Loading your NFTs...</p>
       ) : nftsData.ownedNfts && nftsData.ownedNfts.length > 0 ? (
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {nftsData.ownedNfts.map((nft) => (
-            <NftCard key={nft.tokenId} nft={nft} />
-          ))}
-        </div>
+        <NftSetDisplay nfts={nftsData.ownedNfts} />
       ) : (
         <p className="text-xl">No NFTs found in this wallet.</p>
       )}

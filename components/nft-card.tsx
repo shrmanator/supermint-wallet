@@ -16,9 +16,10 @@ import { Nft } from "@/types/alchemy/nft-types";
 
 interface NftCardProps {
   nft: Nft;
+  compact?: boolean;
 }
 
-const NftCard: React.FC<NftCardProps> = ({ nft }) => {
+const NftCard: React.FC<NftCardProps> = ({ nft, compact = false }) => {
   const getMediaSrc = (nft: Nft) => {
     const originalSrc = nft.image.cachedUrl || nft.image.originalUrl || null;
     if (originalSrc) {
@@ -29,6 +30,27 @@ const NftCard: React.FC<NftCardProps> = ({ nft }) => {
 
   const mediaSrc = getMediaSrc(nft);
   const seriesInfo = nft.raw.metadata.supermint;
+
+  if (compact) {
+    return (
+      <Card className="overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 relative group">
+        <div className="aspect-square">
+          {mediaSrc ? (
+            <CustomMediaPlayer
+              src={mediaSrc}
+              alt={nft.name || `NFT #${nft.tokenId}`}
+              contentType={nft.image.contentType}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-muted text-muted-foreground">
+              <InfoIcon className="w-6 h-6 opacity-50" />
+            </div>
+          )}
+        </div>
+      </Card>
+    );
+  }
 
   return (
     <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 relative group">
