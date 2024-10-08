@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
   MediaErrorDetail,
   MediaErrorEvent,
@@ -18,7 +17,6 @@ interface CustomMediaPlayerProps {
   alt: string;
   contentType?: string;
   className?: string;
-  priority?: boolean;
 }
 
 const CustomMediaPlayer: React.FC<CustomMediaPlayerProps> = ({
@@ -56,12 +54,12 @@ const CustomMediaPlayer: React.FC<CustomMediaPlayerProps> = ({
     : { src, type: contentType as AudioSrc["type"] };
 
   return (
-    <AspectRatio ratio={16 / 9} className="bg-muted relative">
+    <div className="relative w-full pt-[100%]">
       {isLoading && (
         <Skeleton className="absolute inset-0 w-full h-full rounded-md" />
       )}
       {isVideo ? (
-        <>
+        <div className="absolute inset-0 flex items-center justify-center bg-black">
           <MediaPlayer
             src={mediaSrc}
             playsInline
@@ -70,7 +68,9 @@ const CustomMediaPlayer: React.FC<CustomMediaPlayerProps> = ({
             autoPlay={true}
             onCanPlay={handleMediaReady}
             onError={handleMediaError}
-            className={`w-full h-full ${isLoading ? "invisible" : "visible"}`}
+            className={`max-w-full max-h-full ${
+              isLoading ? "invisible" : "visible"
+            }`}
           >
             <MediaProvider />
           </MediaPlayer>
@@ -80,7 +80,7 @@ const CustomMediaPlayer: React.FC<CustomMediaPlayerProps> = ({
           >
             {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
           </button>
-        </>
+        </div>
       ) : (
         <Image
           src={src}
@@ -88,13 +88,14 @@ const CustomMediaPlayer: React.FC<CustomMediaPlayerProps> = ({
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           priority
-          className={`rounded-md object-cover ${className} ${
+          className={`rounded-md object-contain ${className} ${
             isLoading ? "invisible" : "visible"
           }`}
           onLoad={handleMediaReady}
         />
       )}
-    </AspectRatio>
+    </div>
   );
 };
+
 export default CustomMediaPlayer;
