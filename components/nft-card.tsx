@@ -6,7 +6,7 @@ import {
   CardTitle,
   CardFooter,
 } from "@/components/ui/card";
-import CustomMediaPlayer from "@/app/media-renderer";
+import CustomMediaPlayer from "@/components/media-renderer";
 import { Nft } from "@/lib/alchemy/nft-types";
 
 interface NftCardProps {

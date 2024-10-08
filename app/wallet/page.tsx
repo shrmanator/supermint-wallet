@@ -5,7 +5,7 @@ import useSWR from "swr";
 import axios from "axios";
 import { useEffect } from "react";
 import { NftResponse } from "@/lib/alchemy/nft-types";
-import NftCard from "@/components/ui/nft-card";
+import NftCard from "@/components/nft-card";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
