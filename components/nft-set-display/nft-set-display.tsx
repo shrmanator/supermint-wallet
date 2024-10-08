@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { CheckCircle2, LockIcon, ChevronRight } from "lucide-react";
+import { CheckCircle2, ChevronRight, CircleSlash2 } from "lucide-react";
 import { Nft } from "@/types/alchemy/nft-types";
 import NftCard from "@/components/nft-card";
 import UnclaimedNftCard from "@/components/nft-set-display/unclaimed-nft-card";
@@ -69,18 +69,26 @@ const NftCollectionDisplay: React.FC<NftCollectionDisplayProps> = ({
       <Card key={setInfo.setName} className="overflow-hidden">
         <CardHeader className="pb-2">
           <div className="flex justify-between items-center">
-            <CardTitle>{setInfo.setName}</CardTitle>
+            <CardTitle className="text-white font-medium text-lg">
+              {setInfo.setName}
+            </CardTitle>
             <Badge
               variant={isComplete ? "default" : "secondary"}
-              className="flex items-center gap-1"
+              className={`flex items-center gap-1 px-3 py-1 rounded-full transition-colors duration-200 ${
+                isComplete
+                  ? "bg-green-50 text-green-600"
+                  : "bg-gray-200 text-gray-600"
+              }`}
             >
               {isComplete ? (
                 <>
-                  <CheckCircle2 size={14} /> Complete
+                  <CheckCircle2 size={16} className="text-green-500" /> Set
+                  Complete
                 </>
               ) : (
                 <>
-                  <LockIcon size={14} /> Incomplete
+                  <CircleSlash2 size={16} className="text-gray-500" /> Set
+                  Incomplete
                 </>
               )}
             </Badge>
