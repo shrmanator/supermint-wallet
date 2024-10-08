@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import {
@@ -9,23 +9,38 @@ import {
 } from "@vidstack/react";
 import "@vidstack/react/player/styles/base.css";
 import { Volume2, VolumeX } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const NextVidstackMediaRenderer = ({
-  src,
-  alt,
-  contentType,
-  className,
-}: {
+interface CustomMediaPlayerProps {
   src: string;
   alt: string;
   contentType?: string;
   className?: string;
+  priority?: boolean;
+}
+
+const CustomMediaPlayer: React.FC<CustomMediaPlayerProps> = ({
+  src,
+  alt,
+  contentType,
+  className,
+  priority = false,
 }) => {
   const isVideo = contentType?.startsWith("video");
   const [isMuted, setIsMuted] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Reset loading state when src changes
+    setIsLoading(true);
+  }, [src]);
 
   const handleMediaPlayerReady = () => {
-    // Add any logic you want to execute when the media player is ready
+    setIsLoading(false);
+  };
+
+  const handleImageLoad = () => {
+    setIsLoading(false);
   };
 
   const handleMediaPlayerError = (
@@ -33,6 +48,7 @@ const NextVidstackMediaRenderer = ({
     nativeEvent: MediaErrorEvent
   ) => {
     console.error("Media player error:", detail, nativeEvent);
+    setIsLoading(false);
   };
 
   const toggleMute = () => {
@@ -41,6 +57,9 @@ const NextVidstackMediaRenderer = ({
 
   return (
     <AspectRatio ratio={16 / 9} className="bg-muted relative">
+      {isLoading && (
+        <Skeleton className="absolute inset-0 w-full h-full rounded-md" />
+      )}
       {isVideo ? (
         <>
           <MediaPlayer
@@ -51,7 +70,7 @@ const NextVidstackMediaRenderer = ({
             autoPlay={true}
             onPlay={handleMediaPlayerReady}
             onError={handleMediaPlayerError}
-            className="w-full h-full"
+            className={`w-full h-full ${isLoading ? "invisible" : "visible"}`}
           >
             <MediaProvider />
           </MediaPlayer>
@@ -67,11 +86,16 @@ const NextVidstackMediaRenderer = ({
           src={src}
           alt={alt}
           fill
-          className={`rounded-md object-cover ${className}`}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          priority={priority}
+          className={`rounded-md object-cover ${className} ${
+            isLoading ? "invisible" : "visible"
+          }`}
+          onLoadingComplete={handleImageLoad}
         />
       )}
     </AspectRatio>
   );
 };
 
-export default NextVidstackMediaRenderer;
+export default CustomMediaPlayer;

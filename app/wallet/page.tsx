@@ -12,8 +12,8 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import NextVidstackMediaRenderer from "@/app/media-renderer";
 import { Nft, NftResponse } from "@/lib/alchemy/nft-types";
+import CustomMediaPlayer from "@/app/media-renderer";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
@@ -71,7 +71,7 @@ export default function WalletPage() {
               <Card key={nft.tokenId} className="overflow-hidden">
                 <CardContent className="p-4">
                   {mediaSrc ? (
-                    <NextVidstackMediaRenderer
+                    <CustomMediaPlayer
                       src={mediaSrc}
                       alt={nft.name || `NFT #${nft.tokenId}`}
                       contentType={nft.image.contentType}
