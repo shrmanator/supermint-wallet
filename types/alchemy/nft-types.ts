@@ -39,7 +39,7 @@ export interface NftRawMetadata {
   supermint: {
     isInSet: boolean;
     setName: string | null;
-    nftSetId: string | null;
+    nftSetId: number | null;
     seriesDescription: string;
     totalNftsInSeries: number;
     payload: string;
@@ -51,7 +51,18 @@ export interface NftRawMetadata {
   };
   attributes: Array<{
     value: string | number | boolean;
-    trait_type: string;
+    trait_type:
+      | "Series Title"
+      | "Series Artist Name"
+      | "Charity Name"
+      | "Series Number"
+      | "Total NFTs in Series"
+      | "Is in Set"
+      | "NFT Set ID"
+      | "Set Name"
+      | "Set Description"
+      | "Set Size"
+      | string; // Allow for other potential attributes
   }>;
   payload: string;
 }
