@@ -7,8 +7,24 @@ import { client } from "@/lib/thirdweb/client";
 import { useWalletAuth } from "@/app/hooks/use-wallet-auth";
 import SuperMintLogo from "../../components/supermint-logo/SuperMintLogo";
 
-// Wraps pages that require wallet functionality.
-const wallets = [
+/**
+ * WalletLayout Component
+ *
+ * @description
+ * This component serves as a wrapper for pages that require wallet functionality.
+ * It provides the necessary context and components for wallet integration,
+ * ensuring that child components have access to wallet-related features and data.
+ *
+ * @example
+ *
+ * <WalletLayout>
+ *   <WalletPage />
+ * </WalletLayout>
+ *
+ *
+ * @param {React.ReactNode} children - The child components to be wrapped by the WalletLayout
+ * @returns {JSX.Element} A component that provides wallet functionality to its children
+ */ const wallets = [
   inAppWallet({
     auth: {
       options: ["google", "email"],
