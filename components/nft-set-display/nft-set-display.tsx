@@ -12,7 +12,7 @@ import {
 import { CheckCircle2, LockIcon, ChevronRight } from "lucide-react";
 import { Nft } from "@/types/alchemy/nft-types";
 import NftCard from "@/components/nft-card";
-import UnclaimedNftCard from "@/components/nft-set-display/mystery-nft-card";
+import UnclaimedNftCard from "@/components/nft-set-display/unclaimed-nft-card";
 
 interface NftCollectionDisplayProps {
   nfts: Nft[];
@@ -100,7 +100,7 @@ const NftCollectionDisplay: React.FC<NftCollectionDisplayProps> = ({
               <div key={`mystery-${index}`} className="aspect-square">
                 <UnclaimedNftCard
                   charityName={setInfo.charityName}
-                  backgroundImageUrl={"public/images/supermint-logo.png"}
+                  backgroundImageUrl={"/images/question-mark.webp"}
                 />
               </div>
             ))}
@@ -127,7 +127,7 @@ const NftCollectionDisplay: React.FC<NftCollectionDisplayProps> = ({
                       <UnclaimedNftCard
                         key={`mystery-full-${index}`}
                         charityName={setInfo.charityName}
-                        backgroundImageUrl={"public/images/supermint-logo.png"}
+                        backgroundImageUrl={"/images/question-mark.webp"}
                       />
                     ))}
                   </div>

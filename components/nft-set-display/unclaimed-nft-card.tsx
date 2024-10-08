@@ -2,10 +2,11 @@ import React, { useEffect, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Lock } from "lucide-react";
 import { motion, useAnimation } from "framer-motion";
+import styles from "@/components/nft-set-display/unclaimed-nft-card.module.css";
 
 interface UnclaimedNftCardProps {
   charityName: string;
-  backgroundImageUrl: string; // New prop for background image
+  backgroundImageUrl: string;
 }
 
 const UnclaimedNftCard: React.FC<UnclaimedNftCardProps> = ({
@@ -31,36 +32,25 @@ const UnclaimedNftCard: React.FC<UnclaimedNftCardProps> = ({
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    const particles: Array<{
-      x: number;
-      y: number;
-      speed: number;
-      size: number;
-    }> = [];
-    for (let i = 0; i < 50; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        speed: 0.05 + Math.random() * 0.1,
-        size: Math.random() * 2 + 0.5,
-      });
-    }
+    const particles = Array.from({ length: 50 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      speed: 0.05 + Math.random() * 0.1,
+      size: Math.random() * 2 + 0.5,
+    }));
 
     function animate() {
       if (!canvas || !ctx) return;
-
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
 
       particles.forEach((particle) => {
         particle.y -= particle.speed;
         if (particle.y < 0) particle.y = canvas.height;
-
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
         ctx.fill();
       });
-
       requestAnimationFrame(animate);
     }
     animate();
@@ -79,36 +69,27 @@ const UnclaimedNftCard: React.FC<UnclaimedNftCardProps> = ({
 
   return (
     <Card
-      className="h-full relative overflow-hidden cursor-pointer"
+      className={styles.card}
       onClick={handleCardClick}
+      style={
+        {
+          "--background-image": `url(${backgroundImageUrl})`,
+        } as React.CSSProperties
+      } // Set CSS variable here
     >
-      {/* Pixelated background image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: `url(${backgroundImageUrl})`,
-          filter: "blur(10px)",
-          transform: "scale(1.1)", // Slightly scale up to avoid blur edges
-        }}
-      />
-      {/* Darkening overlay */}
-      <div className="absolute inset-0 bg-black opacity-50" />
-
-      {/* Particle effect */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
-
-      {/* Card content */}
-      <CardContent className="p-4 h-full flex flex-col items-center justify-center text-center relative z-10">
-        <motion.div animate={controls} className="mb-3">
-          <Lock className="w-10 h-10 text-white" />
+      <div className={styles.pixelatedBackground} />
+      <div className={styles.overlay} />
+      <canvas ref={canvasRef} className={styles.particleCanvas} />
+      <CardContent className={styles.cardContent}>
+        <motion.div animate={controls} className={styles.lockIcon}>
+          <Lock />
         </motion.div>
-        <p className="font-semibold mb-2 text-white">Unclaimed NFT</p>
-        <p className="text-xs text-gray-200 mb-2">
-          Complete your set by donating to {charityName}
+        <p className={styles.title}>Missing NFT</p>
+        <p className={styles.charityMessage}>
+          Donate to {charityName} for a chance to claim this NFT and complete
+          the set.
         </p>
-        <p className="text-xs font-medium text-yellow-300">
-          Limited availability
-        </p>
+        <p className={styles.limitedText}>Limited availability</p>
       </CardContent>
     </Card>
   );
