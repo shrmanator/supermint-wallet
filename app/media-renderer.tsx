@@ -6,6 +6,8 @@ import {
   MediaErrorEvent,
   MediaPlayer,
   MediaProvider,
+  VideoSrc,
+  AudioSrc,
 } from "@vidstack/react";
 import "@vidstack/react/player/styles/base.css";
 import { Volume2, VolumeX } from "lucide-react";
@@ -24,36 +26,34 @@ const CustomMediaPlayer: React.FC<CustomMediaPlayerProps> = ({
   alt,
   contentType,
   className,
-  priority = false,
 }) => {
   const isVideo = contentType?.startsWith("video");
   const [isMuted, setIsMuted] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Reset loading state when src changes
     setIsLoading(true);
   }, [src]);
 
-  const handleMediaPlayerReady = () => {
+  const handleMediaReady = () => {
     setIsLoading(false);
   };
 
-  const handleImageLoad = () => {
-    setIsLoading(false);
-  };
-
-  const handleMediaPlayerError = (
+  const handleMediaError = (
     detail: MediaErrorDetail,
     nativeEvent: MediaErrorEvent
   ) => {
-    console.error("Media player error:", detail, nativeEvent);
+    console.error("Media error:", detail, nativeEvent);
     setIsLoading(false);
   };
 
   const toggleMute = () => {
     setIsMuted(!isMuted);
   };
+
+  const mediaSrc: VideoSrc | AudioSrc = isVideo
+    ? { src, type: contentType as VideoSrc["type"] }
+    : { src, type: contentType as AudioSrc["type"] };
 
   return (
     <AspectRatio ratio={16 / 9} className="bg-muted relative">
@@ -63,13 +63,13 @@ const CustomMediaPlayer: React.FC<CustomMediaPlayerProps> = ({
       {isVideo ? (
         <>
           <MediaPlayer
-            src={src}
+            src={mediaSrc}
             playsInline
             loop
             muted={isMuted}
             autoPlay={true}
-            onPlay={handleMediaPlayerReady}
-            onError={handleMediaPlayerError}
+            onCanPlay={handleMediaReady}
+            onError={handleMediaError}
             className={`w-full h-full ${isLoading ? "invisible" : "visible"}`}
           >
             <MediaProvider />
@@ -87,15 +87,14 @@ const CustomMediaPlayer: React.FC<CustomMediaPlayerProps> = ({
           alt={alt}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          priority={priority}
+          priority
           className={`rounded-md object-cover ${className} ${
             isLoading ? "invisible" : "visible"
           }`}
-          onLoadingComplete={handleImageLoad}
+          onLoad={handleMediaReady}
         />
       )}
     </AspectRatio>
   );
 };
-
 export default CustomMediaPlayer;
