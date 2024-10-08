@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import NextVidstackMediaRenderer from "@/app/media-renderer";
+import { Nft, NftResponse } from "@/lib/alchemy/nft-types";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
@@ -23,7 +24,7 @@ export default function WalletPage() {
     data: nftsData,
     error: nftsError,
     isLoading: isNftsLoading,
-  } = useSWR(
+  } = useSWR<NftResponse>(
     account?.address ? `/api/nfts?owner=${account.address}` : null,
     fetcher
   );
@@ -34,11 +35,9 @@ export default function WalletPage() {
     }
   }, [nftsData]);
 
-  const getMediaSrc = (nft) => {
-    const originalSrc =
-      nft.image?.cachedUrl || nft.image?.originalUrl || nft.tokenUri || null;
+  const getMediaSrc = (nft: Nft) => {
+    const originalSrc = nft.image.cachedUrl || nft.image.originalUrl || null;
     if (originalSrc) {
-      // Use the proxy for the media source
       return `/api/image-proxy?url=${encodeURIComponent(originalSrc)}`;
     }
     return null;
@@ -65,7 +64,7 @@ export default function WalletPage() {
         </p>
       ) : nftsData?.ownedNfts && nftsData.ownedNfts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {nftsData.ownedNfts.map((nft: any) => {
+          {nftsData.ownedNfts.map((nft: Nft) => {
             const mediaSrc = getMediaSrc(nft);
 
             return (
@@ -75,7 +74,7 @@ export default function WalletPage() {
                     <NextVidstackMediaRenderer
                       src={mediaSrc}
                       alt={nft.name || `NFT #${nft.tokenId}`}
-                      contentType={nft.image?.contentType}
+                      contentType={nft.image.contentType}
                     />
                   ) : (
                     <div className="aspect-square flex items-center justify-center bg-muted text-muted-foreground rounded-md">
@@ -88,7 +87,7 @@ export default function WalletPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground">
-                    {nft.description}
+                    {nft.description || "No description available"}
                   </p>
                 </CardContent>
                 <CardFooter>
