@@ -7,11 +7,13 @@ import styles from "./unclaimed-nft-card.module.css";
 interface UnclaimedNftCardProps {
   charityName: string;
   backgroundImageUrl: string;
+  isSmallDisplay?: boolean; // Add prop for smaller displays
 }
 
 const UnclaimedNftCard: React.FC<UnclaimedNftCardProps> = ({
   charityName,
   backgroundImageUrl,
+  isSmallDisplay = false,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const controls = useAnimation();
@@ -69,13 +71,13 @@ const UnclaimedNftCard: React.FC<UnclaimedNftCardProps> = ({
 
   return (
     <Card
-      className={styles.card}
+      className={`${styles.card} ${isSmallDisplay ? styles.smallCard : ""}`}
       onClick={handleCardClick}
       style={
         {
           "--background-image": `url(${backgroundImageUrl})`,
         } as React.CSSProperties
-      } // Set CSS variable here
+      }
     >
       <div className={styles.pixelatedBackground} />
       <div className={styles.overlay} />
@@ -84,12 +86,21 @@ const UnclaimedNftCard: React.FC<UnclaimedNftCardProps> = ({
         <motion.div animate={controls} className={styles.lockIcon}>
           <Lock />
         </motion.div>
-        <p className={styles.title}>Missing NFT</p>
-        <p className={styles.charityMessage}>
-          Donate to {charityName} for a chance to claim this NFT and complete
-          the set.
-        </p>
-        <p className={styles.limitedText}>Limited availability</p>
+        {isSmallDisplay ? (
+          <>
+            <p className={styles.title}>Complete This Set</p>
+            <p className={styles.charityMessage}>Donate to unlock</p>
+          </>
+        ) : (
+          <>
+            <p className={styles.title}>Missing NFT</p>
+            <p className={styles.charityMessage}>
+              Donate to {charityName} for a chance to claim this NFT and
+              complete the set.
+            </p>
+            <p className={styles.limitedText}>Limited availability</p>
+          </>
+        )}
       </CardContent>
     </Card>
   );
