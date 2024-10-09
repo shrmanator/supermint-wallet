@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { ChevronRight } from "lucide-react";
+import { CheckCircle2, ChevronRight, CircleSlash2 } from "lucide-react";
 import { Nft } from "@/types/alchemy/nft-types";
 import NftCard from "@/components/nft-card";
 import UnclaimedNftCard from "@/components/nft-set-display/unclaimed-nft-card";
@@ -26,9 +26,7 @@ interface SetInfo {
   charityName: string;
 }
 
-const NftCollectionDisplay: React.FC<NftCollectionDisplayProps> = ({
-  nfts,
-}) => {
+const NftDisplay: React.FC<NftCollectionDisplayProps> = ({ nfts }) => {
   const groupedNfts = useMemo(() => {
     const sets: { [setName: string]: SetInfo } = {};
     const individual: Nft[] = [];
@@ -77,6 +75,26 @@ const NftCollectionDisplay: React.FC<NftCollectionDisplayProps> = ({
             <CardTitle className="text-primary font-semibold text-lg">
               Set: {setInfo.setName}
             </CardTitle>
+            <Badge
+              variant="default"
+              className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs ${
+                isComplete
+                  ? "bg-green-100 text-green-700"
+                  : "bg-gray-100 text-gray-700"
+              }`}
+            >
+              {isComplete ? (
+                <>
+                  <CheckCircle2 size={16} className="text-green-500" /> Set
+                  Complete
+                </>
+              ) : (
+                <>
+                  <CircleSlash2 size={16} className="text-secondary" /> Set
+                  Incomplete
+                </>
+              )}
+            </Badge>
           </div>
           <p className="text-sm text-muted-foreground mt-1">
             By {setInfo.charityName}
@@ -172,4 +190,4 @@ const NftCollectionDisplay: React.FC<NftCollectionDisplayProps> = ({
   );
 };
 
-export default NftCollectionDisplay;
+export default NftDisplay;
