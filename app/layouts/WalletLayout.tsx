@@ -5,26 +5,9 @@ import { inAppWallet } from "thirdweb/wallets";
 import { polygon } from "thirdweb/chains";
 import { client } from "@/lib/thirdweb/client";
 import { useWalletAuth } from "@/app/hooks/use-wallet-auth";
-import SuperMintLogo from "../../components/supermint-logo/SuperMintLogo";
+import SuperMintLogo from "@/components/supermint-logo/SuperMintLogo"; // Adjust the import path as needed
 
-/**
- * WalletLayout Component
- *
- * @description
- * This component serves as a wrapper for pages that require wallet functionality.
- * It provides the necessary context and components for wallet integration,
- * ensuring that child components have access to wallet-related features and data.
- *
- * @example
- *
- * <WalletLayout>
- *   <WalletPage />
- * </WalletLayout>
- *
- *
- * @param {React.ReactNode} children - The child components to be wrapped by the WalletLayout
- * @returns {JSX.Element} A component that provides wallet functionality to its children
- */ const wallets = [
+const wallets = [
   inAppWallet({
     auth: {
       options: ["google", "email"],
@@ -32,17 +15,26 @@ import SuperMintLogo from "../../components/supermint-logo/SuperMintLogo";
   }),
 ];
 
-export default function WalletLayout({}: { children: React.ReactNode }) {
+export default function WalletLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { handleDoLogin, isLoggedIn, generatePayload, handleDoLogout } =
     useWalletAuth();
 
   return (
     <div className="flex flex-col min-h-screen">
       <header className="border-b">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center justify-between h-16">
-            <div className="flex items-center h-full">
-              <SuperMintLogo />
+            <div className="flex items-center">
+              <SuperMintLogo
+                showText={true}
+                textSize="25px"
+                showIcon={true}
+                iconSize="45px"
+              />
             </div>
             <ConnectButton
               chain={polygon}
@@ -64,11 +56,7 @@ export default function WalletLayout({}: { children: React.ReactNode }) {
           </nav>
         </div>
       </header>
-      <footer className="border-t py-4">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} SuperMint Wallet
-        </div>
-      </footer>
+      <main className="flex-grow">{children}</main>
     </div>
   );
 }

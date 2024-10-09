@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
@@ -10,25 +12,6 @@ interface SuperMintLogoProps {
   iconSize?: string;
 }
 
-/**
- * SuperMintLogo Component
- *
- * This component renders the SuperMint logo, adapting to light and dark themes.
- * It uses dynamic imports to load the appropriate logo image based on the current theme.
- *
- * @component
- * @param {Object} props - The component props
- * @param {boolean} [props.showText=true] - Whether to show the "SuperMint" text
- * @param {string} [props.textSize="25px"] - The size of the "SuperMint" text
- * @param {boolean} [props.showIcon=true] - Whether to show the logo icon
- * @param {string} [props.iconSize="45px"] - The size of the logo icon
- *
- * @example
- * <SuperMintLogo showText={true} textSize="30px" showIcon={true} iconSize="50px" />
- *
- * @remarks
- * The component uses dynamic imports to load the logo images to allow for theme-based logo switching without SSR conflicts.
- */
 const SuperMintLogo: React.FC<SuperMintLogoProps> = ({
   showText = true,
   textSize = "25px",
@@ -58,14 +41,13 @@ const SuperMintLogo: React.FC<SuperMintLogoProps> = ({
     >
       {showIcon && logoSrc && (
         <div
-          className={styles.iconWrapper}
-          style={{ width: iconSize, height: iconSize }}
+          className={`${styles.iconWrapper} ${styles[`iconSize-${iconSize}`]}`}
         >
           <Image
             src={logoSrc}
             alt="SuperMint Logo"
-            width={150}
-            height={150}
+            width={30}
+            height={30}
             className={styles.logoImage}
             priority={true}
           />
@@ -73,7 +55,7 @@ const SuperMintLogo: React.FC<SuperMintLogoProps> = ({
       )}
       {showText && (
         <div className={showIcon ? styles.textWithIcon : ""}>
-          <span className={styles.supermintText} style={{ fontSize: textSize }}>
+          <span className={`${styles.supermintText} ${styles[`textSize-${textSize}`]}`}>
             SuperMint
           </span>
         </div>
@@ -81,5 +63,4 @@ const SuperMintLogo: React.FC<SuperMintLogoProps> = ({
     </div>
   );
 };
-
 export default SuperMintLogo;

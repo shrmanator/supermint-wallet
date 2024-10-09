@@ -44,8 +44,8 @@ const NftDisplay: React.FC<NftDisplayProps> = ({ nfts }) => {
   }, [nfts]);
 
   return (
-    <div className="space-y-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {Object.values(groupedNfts.sets).map((setInfo) => (
           <NftSet
             key={setInfo.setName}
@@ -55,18 +55,10 @@ const NftDisplay: React.FC<NftDisplayProps> = ({ nfts }) => {
             charityName={setInfo.charityName}
           />
         ))}
+        {groupedNfts.individual.map((nft) => (
+          <NftSeriesDisplay key={nft.tokenId} nft={nft} />
+        ))}
       </div>
-
-      {groupedNfts.individual.length > 0 && (
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Individual NFTs</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {groupedNfts.individual.map((nft) => (
-              <NftSeriesDisplay key={nft.tokenId} nft={nft} />
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 };
