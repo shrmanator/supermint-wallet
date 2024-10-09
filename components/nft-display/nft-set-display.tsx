@@ -34,69 +34,74 @@ const NftSet: React.FC<NftSetProps> = ({
   const unknownCount = setSize - nfts.length;
 
   return (
-    <Card className="shadow-lg rounded-lg bg-card-background w-full">
+    <Card className="shadow-md rounded-lg bg-background w-full">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-muted-foreground font-semibold text-lg truncate">
-            Set: <span className="font-bold">{setName}</span>, By {charityName}
+          <CardTitle className="text-muted-foreground font-normal text-md truncate">
+            <span className="font-semibold">{setName}</span> by {charityName}
           </CardTitle>
           <Badge
             variant="default"
-            className={`flex items-center gap-1 px-3 py-1 rounded-full text-sm ${
+            className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
               isComplete
-                ? "bg-green-100 text-green-700"
-                : "bg-gray-100 text-gray-700"
+                ? "bg-success-background text-success-foreground"
+                : "bg-muted-background text-muted-foreground"
             }`}
           >
             {isComplete ? (
               <>
-                <CheckCircle2 size={16} className="text-green-500" /> Complete
+                <CheckCircle2 size={14} className="text-success-foreground" />{" "}
+                Complete
               </>
             ) : (
               <>
-                <CircleSlash2 size={16} className="text-secondary" /> Incomplete
+                <CircleSlash2 size={14} className="text-muted-foreground" />{" "}
+                Incomplete
               </>
             )}
           </Badge>
         </div>
       </CardHeader>
       <CardContent>
-        <p className="text-base text-muted-foreground mt-3 mb-2">
+        <p className="text-sm text-muted-foreground mt-2 mb-3 font-light">
           Collected {nfts.length} / {setSize} NFTs
         </p>
 
         <Progress
-          className={`mb-4 ${isComplete ? "bg-green-500" : ""}`}
+          className="mb-4"
           value={progressPercentage}
+          color={isComplete ? "bg-success" : "bg-muted"}
         />
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-3">
           {nfts.slice(0, displayCount).map((nft) => (
             <div
               key={nft.tokenId}
-              className="aspect-square w-full max-w-[160px]"
+              className="aspect-square w-full max-w-[140px]"
             >
               <NftCard nft={nft} showMetadata={false} />
             </div>
           ))}
           {nfts.length < 2 && (
-            <div className="w-full max-w-[160px] aspect-square flex items-center justify-center">
+            <div className="w-full max-w-[140px] aspect-square flex items-center justify-center">
               <CondensedUnclaimedNftCard charityName={charityName} />
             </div>
           )}
           <Dialog>
             <DialogTrigger asChild>
-              <div className="aspect-square w-full max-w-[160px] cursor-pointer">
-                <Card className="h-full flex flex-col items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 text-white">
-                  <ChevronRight size={24} />
-                  <p className="mt-2 text-base font-semibold">View Full Set</p>
+              <div className="aspect-square w-full max-w-[140px] cursor-pointer">
+                <div className="h-full flex flex-col items-center justify-center bg-accent text-accent-foreground border border-transparent">
+                  <ChevronRight size={20} />
+                  <p className="mt-2 text-sm font-semibold leading-none">
+                    View Full Set
+                  </p>
                   <p className="text-xs mt-1">{setSize} NFTs</p>
-                </Card>
+                </div>
               </div>
             </DialogTrigger>
-            <DialogContent className="max-w-4xl bg-card-background">
+            <DialogContent className="max-w-4xl bg-background">
               <DialogHeader>
-                <DialogTitle className="text-primary text-xl font-bold">
+                <DialogTitle className="text-primary text-lg font-bold leading-tight">
                   {setName} Collection
                 </DialogTitle>
               </DialogHeader>
