@@ -1,11 +1,11 @@
 "use client";
 
+import React from "react";
 import { useActiveAccount } from "thirdweb/react";
 import useSWR from "swr";
 import axios from "axios";
-import { useEffect } from "react";
 import { NftResponse } from "@/types/alchemy/nft-types";
-import NftDisplay from "@/components/nft-set-display/nft-set-display";
+import NftDisplay from "@/components/nft-display/nft-display";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
@@ -16,12 +16,6 @@ export default function WalletPage() {
     account?.address ? `/api/nfts?owner=${account.address}` : null,
     fetcher
   );
-
-  useEffect(() => {
-    if (nftsData) {
-      console.log("NFTs Data:", nftsData);
-    }
-  }, [nftsData]);
 
   return (
     <div className="container mx-auto px-4 py-8">

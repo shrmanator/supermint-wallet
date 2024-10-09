@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Lock } from "lucide-react";
 import { motion, useAnimation } from "framer-motion";
-import styles from "@/components/nft-set-display/unclaimed-nft-card.module.css";
+import styles from "./unclaimed-nft-card.module.css";
 
 interface UnclaimedNftCardProps {
   charityName: string;
