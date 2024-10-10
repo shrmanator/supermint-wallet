@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { ImageIcon } from "lucide-react";
 import CustomMediaPlayer from "@/components/media-renderer";
 import { Nft } from "@/types/alchemy/nft-types";
+import MetadataContent from "./back-of-card";
 
 interface NftCardProps {
   nft: Nft;
@@ -66,7 +67,7 @@ const NftCard: React.FC<NftCardProps> = ({
             {seriesInfo.seriesTitle}
           </h3>
           <span className="text-xs text-muted-foreground ml-2">
-            of {seriesInfo.totalNftsInSeries}
+          {seriesInfo.seriesNumber} of {seriesInfo.totalNftsInSeries}
           </span>
         </div>
         <div className="flex justify-between mt-1">
@@ -94,49 +95,6 @@ const NftCard: React.FC<NftCardProps> = ({
     </div>
   );
 
-  const MetadataContent = () => (
-    <div className="w-full h-full p-4 flex flex-col">
-      <h3 className="text-lg font-semibold mb-3 text-center">NFT Details</h3>
-      <div className="grid grid-cols-2 gap-3 text-sm">
-        <div>
-          <p className="font-medium">Token ID</p>
-          <p className="text-muted-foreground">{nft.tokenId}</p>
-        </div>
-        <div>
-          <p className="font-medium">Token Type</p>
-          <p className="text-muted-foreground">{nft.tokenType}</p>
-        </div>
-        <div>
-          <p className="font-medium">Artist</p>
-          <p className="text-muted-foreground">{seriesInfo.seriesArtistName}</p>
-        </div>
-        <div>
-          <p className="font-medium">Series</p>
-          <p className="text-muted-foreground">
-            {seriesInfo.seriesTitle} (#{seriesInfo.seriesNumber} of{" "}
-            {seriesInfo.totalNftsInSeries})
-          </p>
-        </div>
-      </div>
-      <div className="mt-3">
-        <p className="font-medium text-sm">Set Description</p>
-        <p className="text-xs text-muted-foreground mt-1 line-clamp-3">
-          {seriesInfo.setDescription || "No set description available"}
-        </p>
-      </div>
-      <Button
-        variant="outline"
-        size="sm"
-        className="mt-auto"
-        onClick={() => {
-          /* Handle view more details logic */
-        }}
-      >
-        View More Details
-      </Button>
-    </div>
-  );
-
   return (
     <motion.div
       className="relative cursor-pointer"
@@ -150,15 +108,15 @@ const NftCard: React.FC<NftCardProps> = ({
         style={{ transformStyle: "preserve-3d" }}
       >
         <Card
-          className={`overflow-hidden rounded-lg ${
+          className={`overflow-hidden ${
             showMetadata && layout === "side" ? "flex" : ""
           } [backface-visibility:hidden]`}
         >
           <MediaContent />
           {showMetadata && <InfoContent />}
         </Card>
-        <Card className="absolute inset-0 overflow-hidden rounded-lg [transform:rotateY(180deg)] [backface-visibility:hidden]">
-          <MetadataContent />
+        <Card className="absolute inset-0 overflow-hidden [transform:rotateY(180deg)] [backface-visibility:hidden]">
+          <MetadataContent nft={nft} />
         </Card>
       </motion.div>
     </motion.div>

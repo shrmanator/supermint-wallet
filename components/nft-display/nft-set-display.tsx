@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { CheckCircle2, CircleSlash2, ChevronRight } from "lucide-react";
 import { Nft } from "@/types/alchemy/nft-types";
-import NftCard from "@/components/nft-card";
+import NftCard from "@/components/nft-card/nft-card";
 import { Progress } from "@/components/ui/progress";
 import UnclaimedNftCard from "./unclaimed-nft-card";
 import CondensedUnclaimedNftCard from "./unclaimed-nft-card-condensed";
