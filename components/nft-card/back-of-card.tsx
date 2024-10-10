@@ -13,11 +13,11 @@ import {
 } from "lucide-react";
 import { Nft } from "@/types/alchemy/nft-types";
 
-interface MetadataContentProps {
+interface BackOfCardProps {
   nft: Nft;
 }
 
-const MetadataContent: React.FC<MetadataContentProps> = ({ nft }) => {
+const BackOfCard: React.FC<BackOfCardProps> = ({ nft }) => {
   const seriesInfo = nft.raw.metadata.supermint;
 
   return (
@@ -83,4 +83,4 @@ const MetadataContent: React.FC<MetadataContentProps> = ({ nft }) => {
   );
 };
 
-export default MetadataContent;
+export default BackOfCard;

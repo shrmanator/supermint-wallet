@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { ImageIcon } from "lucide-react";
 import CustomMediaPlayer from "@/components/media-renderer";
 import { Nft } from "@/types/alchemy/nft-types";
-import MetadataContent from "./back-of-card";
+import BackOfCard from "./back-of-card";
 
 interface NftCardProps {
   nft: Nft;
@@ -67,7 +67,7 @@ const NftCard: React.FC<NftCardProps> = ({
             {seriesInfo.seriesTitle}
           </h3>
           <span className="text-xs text-muted-foreground ml-2">
-          {seriesInfo.seriesNumber} of {seriesInfo.totalNftsInSeries}
+            {seriesInfo.seriesNumber} of {seriesInfo.totalNftsInSeries}
           </span>
         </div>
         <div className="flex justify-between mt-1">
@@ -116,7 +116,7 @@ const NftCard: React.FC<NftCardProps> = ({
           {showMetadata && <InfoContent />}
         </Card>
         <Card className="absolute inset-0 overflow-hidden [transform:rotateY(180deg)] [backface-visibility:hidden]">
-          <MetadataContent nft={nft} />
+          <BackOfCard nft={nft} />
         </Card>
       </motion.div>
     </motion.div>
