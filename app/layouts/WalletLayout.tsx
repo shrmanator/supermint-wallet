@@ -31,7 +31,7 @@ export default function WalletLayout({
             <div className="flex items-center">
               <SuperMintLogo
                 showText={true}
-                textSize="25px"
+                textSize="35px"
                 showIcon={true}
                 iconSize="45px"
               />

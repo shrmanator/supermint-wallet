@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { ImageIcon } from "lucide-react";
 import CustomMediaPlayer from "@/components/media-renderer";
 import { Nft } from "@/types/alchemy/nft-types";
@@ -16,6 +18,8 @@ const NftCard: React.FC<NftCardProps> = ({
   layout = "bottom",
   showMetadata = true,
 }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
   const getMediaSrc = (nft: Nft) => {
     return nft.image.cachedUrl || nft.image.originalUrl || null;
   };
@@ -31,6 +35,9 @@ const NftCard: React.FC<NftCardProps> = ({
         layout === "bottom" ? "rounded-t-lg" : "rounded-l-lg"
       } overflow-hidden`}
     >
+      <Badge variant="secondary" className="absolute top-2 left-2 z-10">
+        #{seriesInfo.seriesNumber}
+      </Badge>
       {mediaSrc ? (
         <CustomMediaPlayer
           src={mediaSrc}
@@ -39,9 +46,9 @@ const NftCard: React.FC<NftCardProps> = ({
           className="w-full h-full object-cover"
         />
       ) : (
-        <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900">
-          <ImageIcon className="w-16 h-16 text-gray-600 mb-2" />
-          <p className="text-sm text-gray-400">No image available</p>
+        <div className="w-full h-full flex flex-col items-center justify-center bg-muted">
+          <ImageIcon className="w-16 h-16 text-muted-foreground mb-2" />
+          <p className="text-sm text-muted-foreground">No image available</p>
         </div>
       )}
     </div>
@@ -51,22 +58,22 @@ const NftCard: React.FC<NftCardProps> = ({
     <div
       className={`${
         layout === "side" ? "w-1/2 border-l" : "w-full border-t"
-      } border-gray-700`}
+      } border-border`}
     >
       <CardContent className="p-2">
         <div className="flex justify-between items-center">
           <h3 className="text-sm font-medium truncate flex-1">
             {seriesInfo.seriesTitle}
           </h3>
-          <span className="text-xs text-gray-400 ml-2">
-            #{seriesInfo.seriesNumber} of {seriesInfo.totalNftsInSeries}
+          <span className="text-xs text-muted-foreground ml-2">
+            of {seriesInfo.totalNftsInSeries}
           </span>
         </div>
         <div className="flex justify-between mt-1">
-          <p className="text-xs text-gray-400 truncate flex-1">
+          <p className="text-xs text-muted-foreground truncate flex-1">
             {seriesInfo.seriesArtistName}
           </p>
-          <p className="text-xs text-gray-400 truncate flex-1 text-right">
+          <p className="text-xs text-muted-foreground truncate flex-1 text-right">
             {seriesInfo.charityName}
           </p>
         </div>
@@ -87,15 +94,74 @@ const NftCard: React.FC<NftCardProps> = ({
     </div>
   );
 
+  const MetadataContent = () => (
+    <div className="w-full h-full p-4 flex flex-col">
+      <h3 className="text-lg font-semibold mb-3 text-center">NFT Details</h3>
+      <div className="grid grid-cols-2 gap-3 text-sm">
+        <div>
+          <p className="font-medium">Token ID</p>
+          <p className="text-muted-foreground">{nft.tokenId}</p>
+        </div>
+        <div>
+          <p className="font-medium">Token Type</p>
+          <p className="text-muted-foreground">{nft.tokenType}</p>
+        </div>
+        <div>
+          <p className="font-medium">Artist</p>
+          <p className="text-muted-foreground">{seriesInfo.seriesArtistName}</p>
+        </div>
+        <div>
+          <p className="font-medium">Series</p>
+          <p className="text-muted-foreground">
+            {seriesInfo.seriesTitle} (#{seriesInfo.seriesNumber} of{" "}
+            {seriesInfo.totalNftsInSeries})
+          </p>
+        </div>
+      </div>
+      <div className="mt-3">
+        <p className="font-medium text-sm">Set Description</p>
+        <p className="text-xs text-muted-foreground mt-1 line-clamp-3">
+          {seriesInfo.setDescription || "No set description available"}
+        </p>
+      </div>
+      <Button
+        variant="outline"
+        size="sm"
+        className="mt-auto"
+        onClick={() => {
+          /* Handle view more details logic */
+        }}
+      >
+        View More Details
+      </Button>
+    </div>
+  );
+
   return (
-    <Card
-      className={`overflow-hidden bg-black text-white rounded-none ${
-        showMetadata && layout === "side" ? "flex" : ""
-      }`}
+    <motion.div
+      className="relative cursor-pointer"
+      onClick={() => setIsFlipped(!isFlipped)}
+      whileHover={{ scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
-      <MediaContent />
-      {showMetadata && <InfoContent />}
-    </Card>
+      <motion.div
+        animate={{ rotateY: isFlipped ? 180 : 0 }}
+        transition={{ duration: 0.6, type: "spring" }}
+        style={{ transformStyle: "preserve-3d" }}
+      >
+        <Card
+          className={`overflow-hidden rounded-lg ${
+            showMetadata && layout === "side" ? "flex" : ""
+          } [backface-visibility:hidden]`}
+        >
+          <MediaContent />
+          {showMetadata && <InfoContent />}
+        </Card>
+        <Card className="absolute inset-0 overflow-hidden rounded-lg [transform:rotateY(180deg)] [backface-visibility:hidden]">
+          <MetadataContent />
+        </Card>
+      </motion.div>
+    </motion.div>
   );
 };
 
