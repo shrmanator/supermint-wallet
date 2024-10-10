@@ -106,7 +106,6 @@ const NftCard: React.FC<NftCardProps> = ({
   return (
     <motion.div
       className="relative"
-      whileHover={{ scale: 1.02 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
       <motion.div

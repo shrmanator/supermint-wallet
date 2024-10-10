@@ -16,10 +16,9 @@ import { Nft } from "@/types/alchemy/nft-types";
 
 interface BackOfCardProps {
   nft: Nft;
-  onFlip: () => void;
 }
 
-const BackOfCard: React.FC<BackOfCardProps> = ({ nft, onFlip }) => {
+const BackOfCard: React.FC<BackOfCardProps> = ({ nft }) => {
   const seriesInfo = nft.raw.metadata.supermint;
 
   return (
@@ -82,12 +81,7 @@ const BackOfCard: React.FC<BackOfCardProps> = ({ nft, onFlip }) => {
         </div>
       </CardContent>
       <CardFooter className="p-2 justify-end">
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={onFlip}
-          className="text-xs"
-        >
+        <Button variant="secondary" size="sm" className="text-xs">
           Back
         </Button>
       </CardFooter>
