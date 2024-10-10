@@ -6,15 +6,15 @@ import { Badge } from "@/components/ui/badge";
 import { ImageIcon } from "lucide-react";
 import CustomMediaPlayer from "@/components/media-renderer";
 import { Nft } from "@/types/alchemy/nft-types";
-import BackOfCard from "./back-of-card";
+import BackOfCardMini from "./back-of-card-mini";
 
-interface NftCardProps {
+interface NftCardMiniProps {
   nft: Nft;
   layout?: "side" | "bottom";
   showMetadata?: boolean;
 }
 
-const NftCard: React.FC<NftCardProps> = ({
+const NftCardMini: React.FC<NftCardMiniProps> = ({
   nft,
   layout = "bottom",
   showMetadata = true,
@@ -122,11 +122,11 @@ const NftCard: React.FC<NftCardProps> = ({
           {showMetadata && <InfoContent />}
         </Card>
         <Card className="absolute inset-0 overflow-hidden [transform:rotateY(180deg)] [backface-visibility:hidden]">
-          <BackOfCard nft={nft} setIsFlipped={setIsFlipped} />
+          <BackOfCardMini nft={nft} setIsFlipped={setIsFlipped} />
         </Card>
       </motion.div>
     </motion.div>
   );
 };
 
-export default NftCard;
+export default NftCardMini;

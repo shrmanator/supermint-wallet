@@ -15,12 +15,15 @@ import { Separator } from "@radix-ui/react-separator";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 
-interface BackOfCardProps {
+interface BackOfCardMiniProps {
   nft: Nft;
   setIsFlipped: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const BackOfCard: React.FC<BackOfCardProps> = ({ nft, setIsFlipped }) => {
+const BackOfCardMini: React.FC<BackOfCardMiniProps> = ({
+  nft,
+  setIsFlipped,
+}) => {
   const seriesInfo = nft.raw.metadata.supermint;
 
   return (
@@ -95,4 +98,4 @@ const BackOfCard: React.FC<BackOfCardProps> = ({ nft, setIsFlipped }) => {
   );
 };
 
-export default BackOfCard;
+export default BackOfCardMini;

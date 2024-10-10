@@ -14,6 +14,7 @@ import NftCard from "@/components/nft-card/nft-card";
 import { Progress } from "@/components/ui/progress";
 import UnclaimedNftCard from "./unclaimed-nft-card";
 import CondensedUnclaimedNftCard from "./unclaimed-nft-card-condensed";
+import NftCardMini from "../nft-card/nft-card-mini";
 
 interface NftSetProps {
   setName: string;
@@ -107,7 +108,7 @@ const NftSet: React.FC<NftSetProps> = ({
               </DialogHeader>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
                 {nfts.map((nft) => (
-                  <NftCard key={nft.tokenId} nft={nft} />
+                  <NftCardMini key={nft.tokenId} nft={nft} />
                 ))}
                 {Array.from({ length: unknownCount }).map((_, index) => (
                   <UnclaimedNftCard
