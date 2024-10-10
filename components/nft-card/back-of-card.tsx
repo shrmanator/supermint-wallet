@@ -1,7 +1,8 @@
 import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 import {
   Zap,
   Star,
@@ -15,16 +16,17 @@ import { Nft } from "@/types/alchemy/nft-types";
 
 interface BackOfCardProps {
   nft: Nft;
+  onFlip: () => void;
 }
 
-const BackOfCard: React.FC<BackOfCardProps> = ({ nft }) => {
+const BackOfCard: React.FC<BackOfCardProps> = ({ nft, onFlip }) => {
   const seriesInfo = nft.raw.metadata.supermint;
 
   return (
-    <Card className="w-full h-full bg-purple-600 text-white border-none">
-      <CardContent className="p-2 flex flex-col h-full">
+    <Card className="w-full h-full bg-purple-600 text-white border-none flex flex-col">
+      <CardContent className="p-2 flex-grow flex flex-col">
         <h3 className="text-sm font-bold mb-2 text-center text-yellow-300">
-          NFT POWER CARD
+          NFT POWER CARD DETAILS
         </h3>
         <div className="grid grid-cols-2 gap-1 text-xs mb-2">
           <div className="bg-purple-700 p-1 rounded">
@@ -79,6 +81,16 @@ const BackOfCard: React.FC<BackOfCardProps> = ({ nft }) => {
           </ScrollArea>
         </div>
       </CardContent>
+      <CardFooter className="p-2 justify-end">
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={onFlip}
+          className="text-xs"
+        >
+          Back
+        </Button>
+      </CardFooter>
     </Card>
   );
 };

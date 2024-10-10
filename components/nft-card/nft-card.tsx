@@ -80,16 +80,24 @@ const NftCard: React.FC<NftCardProps> = ({
         </div>
       </CardContent>
 
-      <CardFooter className="p-2 pt-0">
+      <CardFooter className="p-2 pt-0 flex gap-2">
         <Button
           variant="secondary"
           size="sm"
-          className="w-full text-xs"
+          className="flex-1 text-xs"
           onClick={() => {
             /* Handle transfer logic */
           }}
         >
           Transfer
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex-1 text-xs"
+          onClick={() => setIsFlipped(!isFlipped)}
+        >
+          Details
         </Button>
       </CardFooter>
     </div>
@@ -97,8 +105,7 @@ const NftCard: React.FC<NftCardProps> = ({
 
   return (
     <motion.div
-      className="relative cursor-pointer"
-      onClick={() => setIsFlipped(!isFlipped)}
+      className="relative"
       whileHover={{ scale: 1.02 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
@@ -117,6 +124,14 @@ const NftCard: React.FC<NftCardProps> = ({
         </Card>
         <Card className="absolute inset-0 overflow-hidden [transform:rotateY(180deg)] [backface-visibility:hidden]">
           <BackOfCard nft={nft} />
+          <Button
+            variant="outline"
+            size="sm"
+            className="absolute bottom-2 right-2"
+            onClick={() => setIsFlipped(!isFlipped)}
+          >
+            Back
+          </Button>
         </Card>
       </motion.div>
     </motion.div>
