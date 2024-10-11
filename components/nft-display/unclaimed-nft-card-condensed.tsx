@@ -2,14 +2,15 @@ import React, { useEffect, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Lock } from "lucide-react";
 import { motion, useAnimation } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface CondensedUnclaimedNftCardProps {
   charityName: string;
 }
 
-const CondensedUnclaimedNftCard: React.FC<
-  CondensedUnclaimedNftCardProps
-> = ({}) => {
+const CondensedUnclaimedNftCard: React.FC<CondensedUnclaimedNftCardProps> = ({
+  charityName,
+}) => {
   const controls = useAnimation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -66,22 +67,28 @@ const CondensedUnclaimedNftCard: React.FC<
 
   return (
     <Card
-      className="relative flex items-center justify-center w-full h-full bg-background rounded-lg cursor-pointer overflow-hidden border shadow-md"
+      className={cn(
+        "relative flex items-center justify-center w-full h-full cursor-pointer",
+        "hover:shadow-md transition-shadow duration-200"
+      )}
       onClick={handleCardClick}
     >
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full opacity-20"
       />
-      <CardContent className="relative flex flex-col items-center justify-center text-center text-muted-foreground p-4">
+      <CardContent className="relative flex flex-col items-center justify-center text-center p-4">
         <motion.div
           animate={controls}
-          className="flex items-center justify-center w-9 h-9 rounded-full mb-2 border"
+          className={cn(
+            "flex items-center justify-center w-9 h-9 rounded-full mb-2",
+            "border border-muted-foreground/20"
+          )}
         >
-          <Lock size={16} className="text-muted-foreground" />
+          <Lock className="h-4 w-4 text-muted-foreground" />
         </motion.div>
-        <p className="text-xs font-medium leading-tight">
-          Donate to complete this set
+        <p className="text-xs font-medium leading-tight text-muted-foreground">
+          Donate to {charityName} to complete set
         </p>
       </CardContent>
     </Card>

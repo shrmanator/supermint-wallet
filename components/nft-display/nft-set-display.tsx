@@ -15,6 +15,7 @@ import { Progress } from "@/components/ui/progress";
 import UnclaimedNftCard from "./unclaimed-nft-card";
 import CondensedUnclaimedNftCard from "./unclaimed-nft-card-condensed";
 import NftCardMini from "../nft-card/nft-card-mini";
+import { cn } from "@/lib/utils";
 
 interface NftSetProps {
   setName: string;
@@ -35,29 +36,23 @@ const NftSet: React.FC<NftSetProps> = ({
   const unknownCount = setSize - nfts.length;
 
   return (
-    <Card className="shadow-md rounded-lg bg-background w-full">
+    <Card className="shadow-md w-full">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <CardTitle className="text-muted-foreground font-normal text-md truncate">
             <span className="font-semibold">{setName}</span> by {charityName}
           </CardTitle>
           <Badge
-            variant="default"
-            className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
-              isComplete
-                ? "bg-success-background text-success-foreground"
-                : "bg-muted-background text-muted-foreground"
-            }`}
+            variant={isComplete ? "default" : "secondary"}
+            className="flex items-center gap-1"
           >
             {isComplete ? (
               <>
-                <CheckCircle2 size={14} className="text-success-foreground" />{" "}
-                Complete
+                <CheckCircle2 size={14} /> Complete
               </>
             ) : (
               <>
-                <CircleSlash2 size={14} className="text-muted-foreground" />{" "}
-                Incomplete
+                <CircleSlash2 size={14} /> Incomplete
               </>
             )}
           </Badge>
@@ -69,28 +64,27 @@ const NftSet: React.FC<NftSetProps> = ({
         </p>
 
         <Progress
-          className="mb-4"
           value={progressPercentage}
-          color={isComplete ? "bg-success" : "bg-muted"}
+          className={cn("mb-4", isComplete ? "text-success" : "text-muted")}
         />
 
         <div className="grid grid-cols-3 gap-3">
           {nfts.slice(0, displayCount).map((nft) => (
             <div
               key={nft.tokenId}
-              className="aspect-square w-full max-w-[140px]"
+              className="aspect-square w-full max-w-[140px] overflow-hidden"
             >
               <NftCard nft={nft} showMetadata={false} />
             </div>
           ))}
           {nfts.length < 2 && (
-            <div className="w-full max-w-[140px] aspect-square flex items-center justify-center">
+            <div className="w-full max-w-[140px] aspect-square flex items-center justify-center overflow-hidden">
               <CondensedUnclaimedNftCard charityName={charityName} />
             </div>
           )}
           <Dialog>
             <DialogTrigger asChild>
-              <div className="aspect-square w-full max-w-[140px] cursor-pointer">
+              <div className="aspect-square w-full max-w-[140px] cursor-pointer overflow-hidden">
                 <div className="h-full flex flex-col items-center justify-center bg-accent text-accent-foreground border border-transparent">
                   <ChevronRight size={20} />
                   <p className="mt-2 text-sm font-semibold leading-none">
@@ -100,7 +94,7 @@ const NftSet: React.FC<NftSetProps> = ({
                 </div>
               </div>
             </DialogTrigger>
-            <DialogContent className="max-w-4xl bg-background">
+            <DialogContent className="max-w-4xl">
               <DialogHeader>
                 <DialogTitle className="text-primary text-lg font-bold leading-tight">
                   {setName} Collection
@@ -125,5 +119,4 @@ const NftSet: React.FC<NftSetProps> = ({
     </Card>
   );
 };
-
 export default NftSet;
