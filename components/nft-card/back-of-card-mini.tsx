@@ -99,11 +99,15 @@ const BackOfCardMini: React.FC<BackOfCardProps> = ({ nft, setIsFlipped }) => {
           <div className="bg-purple-700 bg-opacity-50 rounded-lg p-2">
             <div className="flex items-center space-x-2 mb-1">
               <FileText className="w-4 h-4 text-yellow-300" />
-              <span className="font-medium text-xs">Description</span>
+              <span className="font-medium text-xs">Message</span>
             </div>
-            <p className="text-xs">
-              {seriesInfo.seriesDescription || "No description available."}
-            </p>
+            <ScrollArea className="h-20 w-full">
+              <div className="pr-4">
+                <p className="text-xs whitespace-normal break-words">
+                  {seriesInfo.seriesDescription || "No description available."}
+                </p>
+              </div>
+            </ScrollArea>
           </div>
         </div>
       </ScrollArea>
