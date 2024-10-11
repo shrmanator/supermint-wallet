@@ -8,9 +8,9 @@ interface CondensedUnclaimedNftCardProps {
   charityName: string;
 }
 
-const CondensedUnclaimedNftCard: React.FC<CondensedUnclaimedNftCardProps> = ({
-  charityName,
-}) => {
+const CondensedUnclaimedNftCard: React.FC<
+  CondensedUnclaimedNftCardProps
+> = ({}) => {
   const controls = useAnimation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -77,7 +77,7 @@ const CondensedUnclaimedNftCard: React.FC<CondensedUnclaimedNftCardProps> = ({
         ref={canvasRef}
         className="absolute inset-0 w-full h-full opacity-20"
       />
-      <CardContent className="relative flex flex-col items-center justify-center text-center p-4">
+      <CardContent className="relative flex flex-col items-center justify-center text-center">
         <motion.div
           animate={controls}
           className={cn(
@@ -88,7 +88,7 @@ const CondensedUnclaimedNftCard: React.FC<CondensedUnclaimedNftCardProps> = ({
           <Lock className="h-4 w-4 text-muted-foreground" />
         </motion.div>
         <p className="text-xs font-medium leading-tight text-muted-foreground">
-          Donate to {charityName} to complete set
+          Donate to complete set
         </p>
       </CardContent>
     </Card>
