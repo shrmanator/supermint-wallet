@@ -2,33 +2,26 @@
 
 import React from "react";
 import { useActiveAccount } from "thirdweb/react";
-import useSWR from "swr";
-import axios from "axios";
-import { NftResponse } from "@/types/alchemy/nft-types";
 import NftDisplay from "@/components/nft-display/nft-display";
-
-const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+import { useNfts } from "@/app/hooks/use-nfts";
+import Loading from "@/app/loading";
+import EmptyState from "@/app/empty-state";
+import PageError from "@/app/page-error";
 
 export default function WalletPage() {
   const account = useActiveAccount();
-
-  const { data: nftsData, error: nftsError } = useSWR<NftResponse>(
-    account?.address ? `/api/nfts?owner=${account.address}` : null,
-    fetcher
-  );
+  const { nftsData, nftsError, isLoading } = useNfts(account?.address);
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {nftsError ? (
-        <p className="text-xl text-red-500">
-          Error: {nftsError.message || "Failed to fetch NFTs"}
-        </p>
-      ) : !nftsData ? (
-        <p className="text-xl">Loading your NFTs...</p>
-      ) : nftsData.ownedNfts && nftsData.ownedNfts.length > 0 ? (
+      {isLoading ? (
+        <Loading message="Loading your NFTs..." />
+      ) : nftsError ? (
+        <PageError message={nftsError.message || "Failed to fetch NFTs"} />
+      ) : nftsData && nftsData.ownedNfts.length > 0 ? (
         <NftDisplay nfts={nftsData.ownedNfts} />
       ) : (
-        <p className="text-xl">No NFTs found in this wallet.</p>
+        <EmptyState message="No NFTs found in this wallet." />
       )}
     </div>
   );

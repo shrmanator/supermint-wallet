@@ -1,4 +1,3 @@
-// app/layout.tsx
 import type { Metadata } from "next";
 import { Inter, Dancing_Script } from "next/font/google";
 import { ThirdwebProvider } from "thirdweb/react";
