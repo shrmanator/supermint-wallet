@@ -60,7 +60,9 @@ export default function DonationPage() {
       <Card className="w-full max-w-md mx-auto bg-card">
         <CardHeader>
           <CardTitle>Make a Donation</CardTitle>
-          <CardDescription>Support our cause</CardDescription>
+          <CardDescription>
+            All donations go to the Charity Fund
+          </CardDescription>
         </CardHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -108,7 +110,7 @@ export default function DonationPage() {
                     <div className="space-y-1 leading-none">
                       <FormLabel className="flex items-center">
                         <Gift className="mr-2 h-4 w-4" />
-                        Get Exclusive NFT
+                        Get Our Exclusive NFT
                       </FormLabel>
                       <FormDescription>
                         Receive one of our limited NFTs with your donation
