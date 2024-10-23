@@ -43,7 +43,7 @@ export default function DonationPage() {
     console.log("Form submitted:", values);
     let message = `Thank you for your donation of $${values.amount}. A confirmation has been sent to ${values.email}!`;
     if (values.wantNFT) {
-      message += " You'll receive your exclusive NFT shortly.";
+      message += " You'll receive your digital gift shortly.";
     }
     alert(message);
   }
@@ -53,23 +53,22 @@ export default function DonationPage() {
       <h1 className="text-2xl font-semibold text-center mb-6 text-white">
         Support Our Cause
       </h1>
-      <Card className="w-full max-w-md mx-auto bg-card border-none">
+      <Card className="w-full max-w-md mx-auto bg-[#121212] border-none">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-            <CardContent className="space-y-3">
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <CardContent className="space-y-4 px-4 py-6">
               <FormField
                 control={form.control}
                 name="amount"
                 render={({ field }) => (
-                  <FormItem className="mt-2">
-                    <FormLabel className="text-sm font-medium">
+                  <FormItem className="space-y-2.5">
+                    <FormLabel className="text-base text-white">
                       Donation Amount
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter amount"
                         {...field}
-                        className="bg-background placeholder:text-muted-foreground/50"
+                        className="bg-[#000000] border-0 h-10"
                       />
                     </FormControl>
                     <FormMessage />
@@ -80,15 +79,14 @@ export default function DonationPage() {
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-medium">
+                  <FormItem className="space-y-2.5">
+                    <FormLabel className="text-base text-white">
                       Email Address
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter your email address"
                         {...field}
-                        className="bg-background placeholder:text-muted-foreground/50"
+                        className="bg-[#000000] border-0 h-10"
                       />
                     </FormControl>
                     <FormMessage />
@@ -99,19 +97,19 @@ export default function DonationPage() {
                 control={form.control}
                 name="wantNFT"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 mt-2">
+                  <FormItem className="flex flex-row items-start space-x-2 space-y-0">
                     <FormControl>
                       <Checkbox
                         checked={field.value}
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel className="flex items-center space-x-2 text-sm font-medium">
+                    <div className="space-y-0.5 leading-none">
+                      <FormLabel className="flex items-center space-x-2">
                         <span>Get Free Digital Gift</span>
                         <Gift className="h-4 w-4" />
                       </FormLabel>
-                      <FormDescription className="text-blue-400/70 text-xs">
+                      <FormDescription className="text-[#2563eb] text-xs">
                         Receive a unique NFT with your donation
                       </FormDescription>
                     </div>
@@ -120,7 +118,7 @@ export default function DonationPage() {
               />
               <Button
                 type="submit"
-                className="w-full bg-white text-black hover:bg-white/90 mt-4"
+                className="w-full bg-white text-black hover:bg-white/90 mt-3 font-medium"
               >
                 Donate
               </Button>
