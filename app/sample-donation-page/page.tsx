@@ -66,10 +66,7 @@ export default function DonationPage() {
                       Donation Amount
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        className="bg-[#000000] border-0 h-10"
-                      />
+                      <Input {...field} className="h-10" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -84,10 +81,7 @@ export default function DonationPage() {
                       Email Address
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        className="bg-[#000000] border-0 h-10"
-                      />
+                      <Input {...field} className="h-10" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -109,7 +103,7 @@ export default function DonationPage() {
                         <span>Get Free Digital Gift</span>
                         <Gift className="h-4 w-4" />
                       </FormLabel>
-                      <FormDescription className="text-[#2563eb] text-xs">
+                      <FormDescription className="text-xs">
                         Receive a unique NFT with your donation
                       </FormDescription>
                     </div>
