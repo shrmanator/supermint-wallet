@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 import {
   Form,
   FormField,
@@ -13,7 +14,6 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -50,23 +50,21 @@ export default function DonationPage() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-semibold text-center mb-6 text-white">
+      <h1 className="text-3xl font-semibold text-center mb-8">
         Support Our Cause
       </h1>
-      <Card className="w-full max-w-md mx-auto bg-[#121212] border-none">
+      <Card className="max-w-md mx-auto">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <CardContent className="space-y-4 px-4 py-6">
+            <CardContent className="space-y-4">
               <FormField
                 control={form.control}
                 name="amount"
                 render={({ field }) => (
-                  <FormItem className="space-y-2.5">
-                    <FormLabel className="text-base text-white">
-                      Donation Amount
-                    </FormLabel>
+                  <FormItem className="mt-4">
+                    <FormLabel>Donation Amount</FormLabel>
                     <FormControl>
-                      <Input {...field} className="h-10" />
+                      <Input {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -76,12 +74,10 @@ export default function DonationPage() {
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem className="space-y-2.5">
-                    <FormLabel className="text-base text-white">
-                      Email Address
-                    </FormLabel>
+                  <FormItem>
+                    <FormLabel>Email Address</FormLabel>
                     <FormControl>
-                      <Input {...field} className="h-10" />
+                      <Input {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -91,29 +87,24 @@ export default function DonationPage() {
                 control={form.control}
                 name="wantNFT"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-2 space-y-0">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="space-y-0.5 leading-none">
-                      <FormLabel className="flex items-center space-x-2">
-                        <span>Get Free Digital Gift</span>
-                        <Gift className="h-4 w-4" />
-                      </FormLabel>
-                      <FormDescription className="text-xs">
+                  <div className="flex items-top space-x-2">
+                    <Checkbox
+                      id="nft"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                    <div className="grid gap-1.5 leading-none">
+                      <Label htmlFor="nft" className="flex items-center gap-2">
+                        Get Free Digital Gift <Gift className="h-4 w-4" />
+                      </Label>
+                      <p className="text-sm text-muted-foreground">
                         Receive a unique NFT with your donation
-                      </FormDescription>
+                      </p>
                     </div>
-                  </FormItem>
+                  </div>
                 )}
               />
-              <Button
-                type="submit"
-                className="w-full bg-white text-black hover:bg-white/90 mt-3 font-medium"
-              >
+              <Button type="submit" className="w-full">
                 Donate
               </Button>
             </CardContent>
