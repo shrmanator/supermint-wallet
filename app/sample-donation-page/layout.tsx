@@ -11,9 +11,6 @@ export default function DonationLayout({ children }: DonationLayoutProps) {
         <div className="absolute inset-0 bg-gradient-to-r from-primary/50 to-secondary/50 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
         <div className="relative px-4 py-10 bg-card shadow-lg sm:rounded-3xl sm:p-20">
           <div className="max-w-md mx-auto">
-            <h1 className="text-3xl font-bold mb-6 text-center">
-              Support Our Cause
-            </h1>
             <div className="space-y-4">{children}</div>
           </div>
         </div>

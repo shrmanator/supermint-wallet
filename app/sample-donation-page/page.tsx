@@ -5,14 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Form,
   FormField,
@@ -57,24 +50,27 @@ export default function DonationPage() {
 
   return (
     <div className="container mx-auto p-4">
-      <Card className="w-full max-w-md mx-auto bg-card">
-        <CardHeader>
-          <CardTitle>Make a Donation</CardTitle>
-          <CardDescription>
-            All donations go to the Charity Fund
-          </CardDescription>
-        </CardHeader>
+      <h1 className="text-2xl font-semibold text-center mb-6 text-white">
+        Support Our Cause
+      </h1>
+      <Card className="w-full max-w-md mx-auto bg-card border-none">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <CardContent className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+            <CardContent className="space-y-3">
               <FormField
                 control={form.control}
                 name="amount"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Donation Amount</FormLabel>
+                  <FormItem className="mt-2">
+                    <FormLabel className="text-sm font-medium">
+                      Donation Amount
+                    </FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter amount" {...field} />
+                      <Input
+                        placeholder="Enter amount"
+                        {...field}
+                        className="bg-background placeholder:text-muted-foreground/50"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -85,11 +81,14 @@ export default function DonationPage() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email Address</FormLabel>
+                    <FormLabel className="text-sm font-medium">
+                      Email Address
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Enter your email address"
                         {...field}
+                        className="bg-background placeholder:text-muted-foreground/50"
                       />
                     </FormControl>
                     <FormMessage />
@@ -100,7 +99,7 @@ export default function DonationPage() {
                 control={form.control}
                 name="wantNFT"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 mt-2">
                     <FormControl>
                       <Checkbox
                         checked={field.value}
@@ -108,23 +107,24 @@ export default function DonationPage() {
                       />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                      <FormLabel className="flex items-center">
-                        <Gift className="mr-2 h-4 w-4" />
-                        Get Our Exclusive NFT
+                      <FormLabel className="flex items-center space-x-2 text-sm font-medium">
+                        <span>Get Free Digital Gift</span>
+                        <Gift className="h-4 w-4" />
                       </FormLabel>
-                      <FormDescription>
-                        Receive one of our limited NFTs with your donation
+                      <FormDescription className="text-blue-400/70 text-xs">
+                        Receive a unique NFT with your donation
                       </FormDescription>
                     </div>
                   </FormItem>
                 )}
               />
-            </CardContent>
-            <CardFooter>
-              <Button type="submit" className="w-full">
+              <Button
+                type="submit"
+                className="w-full bg-white text-black hover:bg-white/90 mt-4"
+              >
                 Donate
               </Button>
-            </CardFooter>
+            </CardContent>
           </form>
         </Form>
       </Card>
