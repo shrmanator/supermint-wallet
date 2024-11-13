@@ -5,7 +5,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
 
     const response = await fetch(
-      "http://localhost:5000/api/wallet/create-internal",
+      `${process.env.NEXT_PUBLIC_SUPERMINT_SITE_ADDRESS}/api/wallet/create-internal`,
       {
         method: "POST",
         headers: {

@@ -81,6 +81,7 @@ export function useWalletAuth() {
           walletAddress,
           name: email.split("@")[0],
         });
+        console.log("Wallet user upserted successfully!");
 
         const result = await linkWalletAndClaimNFTs({
           email,
