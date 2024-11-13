@@ -9,7 +9,7 @@ import {
   login,
   logout,
 } from "@/actions/thirdweb-login";
-import { thirdwebLinkWalletAndClaimNFT } from "@/lib/supermint/nftService";
+import { linkWalletAndClaimNFTs } from "@/services/walletService";
 
 interface NFTClaimResult {
   statusCode: number;
@@ -71,10 +71,10 @@ export function useWalletAuth() {
       };
 
       try {
-        const result = await thirdwebLinkWalletAndClaimNFT({
+        const result = await linkWalletAndClaimNFTs({
           email,
           walletAddress,
-          nftClaimToken: "DEPRECATED_VALUE",
+          nftClaimToken: "DEPRECATED_VALUE", // keeping this for compatibility
         });
 
         if (!isNFTClaimResult(result)) {

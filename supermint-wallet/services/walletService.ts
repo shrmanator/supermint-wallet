@@ -8,14 +8,17 @@ export async function createWalletUser(userData: {
   email: string;
   name: string;
 }) {
-  const response = await fetch("http://localhost:5000/api/internal/create", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-api-key": process.env.INTERNAL_SERVICE_KEY!,
-    },
-    body: JSON.stringify(userData),
-  });
+  const response = await fetch(
+    "http://localhost:5000/api/wallet/create-internal",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.INTERNAL_SERVICE_KEY!,
+      },
+      body: JSON.stringify(userData),
+    }
+  );
 
   if (!response.ok) {
     throw new Error(`Error: ${response.status}`);
@@ -24,10 +27,10 @@ export async function createWalletUser(userData: {
   return response.json();
 }
 
-export async function linkWalletAndClaimNFT(
+export async function linkWalletAndClaimNFTs(
   params: LinkWalletParams
 ): Promise<NFTClaimResult> {
-  const response = await fetch("/api/wallet/link-and-process", {
+  const response = await fetch("/api/user/link-user-and-process-nfts", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -36,15 +39,5 @@ export async function linkWalletAndClaimNFT(
   });
 
   const result = await response.json();
-
-  return {
-    statusCode: response.status,
-    message: result.message || "Operation completed",
-    data: result.data
-      ? {
-          success: result.data.success || false,
-          message: result.data.message || "",
-        }
-      : undefined,
-  };
+  return result;
 }

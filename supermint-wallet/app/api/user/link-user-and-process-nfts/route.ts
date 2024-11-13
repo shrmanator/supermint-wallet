@@ -1,35 +1,47 @@
-import { linkWalletAndProcessClaims } from "@/services/walletService";
-import { ApiError } from "@/types/errors";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const body = await request.json();
+    const body = await req.json();
 
-    // Validate required fields
-    if (!body.email || !body.walletAddress || !body.nftClaimToken) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
-    }
+    const response = await fetch(
+      "http://localhost:5000/api/wallet/link-wallet-and-process-all-claims-via-api",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": process.env.INTERNAL_SERVICE_API_KEY!,
+        },
+        body: JSON.stringify(body),
+      }
+    );
 
-    const result = await linkWalletAndProcessClaims({
-      email: body.email,
-      walletAddress: body.walletAddress,
-      nftClaimToken: body.nftClaimToken,
-    });
-
-    return NextResponse.json(result);
-  } catch (error) {
-    console.error("Error linking wallet and processing claims:", error);
-
-    // Type guard to check if error is an ApiError
-    const apiError = error as ApiError;
+    const result = await response.json();
+    const isSuccess = response.status === 200;
 
     return NextResponse.json(
-      { error: apiError.message || "Failed to process request" },
-      { status: apiError.status || 500 }
+      {
+        statusCode: response.status,
+        message: result.message || "Operation completed",
+        data: {
+          success: isSuccess,
+          message: result.data?.message || result.message || "",
+        },
+      },
+      { status: response.status }
+    );
+  } catch (error) {
+    console.error("Error linking wallet:", error);
+    return NextResponse.json(
+      {
+        statusCode: 500,
+        message: "Internal server error",
+        data: {
+          success: false,
+          message: "Failed to link wallet",
+        },
+      },
+      { status: 500 }
     );
   }
 }
