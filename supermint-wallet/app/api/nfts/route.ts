@@ -57,7 +57,7 @@ async function fetchNFTsForOwner(owner: string): Promise<Nft> {
           },
         }
       );
-      console.log("Fetched NFTs:", response.data);
+      // console.log("Fetched NFTs:", response.data.ownedNfts);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 429) {

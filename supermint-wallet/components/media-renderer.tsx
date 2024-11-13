@@ -92,6 +92,7 @@ const CustomMediaPlayer: React.FC<CustomMediaPlayerProps> = ({
             isLoading ? "invisible" : "visible"
           }`}
           onLoad={handleMediaReady}
+          unoptimized
         />
       )}
     </div>
