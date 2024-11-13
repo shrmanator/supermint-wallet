@@ -1,24 +1,17 @@
 import {
+  CreateWalletUserData,
   LinkWalletParams,
   NFTClaimResult,
 } from "@/types/link-wallet-and-claim-nft";
 
-export async function createWalletUser(userData: {
-  walletAddress: string;
-  email: string;
-  name: string;
-}) {
-  const response = await fetch(
-    "http://localhost:5000/api/wallet/create-internal",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": process.env.INTERNAL_SERVICE_KEY!,
-      },
-      body: JSON.stringify(userData),
-    }
-  );
+export async function createWalletUser(userData: CreateWalletUserData) {
+  const response = await fetch("/api/user/create-wallet", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  });
 
   if (!response.ok) {
     throw new Error(`Error: ${response.status}`);

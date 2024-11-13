@@ -1,25 +1,30 @@
-import { NextResponse } from "next/server";
-import { createWalletUser } from "@/services/walletService";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const body = await request.json();
+    const body = await req.json();
 
-    // Validate input if needed
-    if (!body.walletAddress || !body.email || !body.name) {
+    const response = await fetch(
+      "http://localhost:5000/api/wallet/create-internal",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": process.env.INTERNAL_SERVICE_KEY!,
+        },
+        body: JSON.stringify(body),
+      }
+    );
+
+    if (!response.ok) {
       return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
+        { error: `Failed to create wallet user: ${response.status}` },
+        { status: response.status }
       );
     }
 
-    const result = await createWalletUser({
-      walletAddress: body.walletAddress,
-      email: body.email,
-      name: body.name,
-    });
-
-    return NextResponse.json(result);
+    const result = await response.json();
+    return NextResponse.json(result, { status: 200 });
   } catch (error) {
     console.error("Error creating wallet user:", error);
     return NextResponse.json(

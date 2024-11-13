@@ -12,3 +12,9 @@ export interface NFTClaimResult {
     message: string;
   };
 }
+
+export interface CreateWalletUserData {
+  walletAddress: string;
+  email: string;
+  name: string;
+}
