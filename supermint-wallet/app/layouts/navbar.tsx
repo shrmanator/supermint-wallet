@@ -15,7 +15,7 @@ const wallets = [
   }),
 ];
 
-export default function WalletLayout({
+export default function NavBar({
   children,
 }: {
   children: React.ReactNode;
