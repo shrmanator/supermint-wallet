@@ -1,3 +1,8 @@
+import {
+  LinkWalletParams,
+  NFTClaimResult,
+} from "@/types/link-wallet-and-claim-nft";
+
 export async function createWalletUser(userData: {
   walletAddress: string;
   email: string;
@@ -19,31 +24,27 @@ export async function createWalletUser(userData: {
   return response.json();
 }
 
-interface LinkWalletData {
-  email: string;
-  walletAddress: string;
-  nftClaimToken: string;
-}
+export async function linkWalletAndClaimNFT(
+  params: LinkWalletParams
+): Promise<NFTClaimResult> {
+  const response = await fetch("/api/wallet/link-and-process", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(params),
+  });
 
-export async function linkWalletAndProcessClaims(data: LinkWalletData) {
-  const response = await fetch(
-    "http://localhost:5000/api/link-wallet-and-process-all-claims-via-api",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": process.env.INTERNAL_SERVICE_KEY!,
-      },
-      body: JSON.stringify(data),
-    }
-  );
+  const result = await response.json();
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(
-      errorData.message || "Failed to link wallet and process claims"
-    );
-  }
-
-  return response.json();
+  return {
+    statusCode: response.status,
+    message: result.message || "Operation completed",
+    data: result.data
+      ? {
+          success: result.data.success || false,
+          message: result.data.message || "",
+        }
+      : undefined,
+  };
 }

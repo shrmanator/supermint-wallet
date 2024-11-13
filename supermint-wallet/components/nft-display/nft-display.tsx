@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
-import { Nft } from "@/types/alchemy/nft-types";
 import NftSeriesDisplay from "./nft-series-display";
 import NftSet from "./nft-set-display";
+import { Nft } from "@/alchemy/nft-types";
 
 interface NftDisplayProps {
   nfts: Nft[];
