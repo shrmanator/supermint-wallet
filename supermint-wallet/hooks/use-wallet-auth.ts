@@ -8,7 +8,7 @@ import {
   isLoggedIn,
   login,
   logout,
-} from "@/app/actions/thirdweb-login";
+} from "@/actions/thirdweb-login";
 import { thirdwebLinkWalletAndClaimNFT } from "@/lib/supermint/nftService";
 
 interface NFTClaimResult {

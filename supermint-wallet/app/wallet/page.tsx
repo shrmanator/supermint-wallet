@@ -1,11 +1,11 @@
 "use client";
 
+import NftDisplay from "@/components/nft-display/nft-display";
+import { useNfts } from "@/hooks/use-nfts";
 import React from "react";
 import { useActiveAccount } from "thirdweb/react";
-import NftDisplay from "@/components/nft-display/nft-display";
-import { useNfts } from "@/app/hooks/use-nfts";
-import Loading from "@/app/loading";
 import EmptyState from "@/app/empty-state";
+import Loading from "@/app/loading";
 import PageError from "@/app/page-error";
 
 export default function WalletPage() {
