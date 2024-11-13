@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": process.env.INTERNAL_SERVICE_KEY!,
+          "x-api-key": process.env.INTERNAL_SERVICE_API_KEY!,
         },
         body: JSON.stringify(body),
       }

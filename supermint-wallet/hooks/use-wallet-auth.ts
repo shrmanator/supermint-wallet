@@ -9,7 +9,10 @@ import {
   login,
   logout,
 } from "@/actions/thirdweb-login";
-import { linkWalletAndClaimNFTs } from "@/services/walletService";
+import {
+  createWalletUser,
+  linkWalletAndClaimNFTs,
+} from "@/services/walletService";
 
 interface NFTClaimResult {
   statusCode: number;
@@ -71,6 +74,14 @@ export function useWalletAuth() {
       };
 
       try {
+        // Always call upsert first - it'll handle both new and existing users
+        console.log("Upserting wallet user...");
+        await createWalletUser({
+          email,
+          walletAddress,
+          name: email.split("@")[0],
+        });
+
         const result = await linkWalletAndClaimNFTs({
           email,
           walletAddress,
