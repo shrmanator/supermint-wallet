@@ -1,4 +1,3 @@
-// app/api/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 
@@ -7,7 +6,7 @@ const ALCHEMY_BASE_URL = "https://polygon-mainnet.g.alchemy.com/nft/v3";
 const MAX_RETRIES = 3;
 const BASE_DELAY = 1000; // 1 second
 
-async function fetchNFTsForOwner(owner: string): Promise<any> {
+async function fetchNFTsForOwner(owner: string): Promise<unknown> {
   let retries = 0;
 
   while (retries < MAX_RETRIES) {

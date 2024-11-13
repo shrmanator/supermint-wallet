@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import axios from "axios";
-import { NftResponse } from "@/types/alchemy/nft-types";
+import { NftResponse } from "@/alchemy/nft-types";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
