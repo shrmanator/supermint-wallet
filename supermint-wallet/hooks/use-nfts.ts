@@ -9,7 +9,6 @@ export function useNfts(ownerAddress?: string) {
     ownerAddress ? `/api/nfts?owner=${ownerAddress}` : null,
     fetcher
   );
-
   return {
     nftsData: data,
     nftsError: error,
