@@ -5,7 +5,7 @@ import {
 } from "@/types/link-wallet-and-claim-nft";
 
 export async function createWalletUser(userData: CreateWalletUserData) {
-  const response = await fetch("/api/user/create-wallet", {
+  const response = await fetch("/api/user/create-wallet-user", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
