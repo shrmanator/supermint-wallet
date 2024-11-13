@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ImageIcon } from "lucide-react";
 import CustomMediaPlayer from "@/components/media-renderer";
-import { Nft } from "@/types/alchemy/nft-types";
 import BackOfCard from "./back-of-card";
+import { Nft } from "@/alchemy/nft-types";
 
 interface NftCardProps {
   nft: Nft;

@@ -5,7 +5,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
-import { AlchemyNFTResponse } from "./types";
+import { Nft } from "@/alchemy/nft-types";
 
 const API_KEY = process.env.ALCHEMY_API_KEY;
 const ALCHEMY_BASE_URL = "https://polygon-mainnet.g.alchemy.com/nft/v3";
@@ -42,12 +42,12 @@ export async function GET(request: NextRequest) {
 }
 
 /** Fetches NFTs from Alchemy API with retry logic for rate limits */
-async function fetchNFTsForOwner(owner: string): Promise<AlchemyNFTResponse> {
+async function fetchNFTsForOwner(owner: string): Promise<Nft> {
   let retries = 0;
 
   while (retries < MAX_RETRIES) {
     try {
-      const response = await axios.get<AlchemyNFTResponse>(
+      const response = await axios.get<Nft>(
         `${ALCHEMY_BASE_URL}/${API_KEY}/getNFTsForOwner`,
         {
           params: {
