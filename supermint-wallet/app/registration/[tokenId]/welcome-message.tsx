@@ -36,7 +36,7 @@ const WelcomeMessage: FC<WelcomeMessageProps> = ({
         <CardContent className="space-y-4">
           <Separator />
           <p className="text-center">
-            Use{" "}
+            Login to{" "}
             <span className="font-semibold">{charityDetails.donorEmail}</span>{" "}
             to receive your NFT from{" "}
             <span className="font-semibold">
