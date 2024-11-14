@@ -12,7 +12,7 @@ import {
 import {
   createWalletUser,
   linkWalletAndClaimNFTs,
-} from "@/services/walletService";
+} from "@/services/wallet-service";
 
 interface NFTClaimResult {
   statusCode: number;
