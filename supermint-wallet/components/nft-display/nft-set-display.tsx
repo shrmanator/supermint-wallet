@@ -9,13 +9,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { CheckCircle2, CircleSlash2, ChevronRight } from "lucide-react";
-import { Nft } from "@/types/alchemy/nft-types";
 import NftCard from "@/components/nft-card/nft-card";
 import { Progress } from "@/components/ui/progress";
 import UnclaimedNftCard from "./unclaimed-nft-card";
 import CondensedUnclaimedNftCard from "./unclaimed-nft-card-condensed";
 import NftCardMini from "../nft-card/nft-card-mini";
 import { cn } from "@/lib/utils";
+import { Nft } from "@/alchemy/nft-types";
 
 interface NftSetProps {
   setName: string;

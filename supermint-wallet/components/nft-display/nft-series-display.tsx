@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Nft } from "@/types/alchemy/nft-types";
 import NftCard from "@/components/nft-card/nft-card";
+import { Nft } from "@/alchemy/nft-types";
 
 interface NftSeriesDisplayProps {
   nft: Nft;

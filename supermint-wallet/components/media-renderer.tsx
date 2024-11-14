@@ -9,7 +9,7 @@ import {
   AudioSrc,
 } from "@vidstack/react";
 import "@vidstack/react/player/styles/base.css";
-import { Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX, ImageOff } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface CustomMediaPlayerProps {
@@ -28,9 +28,11 @@ const CustomMediaPlayer: React.FC<CustomMediaPlayerProps> = ({
   const isVideo = contentType?.startsWith("video");
   const [isMuted, setIsMuted] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
+    setImageError(false);
   }, [src]);
 
   const handleMediaReady = () => {
@@ -38,20 +40,38 @@ const CustomMediaPlayer: React.FC<CustomMediaPlayerProps> = ({
   };
 
   const handleMediaError = (
-    detail: MediaErrorDetail,
-    nativeEvent: MediaErrorEvent
+    detail?: MediaErrorDetail,
+    nativeEvent?: MediaErrorEvent
   ) => {
     console.error("Media error:", detail, nativeEvent);
     setIsLoading(false);
+    setImageError(true);
   };
 
   const toggleMute = () => {
     setIsMuted(!isMuted);
   };
 
+  // Proxy through the correct endpoint
+  const getProxiedUrl = (url: string) => {
+    if (!url) return "/api/placeholder/400/400";
+    return `/api/image-proxy?url=${encodeURIComponent(url)}`;
+  };
+
   const mediaSrc: VideoSrc | AudioSrc = isVideo
-    ? { src, type: contentType as VideoSrc["type"] }
-    : { src, type: contentType as AudioSrc["type"] };
+    ? { src: getProxiedUrl(src), type: contentType as VideoSrc["type"] }
+    : { src: getProxiedUrl(src), type: contentType as AudioSrc["type"] };
+
+  if (imageError) {
+    return (
+      <div className="relative w-full pt-[100%]">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted rounded-md">
+          <ImageOff className="w-12 h-12 text-muted-foreground mb-2" />
+          <p className="text-sm text-muted-foreground">Media unavailable</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full pt-[100%]">
@@ -83,7 +103,7 @@ const CustomMediaPlayer: React.FC<CustomMediaPlayerProps> = ({
         </div>
       ) : (
         <Image
-          src={src}
+          src={getProxiedUrl(src)}
           alt={alt}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -92,6 +112,7 @@ const CustomMediaPlayer: React.FC<CustomMediaPlayerProps> = ({
             isLoading ? "invisible" : "visible"
           }`}
           onLoad={handleMediaReady}
+          onError={() => handleMediaError()}
           unoptimized
         />
       )}
