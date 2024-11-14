@@ -3,13 +3,13 @@ import InvalidTokenMessage from "./invalid-token";
 import WelcomeMessage from "./welcome-message";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     tokenId: string;
-  };
+  }>;
 }
 
 export default async function CharityPage({ params }: PageProps) {
-  const { tokenId } = params;
+  const { tokenId } = await params;
 
   console.log("🚀 CharityPage - Starting page render with tokenId:", tokenId);
 
