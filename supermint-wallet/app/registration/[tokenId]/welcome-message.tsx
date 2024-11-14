@@ -8,6 +8,7 @@ import { ConnectButton } from "thirdweb/react";
 import { inAppWallet } from "thirdweb/wallets";
 import { polygon } from "thirdweb/chains";
 import { client } from "@/lib/thirdweb/client";
+import { useRouter } from "next/navigation";
 
 const wallets = [
   inAppWallet({
@@ -26,6 +27,13 @@ const WelcomeMessage: FC<WelcomeMessageProps> = ({
   charityDetails,
   isVisible,
 }) => {
+  const router = useRouter();
+
+  // Define the onConnect callback
+  const handleConnect = () => {
+    router.push("/wallet");
+  };
+
   if (!isVisible || !charityDetails) return null;
 
   return (
@@ -57,6 +65,7 @@ const WelcomeMessage: FC<WelcomeMessageProps> = ({
                   size: "wide",
                   showThirdwebBranding: false,
                 }}
+                onConnect={handleConnect} // Attach the onConnect callback
               />
             </div>
           </CardContent>
