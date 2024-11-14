@@ -22,7 +22,7 @@ const NftCard: React.FC<NftCardProps> = ({
   const [isFlipped, setIsFlipped] = useState(false);
 
   const getMediaSrc = (nft: Nft) => {
-    return nft.image.cachedUrl || nft.image.originalUrl || null;
+    return nft.image.cachedUrl || null;
   };
 
   const mediaSrc = getMediaSrc(nft);

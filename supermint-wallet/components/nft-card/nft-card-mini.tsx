@@ -22,7 +22,8 @@ const NftCardMini: React.FC<NftCardMiniProps> = ({
   const [isFlipped, setIsFlipped] = useState(false);
 
   const getMediaSrc = (nft: Nft) => {
-    return nft.image.cachedUrl || nft.image.originalUrl || null;
+    console.log("nft.image.cachedUrl", nft.image.cachedUrl);
+    return nft.image.cachedUrl || null;
   };
 
   const mediaSrc = getMediaSrc(nft);
