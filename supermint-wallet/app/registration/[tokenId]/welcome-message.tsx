@@ -1,6 +1,20 @@
+"use client";
+
 import { FC } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { ConnectButton } from "thirdweb/react";
+import { inAppWallet } from "thirdweb/wallets";
+import { polygon } from "thirdweb/chains";
+import { client } from "@/lib/thirdweb/client";
+
+const wallets = [
+  inAppWallet({
+    auth: {
+      options: ["google", "email"],
+    },
+  }),
+];
 
 interface WelcomeMessageProps {
   charityDetails?: { charityName: string; donorEmail: string } | null;
@@ -30,6 +44,19 @@ const WelcomeMessage: FC<WelcomeMessageProps> = ({
             </span>
             .
           </p>
+          <div className="flex justify-center">
+            <ConnectButton
+              chain={polygon}
+              client={client}
+              wallets={wallets}
+              connectButton={{ label: "Login" }}
+              connectModal={{
+                title: "",
+                size: "wide",
+                showThirdwebBranding: false,
+              }}
+            />
+          </div>
         </CardContent>
       </Card>
     </div>
