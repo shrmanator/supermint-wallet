@@ -1,39 +1,36 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getCharityAndDonorDetails } from "@/services/charity-donor-service";
 import InvalidTokenMessage from "./invalid-token";
+import WelcomeMessage from "./welcome-message";
 
 interface PageProps {
-  params: Promise<{
+  params: {
     tokenId: string;
-  }>;
+  };
 }
 
 export default async function CharityPage({ params }: PageProps) {
-  const { tokenId } = await params;
+  const { tokenId } = params;
 
   console.log("🚀 CharityPage - Starting page render with tokenId:", tokenId);
 
   try {
     const details = await getCharityAndDonorDetails(tokenId);
 
+    if (!details.data) {
+      throw new Error("No data found");
+    }
+
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Charity Details</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <div>
-            <span className="font-medium">Charity Name: </span>
-            <span>{details.data.charityName}</span>
-          </div>
-          <div>
-            <span className="font-medium">Donor Email: </span>
-            <span>{details.data.donorEmail}</span>
-          </div>
-        </CardContent>
-      </Card>
+      <WelcomeMessage
+        charityDetails={{
+          charityName: details.data.charityName,
+          donorEmail: details.data.donorEmail,
+        }}
+        isVisible={true}
+      />
     );
   } catch (error) {
+    console.error("Error fetching charity details:", error);
     return <InvalidTokenMessage />;
   }
 }
