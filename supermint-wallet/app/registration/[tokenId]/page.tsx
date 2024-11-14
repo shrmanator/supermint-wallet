@@ -1,3 +1,4 @@
+// CharityPage.tsx
 import { getCharityAndDonorDetails } from "@/services/charity-donor-service";
 import InvalidTokenMessage from "./invalid-token";
 import WelcomeMessage from "./welcome-message";

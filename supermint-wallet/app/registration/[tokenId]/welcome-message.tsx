@@ -1,3 +1,4 @@
+// welcome-message.tsx
 "use client";
 
 import { FC } from "react";
@@ -28,37 +29,39 @@ const WelcomeMessage: FC<WelcomeMessageProps> = ({
   if (!isVisible || !charityDetails) return null;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background text-foreground">
-      <Card className="w-full max-w-md mx-auto">
-        <CardHeader>
-          <CardTitle className="text-center">Welcome to SuperMint</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <Separator />
-          <p className="text-center">
-            Login to{" "}
-            <span className="font-semibold">{charityDetails.donorEmail}</span>{" "}
-            to receive your NFT from{" "}
-            <span className="font-semibold">
-              {charityDetails.charityName || "the charity"}
-            </span>
-            .
-          </p>
-          <div className="flex justify-center">
-            <ConnectButton
-              chain={polygon}
-              client={client}
-              wallets={wallets}
-              connectButton={{ label: "Login" }}
-              connectModal={{
-                title: "",
-                size: "wide",
-                showThirdwebBranding: false,
-              }}
-            />
-          </div>
-        </CardContent>
-      </Card>
+    <div className="fixed inset-0 flex items-center justify-center bg-overlay z-50 bg-black bg-opacity-100">
+      <div className="p-4 rounded-lg shadow-lg max-w-md w-full">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-center">Welcome to SuperMint</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Separator />
+            <p className="text-center">
+              Login to{" "}
+              <span className="font-semibold">{charityDetails.donorEmail}</span>{" "}
+              to receive your NFT from{" "}
+              <span className="font-semibold">
+                {charityDetails.charityName || "the charity"}
+              </span>
+              .
+            </p>
+            <div className="flex justify-center">
+              <ConnectButton
+                chain={polygon}
+                client={client}
+                wallets={wallets}
+                connectButton={{ label: "Login" }}
+                connectModal={{
+                  title: "",
+                  size: "wide",
+                  showThirdwebBranding: false,
+                }}
+              />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
