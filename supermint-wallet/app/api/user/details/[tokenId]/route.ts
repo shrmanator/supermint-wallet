@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const API_URL = "http://localhost:5000";
+const API_URL = process.env.SUPERMINT_SITE_ADDRESS;
 const API_KEY = process.env.INTERNAL_SERVICE_API_KEY;
 
 export async function GET(

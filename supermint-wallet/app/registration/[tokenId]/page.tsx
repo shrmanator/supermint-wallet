@@ -3,22 +3,24 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getCharityAndDonorDetails } from "@/services/charity-donor-service";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     tokenId: string;
-  };
+  }>;
 }
 
 export default async function CharityPage({ params }: PageProps) {
-  console.log("🚀 CharityPage - Starting page render with params:", params);
+  const { tokenId } = await params;
+
+  console.log("🚀 CharityPage - Starting page render with tokenId:", tokenId);
 
   try {
     console.log(
       "📍 CharityPage - Attempting to fetch details for tokenId:",
-      params.tokenId
+      tokenId
     );
 
     const startTime = performance.now();
-    const details = await getCharityAndDonorDetails(params.tokenId);
+    const details = await getCharityAndDonorDetails(tokenId);
     const endTime = performance.now();
 
     console.log("✅ CharityPage - Successfully fetched details:", {
@@ -49,7 +51,7 @@ export default async function CharityPage({ params }: PageProps) {
     );
   } catch (error) {
     console.error("❌ CharityPage - Error fetching details:", {
-      tokenId: params.tokenId,
+      tokenId,
       error:
         error instanceof Error
           ? {
