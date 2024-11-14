@@ -5,13 +5,15 @@ const API_KEY = process.env.INTERNAL_SERVICE_API_KEY;
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { tokenId: string } }
+  { params }: { params: Promise<{ tokenId: string }> }
 ) {
-  console.log("📡 API Route - Starting request for tokenId:", params.tokenId);
+  const { tokenId } = await params;
+
+  console.log("📡 API Route - Starting request for tokenId:", tokenId);
 
   try {
     const response = await fetch(
-      `${API_URL}/api/wallet/detailsViaInternalApiKey/${params.tokenId}`,
+      `${API_URL}/api/wallet/detailsViaInternalApiKey/${tokenId}`,
       {
         headers: {
           "x-api-key": API_KEY || "",
