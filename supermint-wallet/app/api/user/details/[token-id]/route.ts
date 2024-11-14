@@ -1,65 +1,40 @@
-// app/api/wallet/details/[tokenId]/route.ts
+// app/api/charity/[tokenId]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
-// Server-side service
-const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:5000";
-const INTERNAL_API_KEY = process.env.INTERNAL_SERVICE_API_KEY;
-
-async function getCharityAndDonorDetails(nftClaimToken: string) {
-  const response = await fetch(
-    `${BACKEND_URL}/api/wallet/detailsViaInternalApiKey/${nftClaimToken}`,
-    {
-      headers: {
-        "x-api-key": INTERNAL_API_KEY || "",
-      },
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  return response.json();
-}
+const API_URL = "http://localhost:5000";
+const API_KEY = process.env.INTERNAL_SERVICE_API_KEY;
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { tokenId: string } }
 ) {
+  console.log("📡 API Route - Starting request for tokenId:", params.tokenId);
+
   try {
-    const { tokenId } = params;
+    const response = await fetch(
+      `${API_URL}/api/wallet/detailsViaInternalApiKey/${params.tokenId}`,
+      {
+        headers: {
+          "x-api-key": API_KEY || "",
+        },
+      }
+    );
 
-    // UUID validation
-    const uuidRegex =
-      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-    if (!uuidRegex.test(tokenId)) {
-      return NextResponse.json(
-        { error: "Invalid token format" },
-        { status: 400 }
-      );
+    console.log("🌐 API Route - Response received:", {
+      status: response.status,
+      ok: response.ok,
+    });
+
+    if (!response.ok) {
+      throw new Error(`API returned ${response.status}`);
     }
 
-    // Call the internal service with API key
-    const details = await getCharityAndDonorDetails(tokenId);
-    return NextResponse.json(details);
+    const data = await response.json();
+    return NextResponse.json(data);
   } catch (error) {
-    console.error("API route error:", error);
-
-    // More specific error handling
-    if (error instanceof Error) {
-      if (error.message.includes("401")) {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-      }
-      if (error.message.includes("404")) {
-        return NextResponse.json(
-          { error: "Details not found" },
-          { status: 404 }
-        );
-      }
-    }
-
+    console.error("❌ API Route - Error:", error);
     return NextResponse.json(
-      { error: "Failed to fetch details" },
+      { error: "Failed to fetch charity details" },
       { status: 500 }
     );
   }
