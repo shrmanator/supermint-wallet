@@ -1,8 +1,6 @@
-// app/charity/[tokenId]/page.tsx
-import { charityDonorService } from "@/services/charity-donor-service";
-import { CharityDonorDetails } from "@/types/charity-donor-details";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { getCharityAndDonorDetails } from "@/services/charity-donor-service";
 
 interface PageProps {
   params: {
@@ -20,8 +18,7 @@ export default async function CharityPage({ params }: PageProps) {
     );
 
     const startTime = performance.now();
-    const details: CharityDonorDetails =
-      await charityDonorService.getCharityAndDonorDetails(params.tokenId);
+    const details = await getCharityAndDonorDetails(params.tokenId);
     const endTime = performance.now();
 
     console.log("✅ CharityPage - Successfully fetched details:", {
