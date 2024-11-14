@@ -1,6 +1,5 @@
 import { CharityDonorDetails } from "@/types/charity-donor-details";
 
-// services/charity-donor-service.ts
 export async function getCharityAndDonorDetails(
   tokenId: string
 ): Promise<CharityDonorDetails> {
