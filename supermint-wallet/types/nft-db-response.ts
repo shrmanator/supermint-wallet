@@ -1,4 +1,4 @@
-export type NFTResponse = {
+export interface NFTResponse {
   id: number;
   tokenId: string | null;
   mintedAt: string | null;
@@ -7,7 +7,7 @@ export type NFTResponse = {
   metadataIpfsHash: string | null;
   donorEmail: string | null;
   claimed: boolean;
-  status: string;
+  status: "PENDING" | "CLAIMED" | "FAILED" | "TRANSFERRED_OUT";
   seriesNumber: number | null;
   seriesTitle: string;
   artistName: string;
@@ -18,4 +18,4 @@ export type NFTResponse = {
     description: string;
   } | null;
   walletAddress: string | null;
-};
+}

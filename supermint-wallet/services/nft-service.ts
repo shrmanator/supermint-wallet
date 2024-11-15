@@ -1,8 +1,9 @@
-// services/nft-service.ts
-import { NFTResponse } from "@/types/nft-db-response";
+interface NFTStatus {
+  status: "PENDING" | "COMPLETED" | "FAILED";
+}
 
 export class NFTService {
-  static async getNFTsFromDb(email: string): Promise<NFTResponse[]> {
+  static async getNFTsFromDb(email: string): Promise<NFTStatus> {
     try {
       const response = await fetch(
         `/api/nfts/get-users-nfts-from-supermint-db/${encodeURIComponent(
@@ -16,13 +17,13 @@ export class NFTService {
       );
 
       if (!response.ok) {
-        throw new Error("Failed to fetch NFTs");
+        throw new Error("Failed to check NFT status");
       }
 
       const result = await response.json();
       return result.data;
     } catch (error) {
-      console.error("Error fetching DB NFTs:", error);
+      console.error("Error checking NFT status:", error);
       throw error;
     }
   }
