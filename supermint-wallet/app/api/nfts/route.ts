@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-/** Fetches NFTs from Alchemy API with retry logic for rate limits */
+/** Helper method that fetches NFTs from Alchemy API with retry logic for rate limits */
 async function fetchNFTsForOwner(owner: string): Promise<Nft> {
   let retries = 0;
 
@@ -57,7 +57,6 @@ async function fetchNFTsForOwner(owner: string): Promise<Nft> {
           },
         }
       );
-      // console.log("Fetched NFTs:", response.data.ownedNfts);
       return response.data;
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 429) {
