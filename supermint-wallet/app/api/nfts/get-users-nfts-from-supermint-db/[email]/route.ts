@@ -6,7 +6,7 @@ export async function GET(
 ) {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/wallet/donor/${params.email}/nfts`,
+      `${process.env.SUPERMINT_SITE_ADDRESS}/api/wallet/donor/${params.email}/nfts`,
       {
         headers: {
           "x-api-key": process.env.INTERNAL_SERVICE_API_KEY!,

@@ -10,7 +10,16 @@ import FlickeringAsciiBanner from "@/components/flickering-sm-banner";
 
 export default function WalletPage() {
   const account = useActiveAccount();
-  const { nftsData, nftsError, isLoading } = useNfts(account?.address);
+  const { nftsData, nftsError, isLoading, hasPendingNfts } = useNfts(
+    account?.address
+  );
+
+  console.log("Wallet Page State:", {
+    hasChainNfts: nftsData?.ownedNfts?.length > 0,
+    hasPendingNfts,
+    isLoading,
+    error: nftsError ? String(nftsError) : null,
+  });
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -21,10 +30,17 @@ export default function WalletPage() {
         />
       ) : nftsError ? (
         <PageError message={nftsError.message || "Failed to fetch NFTs"} />
-      ) : nftsData && nftsData.ownedNfts.length > 0 ? (
+      ) : nftsData?.ownedNfts.length > 0 ? (
         <NftDisplay nfts={nftsData.ownedNfts} />
+      ) : hasPendingNfts ? (
+        <div>
+          <p className="mb-4 text-yellow-600">
+            You have pending NFTs that will appear here once minted!
+          </p>
+          <EmptyState message="Check back soon to see your NFTs." />
+        </div>
       ) : (
-        <EmptyState message="No NFTs found in this wallet." />
+        <EmptyState message="No NFTs found. Make a donation to get your first NFT!" />
       )}
     </div>
   );
