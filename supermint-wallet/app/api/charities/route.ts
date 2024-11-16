@@ -1,12 +1,10 @@
-// app/api/charities/route.ts
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
     console.log("Starting charity fetch...");
 
-    const url =
-      "http://localhost:5000/api/charity/all-charities-public-info-via-internal-api-key";
+    const url = `${process.env.SUPERMINT_SITE_ADDRESS}/api/charity/all-charities-public-info-via-internal-api-key`;
     const apiKey = process.env.INTERNAL_SERVICE_API_KEY;
 
     console.log("URL:", url);
