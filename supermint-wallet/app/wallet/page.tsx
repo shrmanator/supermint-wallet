@@ -4,10 +4,16 @@ import NftDisplay from "@/components/nft-display/nft-display";
 import { useNfts } from "@/hooks/use-nfts";
 import React from "react";
 import { useActiveAccount } from "thirdweb/react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import PageError from "@/app/page-error";
 import FlickeringAsciiBanner from "@/components/flickering-sm-banner";
 import { Gift, ExternalLink } from "lucide-react";
@@ -15,6 +21,15 @@ import useSWR from "swr";
 import axios from "axios";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+
+const BeaconPing = () => {
+  return (
+    <span className="relative flex items-center justify-center h-6 w-6 mr-4">
+      <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-blue-500 opacity-50"></span>
+      <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+    </span>
+  );
+};
 
 export default function WalletPage() {
   const account = useActiveAccount();
@@ -29,7 +44,7 @@ export default function WalletPage() {
     return <PageError message="Failed to fetch NFTs" />;
   }
 
-  if (nftsData?.ownedNfts.length > 0) {
+  if (nftsData?.ownedNfts && nftsData.ownedNfts.length > 0) {
     return (
       <div className="container mx-auto px-4 py-8">
         <NftDisplay nfts={nftsData.ownedNfts} />
@@ -38,65 +53,74 @@ export default function WalletPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <Card className="max-w-2xl mx-auto">
-        <div className="flex flex-col items-center p-6">
-          <Gift className="h-12 w-12 text-muted-foreground mb-4" />
-          <CardHeader className="text-center">
-            <CardTitle>No NFTs Found</CardTitle>
-          </CardHeader>
-          <CardContent className="text-center space-y-6 w-full">
-            <p className="text-muted-foreground">
-              If you've made a donation, you'll receive an email when your NFT
-              is ready.
-            </p>
+    <div className="container max-w-2xl mx-auto px-4 py-8">
+      <div className="space-y-6">
+        <Alert className="border border-zinc-800 bg-black">
+          <div className="flex items-center">
+            <BeaconPing />
+            <div>
+              <AlertTitle className="text-white font-medium flex items-center">
+                NFT Status Update
+              </AlertTitle>
+              <AlertDescription className="text-blue-400">
+                If you&apos;ve made a donation, you&apos;ll receive an email
+                when your NFT is ready.
+              </AlertDescription>
+            </div>
+          </div>
+        </Alert>
 
-            <div className="space-y-4">
-              <h3 className="font-medium text-lg">
+        <Card>
+          <CardHeader className="space-y-6 items-center text-center">
+            <Gift className="h-12 w-12 text-muted-foreground" />
+            <div className="space-y-2">
+              <CardTitle className="text-2xl">No NFTs Found</CardTitle>
+              <CardDescription className="text-lg">
                 Make a donation to get your first NFT!
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                Choose from our verified charities:
-              </p>
+              </CardDescription>
+            </div>
+          </CardHeader>
 
-              {charitiesData?.charities && (
-                <ScrollArea className="h-[300px] w-full rounded-md border p-4">
-                  <div className="space-y-4">
+          <CardContent className="space-y-4">
+            <h3 className="text-sm font-medium text-muted-foreground text-center">
+              Choose from our verified charities:
+            </h3>
+
+            {charitiesData?.charities && (
+              <div className="relative">
+                <ScrollArea className="h-[300px] rounded-md" type="always">
+                  <div className="space-y-2 pr-4">
                     {charitiesData.charities.map(
-                      (
-                        charity: { name: string; websiteUrl?: string },
-                        index: number
-                      ) => (
-                        <React.Fragment key={charity.name}>
-                          <div className="flex items-center justify-between">
-                            <span className="font-medium">{charity.name}</span>
-                            {charity.websiteUrl && (
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() =>
-                                  window.open(charity.websiteUrl, "_blank")
-                                }
-                                className="ml-2"
-                              >
-                                <ExternalLink className="h-4 w-4 mr-2" />
-                                Visit Site
-                              </Button>
-                            )}
-                          </div>
-                          {index < charitiesData.charities.length - 1 && (
-                            <Separator />
+                      (charity: { name: string; websiteUrl?: string }) => (
+                        <div
+                          key={charity.name}
+                          className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/50"
+                        >
+                          <span className="font-medium">{charity.name}</span>
+                          {charity.websiteUrl && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() =>
+                                window.open(charity.websiteUrl, "_blank")
+                              }
+                              className="ml-2 whitespace-nowrap"
+                            >
+                              <ExternalLink className="h-4 w-4 mr-2" />
+                              Visit Site
+                            </Button>
                           )}
-                        </React.Fragment>
+                        </div>
                       )
                     )}
                   </div>
+                  <ScrollBar orientation="vertical" />
                 </ScrollArea>
-              )}
-            </div>
+              </div>
+            )}
           </CardContent>
-        </div>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 }
