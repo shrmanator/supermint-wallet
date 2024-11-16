@@ -2,11 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { email: string } }
+  context: { params: { email: string } }
 ) {
   try {
+    const { params } = context;
+    const { email } = await params;
+
     const response = await fetch(
-      `${process.env.SUPERMINT_SITE_ADDRESS}/api/wallet/donor/${params.email}/nfts`,
+      `${process.env.SUPERMINT_SITE_ADDRESS}/api/wallet/donor/${email}/nfts`,
       {
         headers: {
           "x-api-key": process.env.INTERNAL_SERVICE_API_KEY!,
