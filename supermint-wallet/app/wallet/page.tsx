@@ -83,7 +83,7 @@ export default function WalletPage() {
 
           <CardContent className="space-y-4">
             <h3 className="text-sm font-medium text-muted-foreground text-center">
-              Choose from our verified charities:
+              Choose a participating charity:
             </h3>
 
             {charitiesData?.charities && (
