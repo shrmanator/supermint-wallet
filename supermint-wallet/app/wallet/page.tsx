@@ -25,8 +25,8 @@ const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 const BeaconPing = () => {
   return (
     <span className="relative flex items-center justify-center h-6 w-6 mr-4">
-      <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-blue-500 opacity-50"></span>
-      <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+      <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-yellow-400 opacity-50"></span>
+      <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
     </span>
   );
 };
@@ -62,7 +62,7 @@ export default function WalletPage() {
               <AlertTitle className="text-white font-medium flex items-center">
                 NFT Status Update
               </AlertTitle>
-              <AlertDescription className="text-blue-400">
+              <AlertDescription className="text-yellow-400">
                 If you&apos;ve made a donation, you&apos;ll receive an email
                 when your NFT is ready.
               </AlertDescription>
@@ -76,7 +76,8 @@ export default function WalletPage() {
             <div className="space-y-2">
               <CardTitle className="text-2xl">No NFTs Found</CardTitle>
               <CardDescription className="text-lg">
-                Make a donation to get your first NFT!
+                Start your journey by making a donation to receive your first
+                NFT!
               </CardDescription>
             </div>
           </CardHeader>
