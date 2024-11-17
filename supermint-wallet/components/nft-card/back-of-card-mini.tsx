@@ -1,5 +1,4 @@
 import React from "react";
-import { Nft } from "@/types/alchemy/nft-types";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +12,7 @@ import {
   Layers,
 } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
+import { Nft } from "@/alchemy/nft-types";
 
 interface BackOfCardProps {
   nft: Nft;
