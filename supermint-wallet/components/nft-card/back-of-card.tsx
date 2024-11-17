@@ -10,10 +10,10 @@ import {
   FileText,
   ArrowLeft,
 } from "lucide-react";
-import { Nft } from "@/types/alchemy/nft-types";
 import { Separator } from "@radix-ui/react-separator";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
+import { Nft } from "@/alchemy/nft-types";
 
 interface BackOfCardProps {
   nft: Nft;
