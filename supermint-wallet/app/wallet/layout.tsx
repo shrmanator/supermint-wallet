@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useWalletAuth } from "@/hooks/use-wallet-auth";
-import { ConnectEmbed, darkTheme } from "thirdweb/react";
+import { ConnectEmbed } from "thirdweb/react";
 import { polygon } from "thirdweb/chains";
 import { inAppWallet } from "thirdweb/wallets";
 import { client } from "@/lib/thirdweb/client";
@@ -39,11 +39,11 @@ export default function WalletLayout({
   // Show the login interface if the user is not authenticated
   if (!isAuthenticated) {
     return (
-      <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="fixed inset-0 bg-background/100 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <ConnectEmbed
           header={{
-            title: "Login To Supermint",
-            titleIcon: "images/supermint-logo.png", // Optional icon
+            title: "Welcome, login to SuperMint",
+            // titleIcon: "images/supermint-logo.png", // Optional icon
           }}
           showThirdwebBranding={false}
           chain={polygon}
