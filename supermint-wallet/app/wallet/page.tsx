@@ -19,6 +19,7 @@ import FlickeringAsciiBanner from "@/components/flickering-sm-banner";
 import { Gift, ExternalLink } from "lucide-react";
 import useSWR from "swr";
 import axios from "axios";
+import { Typewriter } from "react-simple-typewriter";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
@@ -60,11 +61,16 @@ export default function WalletPage() {
             <BeaconPing />
             <div>
               <AlertTitle className="text-white font-medium flex items-center">
-                NFT Status Update
+                Welcome, donor.
               </AlertTitle>
               <AlertDescription className="text-yellow-400">
-                If you&apos;ve made a donation, you&apos;ll receive an email
-                when your NFT is ready.
+                <Typewriter
+                  words={[
+                    "If you have made a donation, you'll receive an email when your NFT is ready.",
+                  ]}
+                  typeSpeed={50}
+                  cursor={false}
+                />
               </AlertDescription>
             </div>
           </div>
