@@ -38,7 +38,7 @@ export default function RootLayout({
         />
         <meta
           name="twitter:image"
-          content="https://button.supermint.ca/supermint-icon.png"
+          content="https://wallet.supermint.ca/supermint-icon.png"
         />
 
         {/* Open Graph Meta Tags */}
@@ -49,7 +49,7 @@ export default function RootLayout({
         />
         <meta
           property="og:image"
-          content="https://button.supermint.ca/supermint-icon.png"
+          content="https://wallet.supermint.ca/supermint-icon.png"
         />
         <meta property="og:url" content="https://supermintwallet.com" />
         <meta property="og:site_name" content="SuperMint Wallet" />
