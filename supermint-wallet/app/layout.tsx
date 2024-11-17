@@ -51,7 +51,7 @@ export default function RootLayout({
           property="og:image"
           content="https://wallet.supermint.ca/supermint-icon.png"
         />
-        <meta property="og:url" content="https://supermintwallet.com" />
+        <meta property="og:url" content="https://wallet.supermint.ca" />
         <meta property="og:site_name" content="SuperMint Wallet" />
 
         {/* Optional Meta Tags */}
