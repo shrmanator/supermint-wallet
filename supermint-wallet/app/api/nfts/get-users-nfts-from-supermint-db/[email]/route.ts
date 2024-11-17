@@ -1,12 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET(
-  request: NextRequest,
-  context: { params: { email: string } }
-) {
+export async function GET(context: { params: Promise<{ email: string }> }) {
   try {
-    const { params } = context;
-    const { email } = await params;
+    const { email } = await context.params;
 
     const response = await fetch(
       `${process.env.SUPERMINT_SITE_ADDRESS}/api/wallet/donor/${email}/nfts`,
