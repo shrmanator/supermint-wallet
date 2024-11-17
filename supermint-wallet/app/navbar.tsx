@@ -22,7 +22,6 @@ export default function NavBar() {
     generatePayload,
     handleDoLogout,
     account,
-    userEmail,
   } = useWalletAuth();
 
   return (
@@ -37,16 +36,7 @@ export default function NavBar() {
               iconSize="45px"
             />
           </div>
-
           <div className="flex items-center gap-4">
-            {account && (
-              <span className="text-sm text-muted-foreground">
-                {userEmail ||
-                  account.address.slice(0, 6) +
-                    "..." +
-                    account.address.slice(-4)}
-              </span>
-            )}
             <ConnectButton
               chain={polygon}
               client={client}
@@ -54,9 +44,6 @@ export default function NavBar() {
               onDisconnect={account ? handleDoLogout : undefined}
               connectButton={{
                 label: account ? "Disconnect" : "Login",
-              }}
-              signInButton={{
-                label: "Login",
               }}
               connectModal={{
                 title: "",

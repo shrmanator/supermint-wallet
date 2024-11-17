@@ -1,7 +1,6 @@
-// welcome-message.tsx
 "use client";
 
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { ConnectButton } from "thirdweb/react";
@@ -9,6 +8,7 @@ import { inAppWallet } from "thirdweb/wallets";
 import { polygon } from "thirdweb/chains";
 import { client } from "@/lib/thirdweb/client";
 import { useRouter } from "next/navigation";
+import { useWalletAuth } from "@/hooks/use-wallet-auth";
 
 const wallets = [
   inAppWallet({
@@ -28,11 +28,20 @@ const WelcomeMessage: FC<WelcomeMessageProps> = ({
   isVisible,
 }) => {
   const router = useRouter();
+  const {
+    isAuthenticated,
+    handleDoLogin,
+    generatePayload,
+    handleDoLogout,
+    checkAuthStatus,
+  } = useWalletAuth();
 
-  // Define the onConnect callback
-  const handleConnect = () => {
-    router.push("/wallet");
-  };
+  useEffect(() => {
+    if (isAuthenticated) {
+      console.log("User is authenticated. Redirecting to /wallet...");
+      router.push("/wallet");
+    }
+  }, [isAuthenticated, router]); // Dependency ensures it triggers on state change
 
   if (!isVisible || !charityDetails) return null;
 
@@ -65,7 +74,20 @@ const WelcomeMessage: FC<WelcomeMessageProps> = ({
                   size: "wide",
                   showThirdwebBranding: false,
                 }}
-                onConnect={handleConnect} // Attach the onConnect callback
+                auth={{
+                  isLoggedIn: async () => checkAuthStatus(),
+                  doLogin: handleDoLogin,
+                  getLoginPayload: generatePayload,
+                  doLogout: handleDoLogout,
+                }}
+                onConnect={async () => {
+                  console.log("Login complete. Checking authentication...");
+                  const authenticated = await checkAuthStatus();
+                  console.log(
+                    "Authentication status in welcome (onConnect):",
+                    authenticated
+                  );
+                }}
               />
             </div>
           </CardContent>

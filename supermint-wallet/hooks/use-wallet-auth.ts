@@ -59,7 +59,9 @@ export function useWalletAuth() {
   }, []);
 
   const checkAuthStatus = useCallback(async () => {
+    console.log("Checking authentication status...");
     const loggedIn = await isLoggedIn();
+    console.log("Logged in:", loggedIn);
     setIsAuthenticated(loggedIn);
     return loggedIn;
   }, []);
@@ -160,6 +162,7 @@ export function useWalletAuth() {
   return {
     userEmail,
     isAuthenticated,
+    checkAuthStatus,
     nftClaimResult,
     claimError,
     account,
