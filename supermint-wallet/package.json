@@ -29,7 +29,7 @@
     "framer-motion": "^11.11.4",
     "lucide-react": "^0.447.0",
     "media-icons": "^1.1.5",
-    "next": "15.0.4-canary.11",
+    "next": "15.0.4-canary.14",
     "next-themes": "^0.3.0",
     "pino-pretty": "^11.2.2",
     "react": "^18",
