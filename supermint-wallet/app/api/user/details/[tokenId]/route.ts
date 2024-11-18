@@ -43,7 +43,7 @@ export async function GET(
 
   try {
     const response = await fetch(
-      `https://api.supermint.ca/api/wallet/detailsViaInternalApiKey/${tokenId}`,
+      `${API_URL}/api/wallet/detailsViaInternalApiKey/${tokenId}`,
       {
         headers: {
           "x-api-key": API_KEY || "",

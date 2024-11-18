@@ -3,19 +3,29 @@ import { CharityDonorDetails } from "@/types/charity-donor-details";
 export async function getCharityAndDonorDetails(
   tokenId: string
 ): Promise<CharityDonorDetails> {
-  // Check if running on the server
   const isServer = typeof window === "undefined";
   const baseUrl = isServer
-    ? process.env.NEXT_PUBLIC_SUPERMINT_WALLET_SITE_ADDRESS // Ensure this environment variable is set
+    ? process.env.NEXT_PUBLIC_SUPERMINT_WALLET_SITE_ADDRESS
     : "";
 
-  const response = await fetch(`${baseUrl}/api/user/details/${tokenId}`, {
-    cache: "no-store", // Prevent caching in server components
+  console.log("[CharityDetails] ENV:", {
+    isServer,
+    baseUrl,
+    envVar: process.env.NEXT_PUBLIC_SUPERMINT_WALLET_SITE_ADDRESS,
   });
 
-  if (!response.ok) {
-    throw new Error(`Error: ${response.status}`);
-  }
+  try {
+    const response = await fetch(`${baseUrl}/api/user/details/${tokenId}`, {
+      cache: "no-store",
+    });
 
-  return response.json();
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("[CharityDetails] Error:", error);
+    throw error;
+  }
 }
