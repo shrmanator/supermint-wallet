@@ -33,6 +33,7 @@ const CustomMediaPlayer: React.FC<CustomMediaPlayerProps> = ({
   useEffect(() => {
     setIsLoading(true);
     setImageError(false);
+    console.log("src:", src);
   }, [src]);
 
   const handleMediaReady = () => {
@@ -54,6 +55,7 @@ const CustomMediaPlayer: React.FC<CustomMediaPlayerProps> = ({
 
   // Proxy through the correct endpoint
   const getProxiedUrl = (url: string) => {
+    console.log("getProxiedUrl:", url);
     if (!url) return "/api/placeholder/400/400";
     return `/api/image-proxy?url=${encodeURIComponent(url)}`;
   };
@@ -61,7 +63,7 @@ const CustomMediaPlayer: React.FC<CustomMediaPlayerProps> = ({
   const mediaSrc: VideoSrc | AudioSrc = isVideo
     ? { src: getProxiedUrl(src), type: contentType as VideoSrc["type"] }
     : { src: getProxiedUrl(src), type: contentType as AudioSrc["type"] };
-
+  console.log("mediaSrc:", mediaSrc);
   if (imageError) {
     return (
       <div className="relative w-full pt-[100%]">
