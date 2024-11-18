@@ -7,6 +7,7 @@ import { ImageIcon } from "lucide-react";
 import CustomMediaPlayer from "@/components/media-renderer";
 import BackOfCard from "./back-of-card";
 import { Nft } from "@/alchemy/nft-types";
+import { getNftMediaSrc } from "@/app/utils/get-nft-media";
 
 interface NftCardProps {
   nft: Nft;
@@ -21,18 +22,7 @@ const NftCard: React.FC<NftCardProps> = ({
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
-  const getMediaSrc = (nft: Nft) => {
-    // First try the gateway URL from metadata
-    // Only fall back to other URLs if the gateway URL isn't available
-    return (
-      nft.raw?.metadata?.image ||
-      nft.image?.cachedUrl ||
-      nft.image?.originalUrl ||
-      null
-    );
-  };
-
-  const mediaSrc = getMediaSrc(nft);
+  const mediaSrc = getNftMediaSrc(nft);
   const seriesInfo = nft.raw.metadata.supermint;
 
   const MediaContent = () => (

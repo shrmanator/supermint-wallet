@@ -63,7 +63,7 @@ const NftDisplay: React.FC<NftDisplayProps> = ({ nfts }) => {
         ))}
       </div>
     </div>
-  );
+  ); // TODO: find out where we originally get nft data from
 };
 
 export default NftDisplay;
