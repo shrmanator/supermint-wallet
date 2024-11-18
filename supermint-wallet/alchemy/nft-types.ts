@@ -25,10 +25,10 @@ export interface NftContract {
 
 export interface NftImage {
   cachedUrl: string;
-  thumbnailUrl: string;
-  pngUrl: string;
-  contentType: string;
-  size: number;
+  thumbnailUrl: string | null; // Changed from string
+  pngUrl: string | null; // Changed from string
+  contentType: string | null; // Changed from string
+  size: number | null; // Changed from number
   originalUrl: string;
 }
 

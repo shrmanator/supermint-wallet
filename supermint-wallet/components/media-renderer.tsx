@@ -15,7 +15,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 interface CustomMediaPlayerProps {
   src: string;
   alt: string;
-  contentType?: string;
+  contentType?: string | null;
   className?: string;
 }
 
