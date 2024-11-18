@@ -41,7 +41,7 @@ const WelcomeMessage: FC<WelcomeMessageProps> = ({
       console.log("User is authenticated. Redirecting to /wallet...");
       router.push("/wallet");
     }
-  }, [isAuthenticated, router]); // Dependency ensures it triggers on state change
+  }, [isAuthenticated, router]);
 
   if (!isVisible || !charityDetails) return null;
 
