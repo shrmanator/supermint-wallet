@@ -13,7 +13,7 @@ import {
   createWalletUser,
   linkWalletAndClaimNFTs,
 } from "@/services/wallet-service";
-import { UserService } from "@/services/db-user-service";
+import { upsertUser } from "@/actions/user";
 
 interface NFTClaimResult {
   statusCode: number;
@@ -141,7 +141,7 @@ export function useWalletAuth() {
         await login(params);
         const email = await fetchUserEmail();
         if (email && account) {
-          await UserService.upsertUser({
+          await upsertUser({
             walletAddress: account.address,
             email,
           });
