@@ -32,6 +32,6 @@ export async function updateNewUserStatus(
 export async function getUser(walletAddress: string) {
   return prisma.user.findUnique({
     where: { walletAddress },
-    include: { shownNFTs: true },
+    include: { ownedNfts: true },
   });
 }
