@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useWalletAuth } from "@/hooks/use-wallet-auth";
 import { ConnectEmbed } from "thirdweb/react";
 import { polygon } from "thirdweb/chains";
 import { inAppWallet } from "thirdweb/wallets";
 import { client } from "@/lib/thirdweb/client";
+import { WelcomeModal } from "@/components/new-user-welcome-modal";
 
 const wallets = [
   inAppWallet({
@@ -26,7 +27,15 @@ export default function WalletLayout({
     generatePayload,
     handleDoLogout,
     checkAuthStatus,
+    account,
+    isNewUser,
   } = useWalletAuth();
+
+  const [showWelcome, setShowWelcome] = useState(false);
+
+  useEffect(() => {
+    if (isNewUser) setShowWelcome(true);
+  }, [isNewUser]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -36,14 +45,12 @@ export default function WalletLayout({
     }
   }, [isAuthenticated]);
 
-  // Show the login interface if the user is not authenticated
   if (!isAuthenticated) {
     return (
       <div className="fixed inset-0 bg-background/100 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <ConnectEmbed
           header={{
             title: "Welcome, login to SuperMint",
-            // titleIcon: "images/supermint-logo.png", // Optional icon
           }}
           showThirdwebBranding={false}
           chain={polygon}
@@ -68,6 +75,16 @@ export default function WalletLayout({
     );
   }
 
-  // Show the main layout content when the user is authenticated
-  return <div>{children}</div>;
+  return (
+    <>
+      <div>{children}</div>
+      {account && (
+        <WelcomeModal
+          isOpen={showWelcome}
+          walletAddress={account.address}
+          onClose={() => setShowWelcome(false)}
+        />
+      )}
+    </>
+  );
 }

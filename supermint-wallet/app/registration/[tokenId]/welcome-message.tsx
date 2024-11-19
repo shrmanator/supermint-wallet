@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { ConnectButton } from "thirdweb/react";
@@ -9,6 +9,7 @@ import { polygon } from "thirdweb/chains";
 import { client } from "@/lib/thirdweb/client";
 import { useRouter } from "next/navigation";
 import { useWalletAuth } from "@/hooks/use-wallet-auth";
+import { WelcomeModal } from "@/components/new-user-welcome-modal";
 
 const wallets = [
   inAppWallet({
@@ -34,7 +35,15 @@ const WelcomeMessage: FC<WelcomeMessageProps> = ({
     generatePayload,
     handleDoLogout,
     checkAuthStatus,
+    account,
+    isNewUser,
   } = useWalletAuth();
+
+  const [showWelcome, setShowWelcome] = useState(false);
+
+  useEffect(() => {
+    if (isNewUser) setShowWelcome(true);
+  }, [isNewUser]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -46,54 +55,67 @@ const WelcomeMessage: FC<WelcomeMessageProps> = ({
   if (!isVisible || !charityDetails) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-overlay z-50 bg-black bg-opacity-100">
-      <div className="p-4 rounded-lg shadow-lg max-w-md w-full">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-center">Welcome to SuperMint</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Separator />
-            <p className="text-center">
-              Login to{" "}
-              <span className="font-semibold">{charityDetails.donorEmail}</span>{" "}
-              to receive your NFT from{" "}
-              <span className="font-semibold">
-                {charityDetails.charityName || "the charity"}
-              </span>
-              .
-            </p>
-            <div className="flex justify-center">
-              <ConnectButton
-                chain={polygon}
-                client={client}
-                wallets={wallets}
-                connectButton={{ label: "Login" }}
-                connectModal={{
-                  title: "",
-                  size: "wide",
-                  showThirdwebBranding: false,
-                }}
-                auth={{
-                  isLoggedIn: async () => checkAuthStatus(),
-                  doLogin: handleDoLogin,
-                  getLoginPayload: generatePayload,
-                  doLogout: handleDoLogout,
-                }}
-                onConnect={async () => {
-                  console.log("Login complete. Checking authentication...");
-                  const authenticated = await checkAuthStatus();
-                  console.log(
-                    "Authentication status in welcome (onConnect):",
-                    authenticated
-                  );
-                }}
-              />
-            </div>
-          </CardContent>
-        </Card>
+    <>
+      <div className="fixed inset-0 flex items-center justify-center bg-overlay z-50 bg-black bg-opacity-100">
+        <div className="p-4 rounded-lg shadow-lg max-w-md w-full">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-center">
+                Welcome to SuperMint
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Separator />
+              <p className="text-center">
+                Login to{" "}
+                <span className="font-semibold">
+                  {charityDetails.donorEmail}
+                </span>{" "}
+                to receive your NFT from{" "}
+                <span className="font-semibold">
+                  {charityDetails.charityName || "the charity"}
+                </span>
+                .
+              </p>
+              <div className="flex justify-center">
+                <ConnectButton
+                  chain={polygon}
+                  client={client}
+                  wallets={wallets}
+                  connectButton={{ label: "Login" }}
+                  connectModal={{
+                    title: "",
+                    size: "wide",
+                    showThirdwebBranding: false,
+                  }}
+                  auth={{
+                    isLoggedIn: async () => checkAuthStatus(),
+                    doLogin: handleDoLogin,
+                    getLoginPayload: generatePayload,
+                    doLogout: handleDoLogout,
+                  }}
+                  onConnect={async () => {
+                    console.log("Login complete. Checking authentication...");
+                    const authenticated = await checkAuthStatus();
+                    console.log(
+                      "Authentication status in welcome (onConnect):",
+                      authenticated
+                    );
+                  }}
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
-    </div>
+      {account && (
+        <WelcomeModal
+          isOpen={showWelcome}
+          walletAddress={account.address}
+          onClose={() => setShowWelcome(false)}
+        />
+      )}
+    </>
   );
 };
 
