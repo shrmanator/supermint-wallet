@@ -7,79 +7,80 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { updateNewUserStatus } from "@/actions/user";
 import { Typewriter } from "react-simple-typewriter";
-import Confetti from "react-confetti";
 
 interface WelcomeModalProps {
   isOpen: boolean;
   walletAddress: string;
   onClose: () => void;
+  onUpdateStatus: (address: string, isNew: boolean) => Promise<void>;
 }
 
 export function WelcomeModal({
   isOpen,
   walletAddress,
   onClose,
+  onUpdateStatus,
 }: WelcomeModalProps) {
   const [showCursor, setShowCursor] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleComplete = async () => {
+    setIsLoading(true);
     try {
-      await updateNewUserStatus(walletAddress, false);
+      await onUpdateStatus(walletAddress, false);
       onClose();
     } catch (error) {
       console.error("Failed to update user status:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const message =
-    "This is where your NFTs are stored when you make a donation. It's your personal collection, showcasing your support and contributions.";
-
   const handleTypeEnd = () => {
-    setShowCursor(false); // Hide cursor when typing is complete
+    setShowCursor(false);
   };
 
   return (
-    <>
-      {isOpen && (
-        <Confetti
-          width={window.innerWidth}
-          height={window.innerHeight}
-          recycle={false}
-          numberOfPieces={300}
-        />
-      )}
-      <Dialog
-        open={isOpen}
-        onOpenChange={handleComplete}
-        aria-label="Welcome Modal"
+    <Dialog open={isOpen} onOpenChange={() => {}} modal>
+      <DialogContent
+        className="max-w-sm p-6"
+        onPointerDownOutside={(e) => e.preventDefault()}
       >
-        <DialogContent className="sm:max-w-md transition-transform duration-300 ease-out">
-          <DialogHeader>
-            <DialogTitle className="text-xl">
-              Welcome to Your Supermint Wallet! 🎉
-            </DialogTitle>
-          </DialogHeader>
-          <div className="space-y-3">
-            <p className="text-zinc-300">
-              <Typewriter
-                words={[message]}
-                cursor={showCursor}
-                cursorStyle="_"
-                typeSpeed={50}
-                deleteSpeed={40}
-                delaySpeed={3000}
-                loop={1} // Type the message once
-                onLoopDone={handleTypeEnd} // Callback when the loop is done
-              />
-            </p>
+        <DialogHeader className="border-none">
+          <DialogTitle className="text-xl font-bold">
+            Your SuperMint Wallet is Ready! 🎉
+          </DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-4 py-2">
+          <div className="text-zinc-300 min-h-12">
+            <Typewriter
+              words={[
+                "Start collecting rare NFTs, complete special sets, and unlock new features! Your wallet is ready to receive unique digital rewards with every donation.",
+              ]}
+              cursor={showCursor}
+              cursorStyle="_"
+              typeSpeed={35}
+              delaySpeed={1000}
+              loop={1}
+              onLoopDone={handleTypeEnd}
+            />
           </div>
-          <DialogFooter>
-            <Button onClick={handleComplete}>Get Started</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </>
+        </div>
+
+        <DialogFooter>
+          <Button
+            onClick={handleComplete}
+            disabled={isLoading}
+            className="w-full"
+          >
+            {isLoading ? "Loading..." : "Start Collecting"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
+
+export default WelcomeModal;
