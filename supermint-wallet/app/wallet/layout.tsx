@@ -7,6 +7,7 @@ import { polygon } from "thirdweb/chains";
 import { inAppWallet } from "thirdweb/wallets";
 import { client } from "@/lib/thirdweb/client";
 import { WelcomeModal } from "@/components/new-user-welcome-modal";
+import SuperMintLogo from "@/components/supermint-logo";
 
 const wallets = [
   inAppWallet({
@@ -47,10 +48,18 @@ export default function WalletLayout({
 
   if (!isAuthenticated) {
     return (
-      <div className="fixed inset-0 bg-background/100 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="fixed inset-0 bg-background/100 backdrop-blur-sm z-50 flex flex-col items-center justify-center p-4">
+        <div className="mb-8">
+          <SuperMintLogo
+            showText={true}
+            textSize="48px" // Using a larger text size
+            showIcon={true}
+            iconSize="64px" // Making the icon slightly larger than the text
+          />
+        </div>
         <ConnectEmbed
           header={{
-            title: "Welcome, login to SuperMint",
+            title: "",
           }}
           showThirdwebBranding={false}
           chain={polygon}

@@ -35,6 +35,7 @@ const BeaconPing = () => {
 export default function WalletPage() {
   const account = useActiveAccount();
   const { nftsData, error, isLoading } = useNfts(account?.address);
+  // TODO: upsert and compoare the nfts db data here
   const { data: charitiesData } = useSWR("/api/charities", fetcher);
 
   if (isLoading) {
