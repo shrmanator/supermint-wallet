@@ -7,7 +7,7 @@ import { ImageIcon } from "lucide-react";
 import CustomMediaPlayer from "@/components/media-renderer";
 import BackOfCard from "./back-of-card";
 import { Nft } from "@/alchemy/nft-types";
-import { getNftMediaSrc } from "@/app/utils/get-nft-media";
+import { getNftMediaSrc } from "@/alchemy/nft-data-helpers";
 
 interface NftCardProps {
   nft: Nft;

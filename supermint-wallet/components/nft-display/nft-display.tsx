@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import NftSeriesDisplay from "./nft-series-display";
 import NftSet from "./nft-set-display";
 import { Nft } from "@/alchemy/nft-types";
+import { getNFTMetadata } from "@/alchemy/nft-data-helpers";
 
 interface NftDisplayProps {
   nfts: Nft[];
@@ -18,7 +19,7 @@ const NftDisplay: React.FC<NftDisplayProps> = ({ nfts }) => {
   const groupedNfts = useMemo(() => {
     const sets: { [setName: string]: SetInfo } = {};
     const individual: Nft[] = [];
-
+    console.log("nft series info", getNFTMetadata(nfts[0]));
     nfts.forEach((nft) => {
       const setInfo = nft.raw.metadata.supermint;
       if (setInfo && setInfo.isInSet && setInfo.setName) {
