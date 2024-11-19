@@ -14,6 +14,7 @@ import {
   linkWalletAndClaimNFTs,
 } from "@/services/wallet-service";
 import { upsertUser } from "@/actions/user";
+import { User } from "@prisma/client";
 
 interface NFTClaimResult {
   statusCode: number;
@@ -39,6 +40,7 @@ function isNFTClaimResult(value: unknown): value is NFTClaimResult {
 }
 
 export function useWalletAuth() {
+  const [userData, setUserData] = useState<User | null>(null);
   const [userEmail, setUserEmail] = useState<string | undefined>();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [nftClaimResult, setNftClaimResult] = useState<NFTClaimResult | null>(
@@ -136,15 +138,15 @@ export function useWalletAuth() {
 
   const handleDoLogin = useCallback(
     async (params: VerifyLoginPayloadParams) => {
-      console.log("Logging in!");
       try {
         await login(params);
         const email = await fetchUserEmail();
         if (email && account) {
-          await upsertUser({
+          const user = await upsertUser({
             walletAddress: account.address,
             email,
           });
+          setUserData(user); // Store user data including isNewUser
         }
         await authenticateAndClaimNFT();
       } catch (error) {
@@ -178,5 +180,6 @@ export function useWalletAuth() {
     isLoggedIn,
     generatePayload,
     handleDoLogout,
+    isNewUser: userData?.isNewUser,
   };
 }
