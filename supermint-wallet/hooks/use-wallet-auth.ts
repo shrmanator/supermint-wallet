@@ -13,6 +13,7 @@ import {
   createWalletUser,
   linkWalletAndClaimNFTs,
 } from "@/services/wallet-service";
+import { UserService } from "@/services/db-user-service";
 
 interface NFTClaimResult {
   statusCode: number;
@@ -138,12 +139,19 @@ export function useWalletAuth() {
       console.log("Logging in!");
       try {
         await login(params);
+        const email = await fetchUserEmail();
+        if (email && account) {
+          await UserService.upsertUser({
+            walletAddress: account.address,
+            email,
+          });
+        }
         await authenticateAndClaimNFT();
       } catch (error) {
         console.error("Login error:", error);
       }
     },
-    [authenticateAndClaimNFT]
+    [authenticateAndClaimNFT, fetchUserEmail, account]
   );
 
   const handleDoLogout = useCallback(async () => {
