@@ -20,6 +20,7 @@ import { Gift, ExternalLink } from "lucide-react";
 import useSWR from "swr";
 import axios from "axios";
 import { Typewriter } from "react-simple-typewriter";
+import WalletHeader from "./wallet-header";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
@@ -45,10 +46,13 @@ export default function WalletPage() {
   if (error) {
     return <PageError message="Failed to fetch NFTs" />;
   }
+  // TODO: test the empty wallet state with no nfts!
+  const hasNfts = nftsData?.ownedNfts && nftsData.ownedNfts.length > 0;
 
-  if (nftsData?.ownedNfts && nftsData.ownedNfts.length > 0) {
+  if (hasNfts) {
     return (
       <div className="container mx-auto px-4 py-8">
+        <WalletHeader hasNfts={true} />
         <NftDisplay nfts={nftsData.ownedNfts} />
       </div>
     );

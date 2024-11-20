@@ -34,7 +34,7 @@ export function WelcomeModal({
   };
 
   const message =
-    "This is where your NFTs are stored when you make a donation. It's your personal collection, showcasing your support and contributions.";
+    "This is where your NFTs are stored after you make a donation. It's your personal collection, showcasing your support and contributions.";
 
   const handleTypeEnd = () => {
     setShowCursor(false); // Hide cursor when typing is complete
