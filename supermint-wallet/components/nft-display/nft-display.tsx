@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 import NftSeriesDisplay from "./nft-series-display";
 import NftSet from "./nft-set-display";
 import { Nft } from "@/alchemy/nft-types";
-import { getNFTMetadata } from "@/alchemy/nft-data-helpers";
 
 interface NftDisplayProps {
   nfts: Nft[];
@@ -19,7 +18,7 @@ const NftDisplay: React.FC<NftDisplayProps> = ({ nfts }) => {
   const groupedNfts = useMemo(() => {
     const sets: { [setName: string]: SetInfo } = {};
     const individual: Nft[] = [];
-    console.log("nft series info", getNFTMetadata(nfts[0]));
+
     nfts.forEach((nft) => {
       const setInfo = nft.raw.metadata.supermint;
       if (setInfo && setInfo.isInSet && setInfo.setName) {
@@ -46,16 +45,9 @@ const NftDisplay: React.FC<NftDisplayProps> = ({ nfts }) => {
 
   return (
     <div className="space-y-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {Object.values(groupedNfts.sets).map((setInfo) => (
-          <div key={setInfo.setName} className="w-full max-w-md mx-auto">
-            <NftSet
-              setName={setInfo.setName}
-              nfts={setInfo.nfts}
-              setSize={setInfo.setSize}
-              charityName={setInfo.charityName}
-            />
-          </div>
+          <NftSet key={setInfo.setName} {...setInfo} />
         ))}
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
