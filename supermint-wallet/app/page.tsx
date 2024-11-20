@@ -48,7 +48,7 @@ export default function Home() {
           />
         </div>
         <ConnectEmbed
-          header={{ title: "" }}
+          header={{ title: "Choose a login method" }}
           showThirdwebBranding={false}
           chain={polygon}
           client={client}

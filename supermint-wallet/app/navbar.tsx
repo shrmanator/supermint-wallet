@@ -55,8 +55,8 @@ export default function NavBar() {
                   label: account ? "Disconnect" : "Login",
                 }}
                 connectModal={{
-                  title: "",
-                  size: "wide",
+                  title: "Choose a login method",
+                  size: "compact",
                   showThirdwebBranding: false,
                 }}
                 auth={{

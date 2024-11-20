@@ -84,8 +84,8 @@ const WelcomeMessage: FC<WelcomeMessageProps> = ({
                   wallets={wallets}
                   connectButton={{ label: "Login" }}
                   connectModal={{
-                    title: "",
-                    size: "wide",
+                    title: "Choose a login method",
+                    size: "compact",
                     showThirdwebBranding: false,
                   }}
                   auth={{
