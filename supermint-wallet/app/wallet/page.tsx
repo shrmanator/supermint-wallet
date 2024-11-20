@@ -62,7 +62,7 @@ export default function WalletPage() {
             <BeaconPing />
             <div>
               <AlertTitle className="text-white font-medium flex items-center">
-                Welcome, donor.
+                Let&apos;s Get Started.
               </AlertTitle>
               <AlertDescription className="text-yellow-400">
                 <Typewriter
@@ -83,8 +83,7 @@ export default function WalletPage() {
             <div className="space-y-2">
               <CardTitle className="text-2xl">No NFTs Found</CardTitle>
               <CardDescription className="text-lg">
-                Start your journey by making a donation to receive your first
-                NFT!
+                Make your first donation to receive an NFT!
               </CardDescription>
             </div>
           </CardHeader>

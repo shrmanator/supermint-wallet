@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useWalletAuth } from "@/hooks/use-wallet-auth";
 import { ConnectEmbed } from "thirdweb/react";
 import { polygon } from "thirdweb/chains";
 import { inAppWallet } from "thirdweb/wallets";
 import { client } from "@/lib/thirdweb/client";
-import { WelcomeModal } from "@/components/new-user-welcome-modal";
 import SuperMintLogo from "@/components/supermint-logo";
 
 const wallets = [
@@ -26,13 +25,7 @@ export default function Home() {
     generatePayload,
     handleDoLogout,
     checkAuthStatus,
-    isNewUser,
   } = useWalletAuth();
-
-
-  useEffect(() => {
-    if (isNewUser) setShowWelcome(true);
-  }, [isNewUser]);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -55,9 +48,7 @@ export default function Home() {
           />
         </div>
         <ConnectEmbed
-          header={{
-            title: "",
-          }}
+          header={{ title: "" }}
           showThirdwebBranding={false}
           chain={polygon}
           client={client}
@@ -71,10 +62,6 @@ export default function Home() {
           onConnect={async () => {
             console.log("Login complete. Checking authentication...");
             const authenticated = await checkAuthStatus();
-            console.log(
-              "Authentication status in welcome (onConnect):",
-              authenticated
-            );
             if (authenticated) {
               router.push("/wallet");
             }
@@ -84,13 +71,5 @@ export default function Home() {
     );
   }
 
-  // This return statement will rarely be rendered as the useEffect will redirect
-  // authenticated users, but it's needed for type safety and edge cases
-  return (
-    <>
-      <div className="flex items-center justify-center min-h-screen">
-        <div>Redirecting to wallet...</div>
-      </div>
-    </>
-  );
+  return null; // Explicitly return null since redirection is handled in useEffect
 }
