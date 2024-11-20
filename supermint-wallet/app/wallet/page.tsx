@@ -4,39 +4,18 @@ import NftDisplay from "@/components/nft-display/nft-display";
 import { useNfts } from "@/hooks/use-nfts";
 import React from "react";
 import { useActiveAccount } from "thirdweb/react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardDescription,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import PageError from "@/app/page-error";
-import FlickeringAsciiBanner from "@/components/flickering-sm-banner";
-import { Gift, ExternalLink } from "lucide-react";
 import useSWR from "swr";
 import axios from "axios";
-import { Typewriter } from "react-simple-typewriter";
+import FlickeringAsciiBanner from "@/components/flickering-sm-banner";
+import PageError from "@/app/page-error";
 import WalletHeader from "./wallet-header";
+import EmptyWallet from "./empty-wallet";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
-
-const BeaconPing = () => {
-  return (
-    <span className="relative flex items-center justify-center h-6 w-6 mr-4">
-      <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-yellow-400 opacity-50"></span>
-      <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow-500"></span>
-    </span>
-  );
-};
 
 export default function WalletPage() {
   const account = useActiveAccount();
   const { nftsData, error, isLoading } = useNfts(account?.address);
-  // TODO: upsert and compoare the nfts db data here
   const { data: charitiesData } = useSWR("/api/charities", fetcher);
 
   if (isLoading) {
@@ -46,92 +25,17 @@ export default function WalletPage() {
   if (error) {
     return <PageError message="Failed to fetch NFTs" />;
   }
-  // TODO: test the empty wallet state with no nfts!
+
   const hasNfts = nftsData?.ownedNfts && nftsData.ownedNfts.length > 0;
 
-  if (hasNfts) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <WalletHeader hasNfts={true} />
-        <NftDisplay nfts={nftsData.ownedNfts} />
-      </div>
-    );
-  }
-
   return (
-    <div className="container max-w-2xl mx-auto px-4 py-8">
-      <div className="space-y-6">
-        <Alert className="border border-zinc-800 bg-black">
-          <div className="flex items-center">
-            <BeaconPing />
-            <div>
-              <AlertTitle className="text-white font-medium flex items-center">
-                Let&apos;s Get Started.
-              </AlertTitle>
-              <AlertDescription className="text-yellow-400">
-                <Typewriter
-                  words={[
-                    "If you have made a donation, you'll receive an email when your NFT is ready.",
-                  ]}
-                  typeSpeed={50}
-                  cursor={false}
-                />
-              </AlertDescription>
-            </div>
-          </div>
-        </Alert>
-
-        <Card>
-          <CardHeader className="space-y-6 items-center text-center">
-            <Gift className="h-12 w-12 text-muted-foreground" />
-            <div className="space-y-2">
-              <CardTitle className="text-2xl">No NFTs Found</CardTitle>
-              <CardDescription className="text-lg">
-                Make your first donation to receive an NFT!
-              </CardDescription>
-            </div>
-          </CardHeader>
-
-          <CardContent className="space-y-4">
-            <h3 className="text-sm font-medium text-muted-foreground text-center">
-              Choose a participating charity:
-            </h3>
-
-            {charitiesData?.charities && (
-              <div className="relative">
-                <ScrollArea className="h-[300px] rounded-md" type="always">
-                  <div className="space-y-2 pr-4">
-                    {charitiesData.charities.map(
-                      (charity: { name: string; websiteUrl?: string }) => (
-                        <div
-                          key={charity.name}
-                          className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/50"
-                        >
-                          <span className="font-medium">{charity.name}</span>
-                          {charity.websiteUrl && (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() =>
-                                window.open(charity.websiteUrl, "_blank")
-                              }
-                              className="ml-2 whitespace-nowrap"
-                            >
-                              <ExternalLink className="h-4 w-4 mr-2" />
-                              Visit Site
-                            </Button>
-                          )}
-                        </div>
-                      )
-                    )}
-                  </div>
-                  <ScrollBar orientation="vertical" />
-                </ScrollArea>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+    <div className="container mx-auto px-4 py-8">
+      <WalletHeader />
+      {hasNfts ? (
+        <NftDisplay nfts={nftsData.ownedNfts} />
+      ) : (
+        <EmptyWallet charitiesData={charitiesData} />
+      )}
     </div>
   );
 }

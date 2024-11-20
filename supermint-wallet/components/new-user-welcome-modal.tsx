@@ -33,11 +33,15 @@ export function WelcomeModal({
     }
   };
 
-  const message =
-    "This is where your NFTs are stored after you make a donation. It's your personal collection, showcasing your support and contributions.";
+  const message = `Your wallet (${walletAddress.slice(
+    0,
+    6
+  )}...${walletAddress.slice(
+    -4
+  )}) has been created! This will store your NFTs when you make donations.`;
 
   const handleTypeEnd = () => {
-    setShowCursor(false); // Hide cursor when typing is complete
+    setShowCursor(false);
   };
 
   return (
@@ -70,8 +74,8 @@ export function WelcomeModal({
                 typeSpeed={50}
                 deleteSpeed={40}
                 delaySpeed={3000}
-                loop={1} // Type the message once
-                onLoopDone={handleTypeEnd} // Callback when the loop is done
+                loop={1}
+                onLoopDone={handleTypeEnd}
               />
             </p>
           </div>
