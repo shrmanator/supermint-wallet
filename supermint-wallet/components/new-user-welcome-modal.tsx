@@ -80,7 +80,7 @@ export function WelcomeModal({
             </p>
           </div>
           <DialogFooter>
-            <Button onClick={handleComplete}>Get Started</Button>
+            <Button onClick={handleComplete}>Continue</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
