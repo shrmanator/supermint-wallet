@@ -26,11 +26,9 @@ export default function Home() {
     generatePayload,
     handleDoLogout,
     checkAuthStatus,
-    account,
     isNewUser,
   } = useWalletAuth();
 
-  const [showWelcome, setShowWelcome] = useState(false);
 
   useEffect(() => {
     if (isNewUser) setShowWelcome(true);
