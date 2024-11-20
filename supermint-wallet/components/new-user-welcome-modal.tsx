@@ -33,7 +33,12 @@ export function WelcomeModal({
     }
   };
 
-  const message = `It will store your NFTs when you make donations.`;
+  const message = `Your wallet (${walletAddress.slice(
+    0,
+    6
+  )}...${walletAddress.slice(
+    -4
+  )}) has been created! This will store your NFTs when you make donations.`;
 
   const handleTypeEnd = () => {
     setShowCursor(false);
@@ -57,7 +62,7 @@ export function WelcomeModal({
         <DialogContent className="sm:max-w-md transition-transform duration-300 ease-out">
           <DialogHeader>
             <DialogTitle className="text-xl">
-              Your wallet has been created! 🎉
+              Welcome to Your Supermint Wallet! 🎉
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-3">
