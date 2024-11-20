@@ -10,6 +10,7 @@ import { client } from "@/lib/thirdweb/client";
 import { useRouter } from "next/navigation";
 import { useWalletAuth } from "@/hooks/use-wallet-auth";
 import { WelcomeModal } from "@/components/new-user-welcome-modal";
+import SuperMintLogo from "@/components/supermint-logo";
 
 const wallets = [
   inAppWallet({
@@ -56,26 +57,31 @@ const WelcomeMessage: FC<WelcomeMessageProps> = ({
 
   return (
     <>
-      <div className="fixed inset-0 flex items-center justify-center bg-overlay z-50 bg-black bg-opacity-100">
+      <div className="fixed inset-0 flex flex-col items-center justify-center bg-overlay z-50 bg-black bg-opacity-100">
+        <div className="mb-4">
+          <SuperMintLogo
+            showText={true}
+            textSize="48px"
+            showIcon={true}
+            iconSize="64px"
+          />
+        </div>
         <div className="p-4 rounded-lg shadow-lg max-w-md w-full">
           <Card>
             <CardHeader>
-              <CardTitle className="text-center">
-                Welcome to SuperMint
-              </CardTitle>
+              <CardTitle className="text-center">Welcome</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <Separator />
               <p className="text-center">
-                Login to{" "}
-                <span className="font-semibold">
+                Login with{" "}
+                <span className="font-bold text-yellow-500">
                   {charityDetails.donorEmail}
                 </span>{" "}
                 to receive your NFT from{" "}
-                <span className="font-semibold">
+                <span className="font-bold text-blue-500">
                   {charityDetails.charityName || "the charity"}
                 </span>
-                .
               </p>
               <div className="flex justify-center">
                 <ConnectButton
