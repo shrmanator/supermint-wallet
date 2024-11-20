@@ -46,15 +46,13 @@ const NftDisplay: React.FC<NftDisplayProps> = ({ nfts }) => {
 
   return (
     <div className="space-y-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="flex flex-wrap gap-6">
         {Object.values(groupedNfts.sets).map((setInfo) => (
-          <div key={setInfo.setName} className="w-full max-w-md mx-auto">
-            <NftSet
-              setName={setInfo.setName}
-              nfts={setInfo.nfts}
-              setSize={setInfo.setSize}
-              charityName={setInfo.charityName}
-            />
+          <div
+            key={setInfo.setName}
+            className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
+          >
+            <NftSet {...setInfo} />
           </div>
         ))}
       </div>
