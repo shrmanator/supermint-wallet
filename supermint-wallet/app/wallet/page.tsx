@@ -14,19 +14,31 @@ export default function WalletPage() {
   const { nftsData, error, isLoading } = useNfts(account?.address);
 
   if (isLoading) {
-    return <FlickeringAsciiBanner loopCount={Infinity} />;
+    return (
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <FlickeringAsciiBanner loopCount={Infinity} />
+      </div>
+    );
   }
 
   if (error) {
-    return <PageError message="Failed to fetch NFTs" />;
+    return (
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <PageError message="Failed to fetch NFTs" />
+      </div>
+    );
   }
 
   const hasNfts = nftsData?.ownedNfts && nftsData.ownedNfts.length > 0;
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <WalletHeader />
-      {hasNfts ? <NftDisplay nfts={nftsData.ownedNfts} /> : <EmptyWallet />}
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="py-8">
+        <div className="mb-8">
+          <WalletHeader />
+        </div>
+        {hasNfts ? <NftDisplay nfts={nftsData.ownedNfts} /> : <EmptyWallet />}
+      </div>
     </div>
   );
 }

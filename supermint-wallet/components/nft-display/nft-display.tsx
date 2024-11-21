@@ -43,13 +43,17 @@ const NftDisplay: React.FC<NftDisplayProps> = ({ nfts }) => {
     return { sets, individual };
   }, [nfts]);
 
+  const setEntries = Object.values(groupedNfts.sets);
+
   return (
-    <div className="space-y-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {Object.values(groupedNfts.sets).map((setInfo) => (
-          <NftSet key={setInfo.setName} {...setInfo} />
-        ))}
-      </div>
+    <div className="flex flex-col gap-6">
+      {setEntries.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {setEntries.map((setInfo) => (
+            <NftSet key={setInfo.setName} {...setInfo} />
+          ))}
+        </div>
+      )}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         {groupedNfts.individual.map((nft) => (
           <NftCard key={nft.tokenId} nft={nft} />
