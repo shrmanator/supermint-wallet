@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Dancing_Script } from "next/font/google";
+import { Inter, Dancing_Script, Space_Grotesk } from "next/font/google";
 import { ThirdwebProvider } from "thirdweb/react";
 import "@/components/ui/global.css";
 import { cn } from "@/lib/utils";
@@ -14,6 +14,11 @@ const dancingScript = Dancing_Script({
   subsets: ["latin"],
   weight: ["700"],
   variable: "--font-dancing-script",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
 });
 
 export const metadata: Metadata = {
@@ -63,12 +68,13 @@ export default function RootLayout({
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
           inter.variable,
-          dancingScript.variable
+          dancingScript.variable,
+          spaceGrotesk.variable
         )}
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >

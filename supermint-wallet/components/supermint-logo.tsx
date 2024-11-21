@@ -88,7 +88,7 @@ const SuperMintLogo: React.FC<SuperMintLogoProps> = ({
             <span
               className="absolute text-sky-400/90 tracking-wide"
               style={{
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "var(--font-space-grotesk)",
                 ...walletStyle,
               }}
             >
