@@ -1,3 +1,5 @@
+"use client";
+
 import React, { createContext, useContext, useMemo } from "react";
 import useSWR from "swr";
 import axios from "axios";
@@ -6,33 +8,25 @@ const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 type CharityUrlMap = Record<string, string>;
 
-interface Charity {
-  name: string;
-  url: string;
-}
-
 const CharityContext = createContext<CharityUrlMap>({});
 
-interface CharityProviderProps {
-  children: React.ReactNode;
-}
-
-export const CharityProvider: React.FC<CharityProviderProps> = ({
+export const CharityProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { data: charitiesData } = useSWR<Charity[]>("/api/charities", fetcher);
+  const { data: charitiesData } = useSWR("/api/charities", fetcher);
 
-  const charityUrlMap = useMemo(
-    () =>
-      charitiesData?.reduce<CharityUrlMap>(
-        (acc, charity) => ({
-          ...acc,
-          [charity.name]: charity.url,
-        }),
-        {}
-      ) || {},
-    [charitiesData]
-  );
+  const charityUrlMap = useMemo(() => {
+    if (!charitiesData || !Array.isArray(charitiesData)) {
+      return {};
+    }
+
+    return charitiesData.reduce((acc, charity) => {
+      if (charity && charity.name && charity.url) {
+        acc[charity.name] = charity.url;
+      }
+      return acc;
+    }, {} as CharityUrlMap);
+  }, [charitiesData]);
 
   return (
     <CharityContext.Provider value={charityUrlMap}>
