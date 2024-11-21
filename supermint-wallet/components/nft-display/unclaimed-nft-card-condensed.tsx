@@ -3,16 +3,18 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Lock } from "lucide-react";
 import { motion, useAnimation } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useCharityUrl } from "@/contexts/charity-context";
 
 interface CondensedUnclaimedNftCardProps {
   charityName: string;
 }
 
-const CondensedUnclaimedNftCard: React.FC<
-  CondensedUnclaimedNftCardProps
-> = ({}) => {
+const CondensedUnclaimedNftCard: React.FC<CondensedUnclaimedNftCardProps> = ({
+  charityName,
+}) => {
   const controls = useAnimation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const charityUrl = useCharityUrl(charityName);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -63,6 +65,10 @@ const CondensedUnclaimedNftCard: React.FC<
       rotate: [0, -5, 5, -5, 5, 0],
       transition: { duration: 0.4 },
     });
+
+    if (charityUrl) {
+      window.open(charityUrl, "_blank", "noopener,noreferrer");
+    }
   };
 
   return (

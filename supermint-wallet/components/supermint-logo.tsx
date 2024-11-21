@@ -1,28 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { useTheme } from "next-themes";
 
 interface SuperMintLogoProps {
-  /**
-   * Controls whether to show the "SuperMint" text.
-   * @default true
-   */
   showText?: boolean;
-  /**
-   * Allows you to set a custom font size for the text.
-   * @default '25px'
-   */
   textSize?: string;
-  /**
-   * Controls whether to show the logo icon.
-   * @default true
-   */
   showIcon?: boolean;
-  /**
-   * Allows you to set a custom size for the logo icon.
-   * @default '35px'
-   */
   iconSize?: string;
 }
 
@@ -32,7 +17,21 @@ const SuperMintLogo: React.FC<SuperMintLogoProps> = ({
   showIcon = true,
   iconSize = "35px",
 }) => {
-  // Convert pixel sizes to numbers for Tailwind classes
+  const { resolvedTheme } = useTheme();
+  const [logoSrc, setLogoSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadLogo = async () => {
+      const { WhiteSuperMintLogo, BlackSuperMintLogo } = await import(
+        "@/public/base64/supermint-logos"
+      );
+      setLogoSrc(
+        resolvedTheme === "dark" ? WhiteSuperMintLogo : BlackSuperMintLogo
+      );
+    };
+    loadLogo();
+  }, [resolvedTheme]);
+
   const getTextSizeClass = (size: string) => {
     const pixels = parseInt(size);
     if (pixels <= 16) return "text-base";
@@ -45,14 +44,30 @@ const SuperMintLogo: React.FC<SuperMintLogoProps> = ({
     return "text-6xl";
   };
 
+  const getWalletPosition = (size: string) => {
+    const pixels = parseInt(size);
+    // Calculate wallet text size and positioning based on main text size
+    const walletSize = Math.max(10, Math.floor(pixels * 0.35)); // Min 10px, or 35% of main text
+    const topOffset = Math.floor(pixels * -0.05); // Negative value moves up
+    const leftOffset = Math.floor(pixels * 0.7); // Proportional to text size
+
+    return {
+      fontSize: `${walletSize}px`,
+      top: `${topOffset}px`,
+      left: `${leftOffset}px`,
+    };
+  };
+
   const textSizeClass = getTextSizeClass(textSize);
+  const textColor = resolvedTheme === "dark" ? "text-white" : "text-black";
+  const walletStyle = getWalletPosition(textSize);
 
   return (
     <div className="flex items-center">
-      {showIcon && (
+      {showIcon && logoSrc && (
         <div className="relative" style={{ width: iconSize, height: iconSize }}>
           <Image
-            src="/images/supermint-logo.png"
+            src={logoSrc}
             alt="SuperMint Logo"
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -63,12 +78,23 @@ const SuperMintLogo: React.FC<SuperMintLogoProps> = ({
       )}
       {showText && (
         <div className={`${showIcon ? "ml-2" : ""}`}>
-          <span
-            className={`font-bold ${textSizeClass} text-white`}
-            style={{ fontFamily: "'Dancing Script', cursive" }}
-          >
-            SuperMint
-          </span>
+          <div className="relative">
+            <span
+              className={`font-bold ${textSizeClass} ${textColor} leading-none`}
+              style={{ fontFamily: "'Dancing Script', cursive" }}
+            >
+              Super<span className="relative">Mint</span>
+            </span>
+            <span
+              className="absolute text-sky-400/90 tracking-wide"
+              style={{
+                fontFamily: "var(--font-space-grotesk)",
+                ...walletStyle,
+              }}
+            >
+              wallet
+            </span>
+          </div>
         </div>
       )}
     </div>

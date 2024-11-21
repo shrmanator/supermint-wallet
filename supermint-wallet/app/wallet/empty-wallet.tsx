@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useCharities } from "@/contexts/charity-context";
 
 const BeaconPing = () => (
   <span className="relative flex items-center justify-center h-6 w-6 mr-4">
@@ -20,16 +21,9 @@ const BeaconPing = () => (
   </span>
 );
 
-interface EmptyWalletProps {
-  charitiesData?: {
-    charities: Array<{
-      name: string;
-      websiteUrl?: string;
-    }>;
-  };
-}
+export default function EmptyWallet() {
+  const charities = useCharities();
 
-export default function EmptyWallet({ charitiesData }: EmptyWalletProps) {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <Alert className="border border-zinc-800 bg-black">
@@ -68,36 +62,34 @@ export default function EmptyWallet({ charitiesData }: EmptyWalletProps) {
             Choose a participating charity:
           </h3>
 
-          {charitiesData?.charities && (
-            <div className="relative">
-              <ScrollArea className="h-[300px] rounded-md" type="always">
-                <div className="space-y-2 pr-4">
-                  {charitiesData.charities.map((charity) => (
-                    <div
-                      key={charity.name}
-                      className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/50"
-                    >
-                      <span className="font-medium">{charity.name}</span>
-                      {charity.websiteUrl && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() =>
-                            window.open(charity.websiteUrl, "_blank")
-                          }
-                          className="ml-2 whitespace-nowrap"
-                        >
-                          <ExternalLink className="h-4 w-4 mr-2" />
-                          Visit Site
-                        </Button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-                <ScrollBar orientation="vertical" />
-              </ScrollArea>
-            </div>
-          )}
+          <div className="relative">
+            <ScrollArea className="h-[300px] rounded-md" type="always">
+              <div className="space-y-2 pr-4">
+                {charities.map((charity) => (
+                  <div
+                    key={charity.name}
+                    className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border border-border/50"
+                  >
+                    <span className="font-medium">{charity.name}</span>
+                    {charity.websiteUrl && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          window.open(charity.websiteUrl, "_blank")
+                        }
+                        className="ml-2 whitespace-nowrap"
+                      >
+                        <ExternalLink className="h-4 w-4 mr-2" />
+                        Visit Site
+                      </Button>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <ScrollBar orientation="vertical" />
+            </ScrollArea>
+          </div>
         </CardContent>
       </Card>
     </div>

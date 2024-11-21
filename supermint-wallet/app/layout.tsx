@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Dancing_Script } from "next/font/google";
+import { Inter, Dancing_Script, Space_Grotesk } from "next/font/google";
 import { ThirdwebProvider } from "thirdweb/react";
 import "@/components/ui/global.css";
 import { cn } from "@/lib/utils";
@@ -7,12 +7,18 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import NavBar from "@/app/navbar";
+import { CharityProvider } from "@/contexts/charity-context";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const dancingScript = Dancing_Script({
   subsets: ["latin"],
   weight: ["700"],
   variable: "--font-dancing-script",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
 });
 
 export const metadata: Metadata = {
@@ -62,7 +68,8 @@ export default function RootLayout({
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
           inter.variable,
-          dancingScript.variable
+          dancingScript.variable,
+          spaceGrotesk.variable
         )}
       >
         <ThemeProvider
@@ -72,15 +79,17 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ThirdwebProvider>
-            <div className="flex flex-col min-h-screen">
-              <NavBar />
-              <main className="flex-grow">{children}</main>
-              <footer className="border-t py-4">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-muted-foreground">
-                  © {new Date().getFullYear()} SuperMint Wallet
-                </div>
-              </footer>
-            </div>
+            <CharityProvider>
+              <div className="flex flex-col min-h-screen">
+                <NavBar />
+                <main className="flex-grow">{children}</main>
+                <footer className="border-t py-4">
+                  <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-muted-foreground">
+                    © {new Date().getFullYear()} SuperMint Wallet
+                  </div>
+                </footer>
+              </div>
+            </CharityProvider>
           </ThirdwebProvider>
         </ThemeProvider>
         <SpeedInsights />

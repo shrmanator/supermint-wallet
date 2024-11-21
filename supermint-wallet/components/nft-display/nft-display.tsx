@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import NftSeriesDisplay from "./nft-series-display";
+import NftCard from "@/components/nft-card/nft-card";
 import NftSet from "./nft-set-display";
 import { Nft } from "@/alchemy/nft-types";
 
@@ -52,7 +52,7 @@ const NftDisplay: React.FC<NftDisplayProps> = ({ nfts }) => {
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         {groupedNfts.individual.map((nft) => (
-          <NftSeriesDisplay key={nft.tokenId} nft={nft} />
+          <NftCard key={nft.tokenId} nft={nft} />
         ))}
       </div>
     </div>

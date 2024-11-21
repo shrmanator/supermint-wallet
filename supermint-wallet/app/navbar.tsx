@@ -4,9 +4,10 @@ import { ConnectButton } from "thirdweb/react";
 import { inAppWallet } from "thirdweb/wallets";
 import { polygon } from "thirdweb/chains";
 import { client } from "@/lib/thirdweb/client";
-import SuperMintLogo from "@/components/supermint-logo/SuperMintLogo";
 import { useWalletAuth } from "@/hooks/use-wallet-auth";
 import { WelcomeModal } from "@/components/new-user-welcome-modal";
+import SuperMintLogo from "@/components/supermint-logo";
+import ThemeToggle from "./theme-toggle";
 
 const wallets = [
   inAppWallet({
@@ -28,6 +29,16 @@ export default function NavBar() {
 
   const [showWelcome, setShowWelcome] = useState(false);
 
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 0
+  );
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   useEffect(() => {
     if (isNewUser) setShowWelcome(true);
   }, [isNewUser]);
@@ -39,13 +50,14 @@ export default function NavBar() {
           <nav className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <SuperMintLogo
-                showText={true}
+                showText={windowWidth >= 768}
                 textSize="35px"
                 showIcon={true}
                 iconSize="45px"
               />
             </div>
             <div className="flex items-center gap-4">
+              <ThemeToggle />
               <ConnectButton
                 chain={polygon}
                 client={client}
