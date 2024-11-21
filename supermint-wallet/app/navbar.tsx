@@ -4,9 +4,9 @@ import { ConnectButton } from "thirdweb/react";
 import { inAppWallet } from "thirdweb/wallets";
 import { polygon } from "thirdweb/chains";
 import { client } from "@/lib/thirdweb/client";
-import SuperMintLogo from "@/components/supermint-logo/SuperMintLogo";
 import { useWalletAuth } from "@/hooks/use-wallet-auth";
 import { WelcomeModal } from "@/components/new-user-welcome-modal";
+import SuperMintLogo from "@/components/supermint-logo";
 
 const wallets = [
   inAppWallet({

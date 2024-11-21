@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { useTheme } from "next-themes";
 
 interface SuperMintLogoProps {
   /**
@@ -32,7 +33,21 @@ const SuperMintLogo: React.FC<SuperMintLogoProps> = ({
   showIcon = true,
   iconSize = "35px",
 }) => {
-  // Convert pixel sizes to numbers for Tailwind classes
+  const { resolvedTheme } = useTheme();
+  const [logoSrc, setLogoSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadLogo = async () => {
+      const { WhiteSuperMintLogo, BlackSuperMintLogo } = await import(
+        "@/public/base64/supermint-logos"
+      );
+      setLogoSrc(
+        resolvedTheme === "dark" ? WhiteSuperMintLogo : BlackSuperMintLogo
+      );
+    };
+    loadLogo();
+  }, [resolvedTheme]);
+
   const getTextSizeClass = (size: string) => {
     const pixels = parseInt(size);
     if (pixels <= 16) return "text-base";
@@ -46,13 +61,14 @@ const SuperMintLogo: React.FC<SuperMintLogoProps> = ({
   };
 
   const textSizeClass = getTextSizeClass(textSize);
+  const textColor = resolvedTheme === "dark" ? "text-white" : "text-black";
 
   return (
     <div className="flex items-center">
-      {showIcon && (
+      {showIcon && logoSrc && (
         <div className="relative" style={{ width: iconSize, height: iconSize }}>
           <Image
-            src="/images/supermint-logo.png"
+            src={logoSrc}
             alt="SuperMint Logo"
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -64,7 +80,7 @@ const SuperMintLogo: React.FC<SuperMintLogoProps> = ({
       {showText && (
         <div className={`${showIcon ? "ml-2" : ""}`}>
           <span
-            className={`font-bold ${textSizeClass} text-white`}
+            className={`font-bold ${textSizeClass} ${textColor}`}
             style={{ fontFamily: "'Dancing Script', cursive" }}
           >
             SuperMint
