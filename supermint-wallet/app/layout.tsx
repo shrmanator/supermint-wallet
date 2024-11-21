@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Dancing_Script, Space_Grotesk } from "next/font/google";
 import { ThirdwebProvider } from "thirdweb/react";
-import "@/components/ui/global.css";
+import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
