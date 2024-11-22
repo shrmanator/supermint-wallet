@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { useWalletAuth } from "@/hooks/use-wallet-auth";
 import { WelcomeModal } from "@/components/new-user-welcome-modal";
 import SuperMintLogo from "@/components/supermint-logo";
+import CelebrateLogo from "@/components/celebrate-logo";
 
 const wallets = [
   inAppWallet({
@@ -59,7 +60,7 @@ const WelcomeMessage: FC<WelcomeMessageProps> = ({
     <>
       <div className="fixed inset-0 flex flex-col items-center justify-center bg-overlay z-50 bg-black bg-opacity-100">
         <div className="mb-4">
-          <SuperMintLogo
+          <CelebrateLogo
             showText={true}
             textSize="48px"
             showIcon={true}

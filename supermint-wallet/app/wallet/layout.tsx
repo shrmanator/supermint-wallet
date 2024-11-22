@@ -7,7 +7,7 @@ import { polygon } from "thirdweb/chains";
 import { inAppWallet } from "thirdweb/wallets";
 import { client } from "@/lib/thirdweb/client";
 import { WelcomeModal } from "@/components/new-user-welcome-modal";
-import SuperMintLogo from "@/components/supermint-logo";
+import CelebrateLogo from "@/components/celebrate-logo";
 
 const wallets = [
   inAppWallet({
@@ -50,11 +50,11 @@ export default function WalletLayout({
     return (
       <div className="fixed inset-0 bg-background/100 backdrop-blur-sm z-50 flex flex-col items-center justify-center p-4">
         <div className="mb-8">
-          <SuperMintLogo
+          <CelebrateLogo
             showText={true}
-            textSize="48px" // Using a larger text size
+            textSize="20px" // Using a larger text size
             showIcon={true}
-            iconSize="64px" // Making the icon slightly larger than the text
+            iconSize="85px" // Making the icon slightly larger than the text
           />
         </div>
         <ConnectEmbed

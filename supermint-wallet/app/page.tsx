@@ -7,7 +7,7 @@ import { ConnectEmbed } from "thirdweb/react";
 import { polygon } from "thirdweb/chains";
 import { inAppWallet } from "thirdweb/wallets";
 import { client } from "@/lib/thirdweb/client";
-import SuperMintLogo from "@/components/supermint-logo";
+import CelebrateLogo from "@/components/celebrate-logo";
 
 const wallets = [
   inAppWallet({
@@ -40,7 +40,7 @@ export default function Home() {
     return (
       <div className="fixed inset-0 bg-background/100 backdrop-blur-sm z-50 flex flex-col items-center justify-center p-4">
         <div className="mb-8">
-          <SuperMintLogo
+          <CelebrateLogo
             showText={true}
             textSize="48px"
             showIcon={true}

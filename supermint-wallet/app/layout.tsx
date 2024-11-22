@@ -8,6 +8,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import NavBar from "@/app/navbar";
 import { CharityProvider } from "@/contexts/charity-context";
+// import ScrollingBanner from "@/components/floating-banner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const dancingScript = Dancing_Script({
@@ -83,9 +84,20 @@ export default function RootLayout({
               <div className="flex flex-col min-h-screen">
                 <NavBar />
                 <main className="flex-grow">{children}</main>
+                {/* <ScrollingBanner /> */}
+
                 <footer className="border-t py-4">
                   <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-muted-foreground">
-                    © {new Date().getFullYear()} SuperMint Wallet
+                    © {new Date().getFullYear()}{" "}
+                    <a
+                      href="https://supermint.ca"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:underline"
+                    >
+                      SuperMint
+                    </a>{" "}
+                    Wallet
                   </div>
                 </footer>
               </div>

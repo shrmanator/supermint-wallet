@@ -6,8 +6,8 @@ import { polygon } from "thirdweb/chains";
 import { client } from "@/lib/thirdweb/client";
 import { useWalletAuth } from "@/hooks/use-wallet-auth";
 import { WelcomeModal } from "@/components/new-user-welcome-modal";
-import SuperMintLogo from "@/components/supermint-logo";
 import ThemeToggle from "./theme-toggle";
+import CelebrateLogo from "@/components/celebrate-logo";
 
 const wallets = [
   inAppWallet({
@@ -29,16 +29,6 @@ export default function NavBar() {
 
   const [showWelcome, setShowWelcome] = useState(false);
 
-  const [windowWidth, setWindowWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 0
-  );
-
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   useEffect(() => {
     if (isNewUser) setShowWelcome(true);
   }, [isNewUser]);
@@ -49,11 +39,11 @@ export default function NavBar() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center justify-between h-16">
             <div className="flex items-center">
-              <SuperMintLogo
-                showText={windowWidth >= 768}
-                textSize="35px"
+              <CelebrateLogo
+                showText={true}
+                textSize="10px"
                 showIcon={true}
-                iconSize="45px"
+                iconSize="50px"
               />
             </div>
             <div className="flex items-center gap-4">
