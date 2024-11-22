@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollArea } from "@/components/ui/scroll-area"; // Adjust based on your import path
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Zap,
   Star,
@@ -8,11 +8,11 @@ import {
   Heart,
   Layers,
   FileText,
-  ArrowLeft,
+  RotateCcw,
 } from "lucide-react";
 import { Separator } from "@radix-ui/react-separator";
-import { Button } from "../ui/button";
-import { Card, CardContent } from "../ui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Nft } from "@/alchemy/nft-types";
 
 interface BackOfCardProps {
@@ -24,7 +24,7 @@ const BackOfCard: React.FC<BackOfCardProps> = ({ nft, setIsFlipped }) => {
   const seriesInfo = nft.raw.metadata.supermint;
 
   return (
-    <Card className="w-full h-full bg-purple-600 text-white border-none flex flex-col relative">
+    <Card className="w-full h-full bg-purple-600 text-white border-none flex flex-col">
       <CardContent className="p-2 flex-grow flex flex-col">
         <h3 className="text-sm font-bold mb-2 text-center text-yellow-300">
           NFT POWER CARD DETAILS
@@ -82,15 +82,17 @@ const BackOfCard: React.FC<BackOfCardProps> = ({ nft, setIsFlipped }) => {
           </ScrollArea>
         </div>
       </CardContent>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => setIsFlipped(false)}
-        className="absolute bottom-2 right-2 lg:bottom-4 lg:right-4 p-2 rounded"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        Back
-      </Button>
+      <CardFooter className="p-2 pt-0">
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={() => setIsFlipped(false)}
+          className="w-full text-sm flex items-center gap-2"
+        >
+          <RotateCcw className="w-4 h-4" />
+          Flip
+        </Button>
+      </CardFooter>
     </Card>
   );
 };

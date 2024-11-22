@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ImageIcon } from "lucide-react";
+import { ImageIcon, RotateCcw } from "lucide-react";
 import CustomMediaPlayer from "@/components/media-renderer";
 import BackOfCard from "./back-of-card";
 import { Nft } from "@/alchemy/nft-types";
@@ -77,52 +77,42 @@ const NftCard: React.FC<NftCardProps> = ({
         </div>
       </CardContent>
 
-      <CardFooter className="p-2 pt-0 flex gap-2">
+      <CardFooter className="p-2 pt-0">
         <Button
           variant="secondary"
           size="sm"
-          className="flex-1 text-xs"
-          onClick={() => {
-            /* Handle transfer logic */
-          }}
-        >
-          Transfer
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          className="flex-1 text-xs"
+          className="w-full text-sm flex items-center gap-2"
           onClick={() => setIsFlipped(!isFlipped)}
         >
-          Details
+          <RotateCcw className="w-4 h-4 scale-x-[-1]" />
+          Flip
         </Button>
       </CardFooter>
     </div>
   );
 
   return (
-    <motion.div
-      className="relative"
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-    >
+    <div className="relative" style={{ perspective: "1000px" }}>
       <motion.div
         animate={{ rotateY: isFlipped ? 180 : 0 }}
-        transition={{ duration: 0.6, type: "spring" }}
-        style={{ transformStyle: "preserve-3d" }}
+        transition={{ duration: 0.6 }}
+        style={{
+          transformStyle: "preserve-3d",
+        }}
       >
         <Card
-          className={`overflow-hidden ${
+          className={`${
             showMetadata && layout === "side" ? "flex" : ""
           } [backface-visibility:hidden]`}
         >
           <MediaContent />
           {showMetadata && <InfoContent />}
         </Card>
-        <Card className="absolute inset-0 overflow-hidden [transform:rotateY(180deg)] [backface-visibility:hidden]">
+        <Card className="absolute inset-0 overflow-hidden [backface-visibility:hidden] [transform:rotateY(180deg)]">
           <BackOfCard nft={nft} setIsFlipped={setIsFlipped} />
         </Card>
       </motion.div>
-    </motion.div>
+    </div>
   );
 };
 
