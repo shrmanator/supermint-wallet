@@ -30,7 +30,8 @@ const NftSet: React.FC<NftSetProps> = ({
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <CardTitle className="text-muted-foreground font-normal text-md truncate">
-            <span className="font-semibold">{setName}</span> by {charityName}
+            <span className="font-semibold">{setName}</span> by{" "}
+            <span className="font-regular text-primary">{charityName}</span>
           </CardTitle>
           <Badge
             variant={isComplete ? "default" : "secondary"}
