@@ -10,7 +10,6 @@ import { client } from "@/lib/thirdweb/client";
 import { useRouter } from "next/navigation";
 import { useWalletAuth } from "@/hooks/use-wallet-auth";
 import { WelcomeModal } from "@/components/new-user-welcome-modal";
-import SuperMintLogo from "@/components/supermint-logo";
 import CelebrateLogo from "@/components/celebrate-logo";
 
 const wallets = [
