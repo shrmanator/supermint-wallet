@@ -21,11 +21,11 @@ model User {
 }
 
 model OwnedNFT {
-  id      Int      @id @default(autoincrement())
+  id      Int     @id @default(autoincrement())
   tokenId String
-  user    User     @relation(fields: [userId], references: [id])
   userId  Int
-  shownAt DateTime @default(now())
+  seen    Boolean @default(false) // New field!
+  user    User    @relation(fields: [userId], references: [id])
 
   @@unique([userId, tokenId])
 }

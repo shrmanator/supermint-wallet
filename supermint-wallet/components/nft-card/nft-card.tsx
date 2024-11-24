@@ -26,6 +26,7 @@ const NftCard: React.FC<NftCardProps> = ({
   if (!nft?.raw?.metadata?.supermint) return null;
 
   const mediaSrc = getNftMediaSrc(nft);
+  console.log("the media source", mediaSrc);
   const { supermint } = nft.raw.metadata;
 
   const MediaContent = () => (

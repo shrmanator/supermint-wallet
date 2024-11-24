@@ -1,6 +1,7 @@
 /**
  * NFT fetching endpoint for Polygon network using Alchemy's API.
- * Includes rate limit handling with exponential backoff and enhanced filtering options.
+ * Uses fixed contract addresses defined in environment variables.
+ * Includes rate limit handling with exponential backoff.
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -12,11 +13,16 @@ const ALCHEMY_BASE_URL = "https://polygon-mainnet.g.alchemy.com/nft/v3";
 const MAX_RETRIES = 3;
 const BASE_DELAY = 1000;
 
+// Fixed contract addresses defined as constants
+const TOKEN_MINTING_PROXY_ADDRESS =
+  process.env.NEXT_PUBLIC_TOKEN_MINTING_PROXY_ADDRESS;
+const TOKEN_MANAGEMENT_PROXY_ADDRESS =
+  process.env.NEXT_PUBLIC_TOKEN_MANAGEMENT_PROXY_ADDRESS;
+
 /** Fetches NFTs for a given address with automatic retry on rate limits */
 export async function GET(request: NextRequest) {
   const searchParams = new URL(request.url).searchParams;
   const owner = searchParams.get("owner");
-  const contractAddresses = searchParams.getAll("contractAddresses[]");
 
   if (!owner) {
     return NextResponse.json(
@@ -26,7 +32,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const nftsData = await fetchNFTsForOwner(owner, contractAddresses);
+    const nftsData = await fetchNFTsForOwner(owner);
     return NextResponse.json(nftsData);
   } catch (error) {
     console.error("Error fetching NFTs:", error);
@@ -44,10 +50,7 @@ export async function GET(request: NextRequest) {
 }
 
 /** Helper method that fetches NFTs from Alchemy API with retry logic for rate limits */
-async function fetchNFTsForOwner(
-  owner: string,
-  contractAddresses: string[] = []
-): Promise<Nft> {
+async function fetchNFTsForOwner(owner: string): Promise<Nft> {
   let retries = 0;
 
   const params = {
@@ -56,7 +59,10 @@ async function fetchNFTsForOwner(
     orderBy: "transferTime",
     excludeFilters: ["AIRDROPS"],
     pageSize: 100,
-    ...(contractAddresses.length > 0 && { contractAddresses }),
+    contractAddresses: [
+      TOKEN_MINTING_PROXY_ADDRESS,
+      TOKEN_MANAGEMENT_PROXY_ADDRESS,
+    ],
   };
 
   while (retries < MAX_RETRIES) {
