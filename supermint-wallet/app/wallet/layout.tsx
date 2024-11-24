@@ -5,7 +5,7 @@ import { useWalletAuth } from "@/hooks/use-wallet-auth";
 import { ConnectEmbed } from "thirdweb/react";
 import { polygon } from "thirdweb/chains";
 import { inAppWallet } from "thirdweb/wallets";
-import { client } from "@/lib/thirdweb/client";
+import { client } from "@/lib/client";
 import { WelcomeModal } from "@/components/new-user-welcome-modal";
 import CelebrateLogo from "@/components/celebrate-logo";
 

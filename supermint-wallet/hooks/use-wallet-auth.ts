@@ -2,13 +2,13 @@ import { useState, useEffect, useCallback } from "react";
 import { useActiveAccount } from "thirdweb/react";
 import { VerifyLoginPayloadParams } from "thirdweb/auth";
 import { getUserEmail } from "thirdweb/wallets/in-app";
-import { client } from "@/lib/thirdweb/client";
+import { client } from "@/lib/client";
 import {
   generatePayload,
   isLoggedIn,
   login,
   logout,
-} from "@/actions/thirdweb-login";
+} from "@/actions/thirdweb-auth";
 import {
   createWalletUser,
   linkWalletAndClaimNFTs,
