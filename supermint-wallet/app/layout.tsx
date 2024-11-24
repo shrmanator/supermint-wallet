@@ -44,7 +44,7 @@ export default function RootLayout({
         />
         <meta
           name="twitter:image"
-          content="https://wallet.supermint.ca/supermint-icon.png"
+          content="https://wallet.supermint.ca/images/supermint-icon.png"
         />
         <meta property="og:title" content="SuperMint Wallet" />
         <meta
@@ -53,7 +53,7 @@ export default function RootLayout({
         />
         <meta
           property="og:image"
-          content="https://wallet.supermint.ca/supermint-icon.png"
+          content="https://wallet.supermint.ca/images/supermint-icon.png"
         />
         <meta property="og:url" content="https://wallet.supermint.ca" />
         <meta property="og:site_name" content="SuperMint Wallet" />
