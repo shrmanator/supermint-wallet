@@ -6,7 +6,6 @@ import { polygon } from "thirdweb/chains";
 import { client } from "@/lib/client";
 import { useWalletAuth } from "@/hooks/use-wallet-auth";
 import { WelcomeModal } from "@/components/new-user-welcome-modal";
-import ThemeToggle from "./theme-toggle";
 import CelebrateLogo from "@/components/celebrate-logo";
 
 const wallets = [
@@ -46,29 +45,26 @@ export default function NavBar() {
                 iconSize="50px"
               />
             </div>
-            <div className="flex items-center gap-4">
-              <ThemeToggle />
-              <ConnectButton
-                chain={polygon}
-                client={client}
-                wallets={wallets}
-                onDisconnect={account ? handleDoLogout : undefined}
-                connectButton={{
-                  label: account ? "Disconnect" : "Login",
-                }}
-                connectModal={{
-                  title: "Choose a login method",
-                  size: "compact",
-                  showThirdwebBranding: false,
-                }}
-                auth={{
-                  isLoggedIn: isLoggedIn,
-                  doLogin: handleDoLogin,
-                  getLoginPayload: generatePayload,
-                  doLogout: handleDoLogout,
-                }}
-              />
-            </div>
+            <ConnectButton
+              chain={polygon}
+              client={client}
+              wallets={wallets}
+              onDisconnect={account ? handleDoLogout : undefined}
+              connectButton={{
+                label: account ? "Disconnect" : "Login",
+              }}
+              connectModal={{
+                title: "Choose a login method",
+                size: "compact",
+                showThirdwebBranding: false,
+              }}
+              auth={{
+                isLoggedIn: isLoggedIn,
+                doLogin: handleDoLogin,
+                getLoginPayload: generatePayload,
+                doLogout: handleDoLogout,
+              }}
+            />
           </nav>
         </div>
       </header>
