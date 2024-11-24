@@ -8,11 +8,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ChevronLeft, ChevronRight, X, Frame } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, Frame, Wallet } from "lucide-react";
 import { useState } from "react";
 import { NFTMediaContent } from "@/components/nft-media-display";
+import { Nft } from "@/alchemy/nft-types";
 
-// Keeping the same props interface
 interface NewNftModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -24,6 +24,7 @@ export function NewNftModal({ isOpen, onClose, nfts }: NewNftModalProps) {
 
   const totalNfts = nfts?.length ?? 0;
   const currentNft = nfts?.[currentIndex];
+  const isLastNft = currentIndex === totalNfts - 1;
 
   if (!nfts?.length || !currentNft) {
     return null;
@@ -41,7 +42,7 @@ export function NewNftModal({ isOpen, onClose, nfts }: NewNftModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-7xl p-0 bg-background rounded-xl overflow-hidden">
+      <DialogContent className="w-[95vw] max-w-6xl p-0 h-[95vh] max-h-[900px] bg-background rounded-xl overflow-hidden">
         {/* Gallery Header */}
         <div className="relative h-12 bg-background flex items-center justify-between px-4 border-b">
           <div className="flex items-center gap-2">
@@ -51,7 +52,7 @@ export function NewNftModal({ isOpen, onClose, nfts }: NewNftModalProps) {
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8 absolute right-4"
+            className="h-8 w-8"
             onClick={onClose}
           >
             <X className="h-4 w-4" />
@@ -59,29 +60,32 @@ export function NewNftModal({ isOpen, onClose, nfts }: NewNftModalProps) {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-0 h-[80vh]">
-          {/* Main Art Display (3/5 width on medium+ screens) */}
-          <div className="relative md:col-span-3 h-full bg-black">
-            <div className="absolute inset-6">
+        {/* Main Content Area */}
+        <div className="flex flex-col md:grid md:grid-cols-5 h-[calc(100%-3rem)] overflow-hidden">
+          {/* Art Display Section */}
+          <div className="relative md:col-span-3 h-[40vh] sm:h-[50vh] md:h-full bg-black">
+            <div className="absolute inset-3 sm:inset-4 md:inset-6">
               <div className="w-full h-full relative">
-                {/* Decorative Frame Effect */}
+                {/* Decorative Frame */}
                 <div className="absolute inset-0 border-2 border-neutral-800 rounded-lg" />
-                <div className="absolute inset-2 bg-black rounded-lg overflow-hidden">
-                  <NFTMediaContent
-                    nft={currentNft}
-                    layout="full"
-                    showSeriesNumber={false}
-                    className="w-full h-full object-contain"
-                  />
+                <div className="absolute inset-1 sm:inset-2 bg-black rounded-lg overflow-hidden">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <NFTMediaContent
+                      nft={currentNft}
+                      layout="full"
+                      showSeriesNumber={false}
+                      className="max-w-full max-h-full object-contain"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Art Information Panel (2/5 width on medium+ screens) */}
-          <Card className="md:col-span-2 border-none rounded-none h-full overflow-y-auto">
-            <CardContent className="p-6 space-y-6">
-              {/* Gallery Plaque */}
+          {/* Information Panel */}
+          <Card className="md:col-span-2 border-none rounded-none flex-1 md:h-full overflow-hidden flex flex-col">
+            <CardContent className="flex-1 p-4 sm:p-6 overflow-hidden flex flex-col">
+              {/* Fixed Content */}
               <div className="space-y-4">
                 {supermintData?.charityName && (
                   <Badge
@@ -92,46 +96,61 @@ export function NewNftModal({ isOpen, onClose, nfts }: NewNftModalProps) {
                   </Badge>
                 )}
 
-                <h2 className="text-2xl font-serif">
+                <h2 className="text-xl sm:text-2xl font-serif">
                   {currentNft?.name?.replace(/#\d+/, "") || "Untitled NFT"}
                 </h2>
 
                 <Separator className="my-4" />
-
-                <div className="prose prose-sm text-muted-foreground">
-                  <p>{currentNft?.description || "No description available"}</p>
-                </div>
               </div>
 
-              {/* Navigation Controls */}
-              <div className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background to-transparent md:relative md:bg-none">
-                <div className="flex justify-between items-center gap-4">
-                  <Button
-                    variant="outline"
-                    onClick={() => navigate("prev")}
-                    disabled={currentIndex === 0}
-                    className="w-full"
-                  >
-                    <ChevronLeft className="w-4 h-4 mr-2" />
-                    Previous
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={() => navigate("next")}
-                    disabled={currentIndex === totalNfts - 1}
-                    className="w-full"
-                  >
-                    Next
-                    <ChevronRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </div>
-
-                {/* Progress Indicator */}
-                <div className="text-center text-sm text-muted-foreground mt-4">
-                  {currentIndex + 1} of {totalNfts}
+              {/* Scrollable Description */}
+              <div className="flex-1 min-h-0">
+                <div className="h-full overflow-y-auto pr-2">
+                  <div className="prose prose-sm text-muted-foreground">
+                    <p>
+                      {currentNft?.description || "No description available"}
+                    </p>
+                  </div>
                 </div>
               </div>
             </CardContent>
+
+            {/* Navigation Footer */}
+            <div className="border-t bg-background p-4 sm:p-6">
+              <div className="flex justify-between items-center gap-4">
+                <Button
+                  variant="outline"
+                  onClick={() => navigate("prev")}
+                  disabled={currentIndex === 0}
+                  className="w-full"
+                >
+                  <ChevronLeft className="w-4 h-4 mr-2" />
+                  Previous
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => (isLastNft ? onClose() : navigate("next"))}
+                  className="w-full"
+                >
+                  {isLastNft ? (
+                    <>
+                      Go to Wallet
+                      <Wallet className="w-4 h-4 ml-2" />
+                    </>
+                  ) : (
+                    <>
+                      Next
+                      <ChevronRight className="w-4 h-4 ml-2" />
+                    </>
+                  )}
+                </Button>
+              </div>
+
+              {/* Progress Indicator */}
+              <div className="text-center text-sm text-muted-foreground mt-4">
+                {currentIndex + 1} of {totalNfts}
+              </div>
+            </div>
           </Card>
         </div>
       </DialogContent>
