@@ -1,7 +1,7 @@
 "use client";
 
 import NftDisplay from "@/components/nft-display/nft-display";
-import { useNfts } from "@/hooks/use-nfts";
+import { usePollingNFTs } from "@/hooks/use-nfts";
 import React from "react";
 import { useActiveAccount } from "thirdweb/react";
 import FlickeringAsciiBanner from "@/components/flickering-sm-banner";
@@ -11,7 +11,7 @@ import EmptyWallet from "./empty-wallet";
 
 export default function WalletPage() {
   const account = useActiveAccount();
-  const { nftsData, error, isLoading } = useNfts(account?.address);
+  const { nftsData, error, isLoading } = usePollingNFTs(account?.address);
 
   if (isLoading) {
     return (

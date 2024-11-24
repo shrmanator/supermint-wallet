@@ -4,7 +4,7 @@ import { NftResponse } from "@/alchemy/nft-types";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
-export function useNfts(ownerAddress?: string) {
+export function usePollingNFTs(ownerAddress?: string) {
   const {
     data: nftsData,
     error,
