@@ -42,9 +42,9 @@ export default function Home() {
         <div className="mb-8">
           <CelebrateLogo
             showText={true}
-            textSize="48px"
+            textSize="20px" // Using a larger text size
             showIcon={true}
-            iconSize="64px"
+            iconSize="85px"
           />
         </div>
         <ConnectEmbed
