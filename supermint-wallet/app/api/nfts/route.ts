@@ -1,6 +1,6 @@
 /**
  * NFT fetching endpoint for Polygon network using Alchemy's API.
- * Includes rate limit handling with exponential backoff.
+ * Includes rate limit handling with exponential backoff and enhanced filtering options.
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -14,7 +14,9 @@ const BASE_DELAY = 1000;
 
 /** Fetches NFTs for a given address with automatic retry on rate limits */
 export async function GET(request: NextRequest) {
-  const owner = new URL(request.url).searchParams.get("owner");
+  const searchParams = new URL(request.url).searchParams;
+  const owner = searchParams.get("owner");
+  const contractAddresses = searchParams.getAll("contractAddresses[]");
 
   if (!owner) {
     return NextResponse.json(
@@ -24,7 +26,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const nftsData = await fetchNFTsForOwner(owner);
+    const nftsData = await fetchNFTsForOwner(owner, contractAddresses);
     return NextResponse.json(nftsData);
   } catch (error) {
     console.error("Error fetching NFTs:", error);
@@ -42,20 +44,26 @@ export async function GET(request: NextRequest) {
 }
 
 /** Helper method that fetches NFTs from Alchemy API with retry logic for rate limits */
-async function fetchNFTsForOwner(owner: string): Promise<Nft> {
+async function fetchNFTsForOwner(
+  owner: string,
+  contractAddresses: string[] = []
+): Promise<Nft> {
   let retries = 0;
+
+  const params = {
+    owner,
+    withMetadata: true,
+    orderBy: "transferTime",
+    excludeFilters: ["AIRDROPS"],
+    pageSize: 100,
+    ...(contractAddresses.length > 0 && { contractAddresses }),
+  };
 
   while (retries < MAX_RETRIES) {
     try {
       const response = await axios.get<Nft>(
         `${ALCHEMY_BASE_URL}/${API_KEY}/getNFTsForOwner`,
-        {
-          params: {
-            owner,
-            withMetadata: true,
-            pageSize: 100,
-          },
-        }
+        { params }
       );
       return response.data;
     } catch (error) {

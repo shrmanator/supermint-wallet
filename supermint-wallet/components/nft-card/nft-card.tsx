@@ -22,8 +22,11 @@ const NftCard: React.FC<NftCardProps> = ({
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
+  // Basic validation
+  if (!nft?.raw?.metadata?.supermint) return null;
+
   const mediaSrc = getNftMediaSrc(nft);
-  const seriesInfo = nft.raw.metadata.supermint;
+  const { supermint } = nft.raw.metadata;
 
   const MediaContent = () => (
     <div
@@ -34,19 +37,19 @@ const NftCard: React.FC<NftCardProps> = ({
       } overflow-hidden`}
     >
       <Badge variant="secondary" className="absolute top-2 left-2 z-10">
-        #{seriesInfo.seriesNumber}
+        #{supermint.seriesNumber}
       </Badge>
       {mediaSrc ? (
         <CustomMediaPlayer
           src={mediaSrc}
-          alt={seriesInfo.seriesTitle || `NFT #${nft.tokenId}`}
-          contentType={nft.image.contentType}
+          alt={`${supermint.seriesTitle} #${supermint.seriesNumber}`}
+          contentType={nft.image?.contentType || "image/png"}
           className="w-full h-full object-cover"
         />
       ) : (
-        <div className="w-full h-full flex flex-col items-center justify-center bg-muted">
+        <div className="w-full h-64 flex flex-col items-center justify-center bg-muted">
           <ImageIcon className="w-16 h-16 text-muted-foreground mb-2" />
-          <p className="text-sm text-muted-foreground">No image available</p>
+          <p className="text-sm text-muted-foreground">No media available</p>
         </div>
       )}
     </div>
@@ -61,18 +64,18 @@ const NftCard: React.FC<NftCardProps> = ({
       <CardContent className="p-2">
         <div className="flex justify-between items-center">
           <h3 className="text-sm font-medium truncate flex-1">
-            {seriesInfo.seriesTitle}
+            {supermint.seriesTitle}
           </h3>
           <span className="text-xs text-muted-foreground ml-2">
-            {seriesInfo.seriesNumber} of {seriesInfo.totalNftsInSeries}
+            {supermint.seriesNumber} of {supermint.totalNftsInSeries}
           </span>
         </div>
         <div className="flex justify-between mt-1">
           <p className="text-xs text-muted-foreground truncate flex-1">
-            {seriesInfo.seriesArtistName}
+            {supermint.seriesArtistName}
           </p>
           <p className="text-xs text-muted-foreground truncate flex-1 text-right">
-            {seriesInfo.charityName}
+            {supermint.charityName}
           </p>
         </div>
       </CardContent>
@@ -82,9 +85,7 @@ const NftCard: React.FC<NftCardProps> = ({
           variant="secondary"
           size="sm"
           className="flex-1 text-xs"
-          onClick={() => {
-            /* Handle transfer logic */
-          }}
+          onClick={(e) => e.preventDefault()}
         >
           Transfer
         </Button>
