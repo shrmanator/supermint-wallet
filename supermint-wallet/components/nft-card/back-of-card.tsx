@@ -72,7 +72,7 @@ const BackOfCard: React.FC<BackOfCardProps> = ({ nft, setIsFlipped }) => {
           />
           <InfoItem
             icon={Layers}
-            label="Series"
+            label="Title"
             value={supermint.seriesTitle}
           />
           <InfoItem
