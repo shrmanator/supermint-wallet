@@ -10,8 +10,6 @@ interface NftDisplayProps {
 }
 
 const NftDisplay: React.FC<NftDisplayProps> = ({ nfts, newNfts = [] }) => {
-  const [selectedNft, setSelectedNft] = useState<Nft | null>(null);
-
   const groupedNfts = useMemo(() => {
     const sets: {
       [charityName: string]: {
@@ -48,7 +46,9 @@ const NftDisplay: React.FC<NftDisplayProps> = ({ nfts, newNfts = [] }) => {
   const setEntries = Object.values(groupedNfts.sets);
 
   const handleNftClick = (nft: Nft) => {
-    setSelectedNft(nft);
+    // If you need to handle NFT selection in the future,
+    // you can implement the logic here
+    console.log("NFT clicked:", nft.tokenId);
   };
 
   return (
