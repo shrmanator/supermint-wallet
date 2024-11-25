@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import NftCard from "@/components/nft-card/nft-card";
 import NftSet from "./nft-set-display";
 import { Nft } from "@/alchemy/nft-types";
