@@ -1,4 +1,4 @@
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -44,14 +44,17 @@ export function NftCelebrationModal({
     }
   };
 
-  const metadata = currentNft?.raw?.metadata;
-  const supermintData = metadata?.supermint;
-  const charityName = supermintData?.charityName || "this organization";
+  const { supermint } = currentNft?.raw?.metadata;
+  const charityName = supermint?.charityName || "this organization";
+  const displayCount = supermint
+    ? `${supermint.seriesNumber} of ${supermint.totalNftsInSeries}`
+    : null;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[95vw] max-w-6xl p-0 h-[95vh] max-h-[900px] bg-background rounded-xl overflow-hidden">
-        <div className="relative flex flex-col h-full">
+      <DialogContent className="w-[95vw] max-w-6xl p-0 h-[95vh] max-h-[900px] bg-background rounded-xl overflow-hidden flex flex-col">
+        <DialogTitle className="sr-only">NFT Celebration View</DialogTitle>
+        <div className="relative flex flex-col h-full overflow-hidden">
           {showConfetti && (
             <Confetti
               width={800}
@@ -67,25 +70,20 @@ export function NftCelebrationModal({
             />
           )}
 
-          {/* Celebration Header */}
           <div className="bg-gradient-to-r from-purple-500 via-purple-600 to-indigo-600 flex-shrink-0">
-            <div className="px-4 py-3 md:px-6 md:py-4 flex flex-col items-center justify-center bg-black/10">
-              <div className="flex items-center gap-2 text-white">
-                <h1 className="text-base md:text-xl font-medium leading-tight">
-                  Congratulations! You&apos;ve received an NFT from{" "}
-                  {charityName}!
+            <div className="px-4 py-4 md:px-6 md:py-5 flex flex-col items-center justify-center bg-black/10">
+              <div className="flex items-center gap-2 text-white max-w-full">
+                <h1 className="text-sm md:text-xl font-medium leading-tight">
+                  Congratulations on your NFT from {charityName}!
                 </h1>
               </div>
-              <p className="text-purple-100 text-xs md:text-sm mt-1">
-                Your contribution has been commemorated as a unique digital
-                collectible
+              <p className="text-purple-100 text-xs md:text-sm mt-2 text-center">
+                Your contribution has been commemorated
               </p>
             </div>
           </div>
 
-          {/* Main Content Area */}
           <div className="flex flex-col md:grid md:grid-cols-5 flex-1 min-h-0">
-            {/* Art Display Section */}
             <div className="md:col-span-3 h-[40vh] sm:h-[50vh] md:h-full bg-black flex items-center justify-center">
               <div className="w-full h-full p-2 sm:p-3 md:p-4">
                 <div className="w-full h-full relative">
@@ -101,34 +99,38 @@ export function NftCelebrationModal({
               </div>
             </div>
 
-            {/* Information Panel */}
             <Card className="md:col-span-2 border-none rounded-none flex-1 overflow-hidden flex flex-col">
-              <CardContent className="flex-1 p-4 sm:p-6 overflow-hidden flex flex-col">
+              <CardContent className="flex-1 p-4 sm:p-6 overflow-y-auto flex flex-col">
                 <div className="space-y-4">
-                  {supermintData?.charityName && (
-                    <Badge
-                      variant="secondary"
-                      className="uppercase text-xs tracking-wider"
-                    >
-                      {supermintData.charityName}
-                    </Badge>
-                  )}
+                  <div className="flex items-center justify-between">
+                    {supermint?.charityName && (
+                      <Badge
+                        variant="secondary"
+                        className="uppercase text-xs tracking-wider"
+                      >
+                        {supermint.charityName}
+                      </Badge>
+                    )}
+                    {displayCount && (
+                      <span className="text-sm text-muted-foreground">
+                        {displayCount}
+                      </span>
+                    )}
+                  </div>
                   <h2 className="text-xl sm:text-2xl font-serif">
-                    {currentNft?.name?.replace(/#\d+/, "") || "Untitled NFT"}
+                    {supermint?.seriesTitle || "Untitled NFT"}
                   </h2>
                   <div className="text-sm text-muted-foreground">
-                    Token ID: {currentNft?.tokenId}
+                    Artist: {supermint?.seriesArtistName || "Unknown Artist"}
                   </div>
                   <Separator className="my-4" />
                 </div>
 
                 <div className="flex-1 min-h-0">
-                  <div className="h-full overflow-y-auto pr-2">
-                    <div className="prose prose-sm text-muted-foreground">
-                      <p>
-                        {currentNft?.description || "No description available"}
-                      </p>
-                    </div>
+                  <div className="prose prose-sm text-muted-foreground">
+                    <p>
+                      {currentNft?.description || "No description available"}
+                    </p>
                   </div>
                 </div>
               </CardContent>

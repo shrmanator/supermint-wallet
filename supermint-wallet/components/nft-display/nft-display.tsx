@@ -57,13 +57,18 @@ const NftDisplay: React.FC<NftDisplayProps> = ({ nfts, newNfts = [] }) => {
       <div className="flex flex-col gap-6">
         {setEntries.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {setEntries.map((setInfo) => (
-              <NftSet
-                key={setInfo.charityName}
-                {...setInfo}
-                onNftClick={handleNftClick}
-              />
-            ))}
+            {setEntries.map((setInfo) => {
+              const setName =
+                setInfo.nfts[0]?.raw?.metadata?.supermint?.setName ?? "";
+              return (
+                <NftSet
+                  key={setInfo.charityName}
+                  setName={setName}
+                  {...setInfo}
+                  onNftClick={handleNftClick}
+                />
+              );
+            })}
           </div>
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -76,20 +81,14 @@ const NftDisplay: React.FC<NftDisplayProps> = ({ nfts, newNfts = [] }) => {
       </div>
 
       {newNfts.length > 0 && (
-        <NftCelebrationModal
-          isOpen={true}
-          onClose={() => {
-            /* Handle new NFTs seen */
-          }}
-          nfts={newNfts}
-        />
+        <NftCelebrationModal isOpen={true} onClose={() => {}} nfts={newNfts} />
       )}
 
       {selectedNft && (
         <NftModal
           isOpen={!!selectedNft}
           onClose={() => setSelectedNft(null)}
-          nfts={[selectedNft]}
+          nft={selectedNft}
         />
       )}
     </>

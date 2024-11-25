@@ -12,6 +12,7 @@ interface NftSetProps {
   nfts: Nft[];
   setSize: number;
   charityName: string;
+  setName: string;
   onNftClick: (nft: Nft) => void;
 }
 
@@ -19,6 +20,7 @@ const NftSet: React.FC<NftSetProps> = ({
   nfts,
   setSize,
   charityName,
+  setName,
   onNftClick,
 }) => {
   const isComplete = nfts.length === setSize;
@@ -30,8 +32,9 @@ const NftSet: React.FC<NftSetProps> = ({
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <CardTitle className="text-muted-foreground font-normal text-md truncate">
+            <span className="text-muted-foreground">{setName}</span>
+            <span className="text-muted-foreground mx-1 font-light">by</span>
             <span className="font-regular text-primary">{charityName}</span>
-            {" Collection"}
           </CardTitle>
           <Badge
             variant={isComplete ? "default" : "secondary"}
