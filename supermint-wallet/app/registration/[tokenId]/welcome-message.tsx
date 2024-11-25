@@ -61,9 +61,9 @@ const WelcomeMessage: FC<WelcomeMessageProps> = ({
         <div className="mb-4">
           <CelebrateLogo
             showText={true}
-            textSize="48px"
+            textSize="20px" // Using a larger text size
             showIcon={true}
-            iconSize="64px"
+            iconSize="85px"
           />
         </div>
         <div className="p-4 rounded-lg shadow-lg max-w-md w-full">
