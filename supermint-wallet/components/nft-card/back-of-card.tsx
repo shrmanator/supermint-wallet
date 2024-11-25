@@ -54,7 +54,7 @@ const BackOfCard: React.FC<BackOfCardProps> = ({ nft, setIsFlipped }) => {
         </h3>
 
         <div className="grid grid-cols-2 gap-2 text-xs">
-          <InfoItem icon={Zap} label="Card ID" value={nft.tokenId} />
+          <InfoItem icon={Zap} label="Token ID" value={nft.tokenId} />
           <InfoItem
             icon={Star}
             label="Rarity"
