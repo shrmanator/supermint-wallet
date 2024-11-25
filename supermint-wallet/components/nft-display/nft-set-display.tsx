@@ -9,17 +9,17 @@ import { cn } from "@/lib/utils";
 import { Nft } from "@/alchemy/nft-types";
 
 interface NftSetProps {
-  setName: string;
   nfts: Nft[];
   setSize: number;
   charityName: string;
+  onNftClick: (nft: Nft) => void;
 }
 
 const NftSet: React.FC<NftSetProps> = ({
-  setName,
   nfts,
   setSize,
   charityName,
+  onNftClick,
 }) => {
   const isComplete = nfts.length === setSize;
   const progressPercentage = (nfts.length / setSize) * 100;
@@ -30,8 +30,8 @@ const NftSet: React.FC<NftSetProps> = ({
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <CardTitle className="text-muted-foreground font-normal text-md truncate">
-            <span className="font-semibold">{setName}</span> by{" "}
             <span className="font-regular text-primary">{charityName}</span>
+            {" Collection"}
           </CardTitle>
           <Badge
             variant={isComplete ? "default" : "secondary"}
@@ -61,7 +61,11 @@ const NftSet: React.FC<NftSetProps> = ({
 
         <div className="grid grid-cols-4 gap-3">
           {nfts.map((nft) => (
-            <div key={nft.tokenId} className="aspect-square overflow-hidden">
+            <div
+              key={nft.tokenId}
+              className="aspect-square overflow-hidden cursor-pointer"
+              onClick={() => onNftClick(nft)}
+            >
               <NftCard nft={nft} showMetadata={false} />
             </div>
           ))}

@@ -1,40 +1,43 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import NftCard from "@/components/nft-card/nft-card";
 import NftSet from "./nft-set-display";
 import { Nft } from "@/alchemy/nft-types";
+import { NftCelebrationModal } from "@/app/wallet/nft-celebration-modal";
+import { NftModal } from "@/app/wallet/nft-modal";
 
 interface NftDisplayProps {
   nfts: Nft[];
+  newNfts?: Nft[];
 }
 
-interface SetInfo {
-  setName: string;
-  nfts: Nft[];
-  setSize: number;
-  charityName: string;
-}
+const NftDisplay: React.FC<NftDisplayProps> = ({ nfts, newNfts = [] }) => {
+  const [selectedNft, setSelectedNft] = useState<Nft | null>(null);
 
-const NftDisplay: React.FC<NftDisplayProps> = ({ nfts }) => {
   const groupedNfts = useMemo(() => {
-    const sets: { [setName: string]: SetInfo } = {};
+    const sets: {
+      [charityName: string]: {
+        nfts: Nft[];
+        setSize: number;
+        charityName: string;
+      };
+    } = {};
     const individual: Nft[] = [];
 
     nfts.forEach((nft) => {
       const setInfo = nft.raw.metadata.supermint;
-      if (setInfo && setInfo.isInSet && setInfo.setName) {
-        if (!sets[setInfo.setName]) {
+      if (setInfo && setInfo.isInSet) {
+        if (!sets[setInfo.charityName]) {
           const setSizeAttribute = nft.raw.metadata.attributes.find(
             (attr) => attr.trait_type === "Set Size"
           );
           const setSize = setSizeAttribute ? Number(setSizeAttribute.value) : 0;
-          sets[setInfo.setName] = {
-            setName: setInfo.setName,
+          sets[setInfo.charityName] = {
             nfts: [],
             setSize,
             charityName: setInfo.charityName,
           };
         }
-        sets[setInfo.setName].nfts.push(nft);
+        sets[setInfo.charityName].nfts.push(nft);
       } else {
         individual.push(nft);
       }
@@ -45,21 +48,51 @@ const NftDisplay: React.FC<NftDisplayProps> = ({ nfts }) => {
 
   const setEntries = Object.values(groupedNfts.sets);
 
+  const handleNftClick = (nft: Nft) => {
+    setSelectedNft(nft);
+  };
+
   return (
-    <div className="flex flex-col gap-6">
-      {setEntries.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {setEntries.map((setInfo) => (
-            <NftSet key={setInfo.setName} {...setInfo} />
+    <>
+      <div className="flex flex-col gap-6">
+        {setEntries.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {setEntries.map((setInfo) => (
+              <NftSet
+                key={setInfo.charityName}
+                {...setInfo}
+                onNftClick={handleNftClick}
+              />
+            ))}
+          </div>
+        )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {groupedNfts.individual.map((nft) => (
+            <div key={nft.tokenId} onClick={() => handleNftClick(nft)}>
+              <NftCard nft={nft} />
+            </div>
           ))}
         </div>
-      )}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {groupedNfts.individual.map((nft) => (
-          <NftCard key={nft.tokenId} nft={nft} />
-        ))}
       </div>
-    </div>
+
+      {newNfts.length > 0 && (
+        <NftCelebrationModal
+          isOpen={true}
+          onClose={() => {
+            /* Handle new NFTs seen */
+          }}
+          nfts={newNfts}
+        />
+      )}
+
+      {selectedNft && (
+        <NftModal
+          isOpen={!!selectedNft}
+          onClose={() => setSelectedNft(null)}
+          nfts={[selectedNft]}
+        />
+      )}
+    </>
   );
 };
 

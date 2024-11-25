@@ -8,13 +8,13 @@ import { useState } from "react";
 import { Nft } from "@/alchemy/nft-types";
 import { NFTMediaContent } from "@/app/wallet/nft-media-display";
 
-interface NewNftModalProps {
+interface NftModalProps {
   isOpen: boolean;
   onClose: () => void;
   nfts: Nft[];
 }
 
-export function NewNftModal({ isOpen, onClose, nfts }: NewNftModalProps) {
+export function NftModal({ isOpen, onClose, nfts }: NftModalProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const totalNfts = nfts?.length ?? 0;

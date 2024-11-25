@@ -10,7 +10,7 @@ import WalletHeader from "./wallet-header";
 import EmptyWallet from "./empty-wallet";
 import { Nft } from "@/alchemy/nft-types";
 import { syncAndGetUnseenNFTs, markNFTsAsSeen } from "@/actions/db-nfts";
-import { NewNftModal } from "./new-nft-modal";
+import { NftCelebrationModal } from "./nft-celebration-modal";
 
 export default function WalletPage() {
   const account = useActiveAccount();
@@ -87,7 +87,7 @@ export default function WalletPage() {
         </div>
       </div>
 
-      <NewNftModal
+      <NftCelebrationModal
         isOpen={showModal}
         onClose={handleModalClose}
         nfts={unseenNfts}
