@@ -1,5 +1,8 @@
 import React from "react";
-import { ScrollArea } from "@/components/ui/scroll-area"; // Adjust based on your import path
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
   Zap,
   Star,
@@ -8,90 +11,126 @@ import {
   Heart,
   Layers,
   FileText,
-  ArrowLeft,
+  RotateCcw,
 } from "lucide-react";
-import { Separator } from "@radix-ui/react-separator";
-import { Button } from "../ui/button";
-import { Card, CardContent } from "../ui/card";
-import { Nft } from "@/alchemy/nft-types";
+
+interface SeriesInfo {
+  seriesNumber: number;
+  totalNftsInSeries: number;
+  charityName: string;
+  seriesArtistName: string;
+  seriesTitle: string;
+  seriesDescription?: string;
+}
+
+interface NFTMetadata {
+  supermint: SeriesInfo;
+}
+
+interface NFTRaw {
+  metadata: NFTMetadata;
+}
+
+interface NFT {
+  tokenId: string;
+  timeLastUpdated: string;
+  raw: NFTRaw;
+}
 
 interface BackOfCardProps {
-  nft: Nft;
-  setIsFlipped: React.Dispatch<React.SetStateAction<boolean>>;
+  nft: NFT;
+  setIsFlipped: (value: boolean) => void;
 }
 
 const BackOfCard: React.FC<BackOfCardProps> = ({ nft, setIsFlipped }) => {
-  const seriesInfo = nft.raw.metadata.supermint;
+  const { supermint } = nft.raw.metadata;
+
+  const InfoItem = ({
+    icon: Icon,
+    label,
+    value,
+  }: {
+    icon: React.ElementType;
+    label: string;
+    value: string | number;
+  }) => (
+    <div className="bg-gradient-to-br from-blue-900/50 to-blue-800/30 p-2 rounded-lg">
+      <p className="font-medium flex items-center text-blue-200">
+        <Icon className="w-3 h-3 mr-1 text-blue-400" />
+        {label}
+      </p>
+      <p className="text-white truncate text-sm">{value}</p>
+    </div>
+  );
+
+  const handleFlip = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsFlipped(false);
+  };
 
   return (
-    <Card className="w-full h-full bg-purple-600 text-white border-none flex flex-col relative">
-      <CardContent className="p-2 flex-grow flex flex-col">
-        <h3 className="text-sm font-bold mb-2 text-center text-yellow-300">
+    <div className="h-full flex flex-col">
+      <CardContent className="p-4 flex-grow flex flex-col">
+        <h3 className="text-sm font-bold mb-3 text-center bg-gradient-to-r from-blue-200 to-blue-400 bg-clip-text text-transparent">
           NFT POWER CARD DETAILS
         </h3>
-        <div className="grid grid-cols-2 gap-1 text-xs mb-2">
-          <div className="bg-purple-700 p-1 rounded">
-            <p className="font-semibold flex items-center">
-              <Zap className="w-3 h-3 mr-1 text-yellow-300" /> Card ID
-            </p>
-            <p>{nft.tokenId}</p>
-          </div>
-          <div className="bg-purple-700 p-1 rounded">
-            <p className="font-semibold flex items-center">
-              <Star className="w-3 h-3 mr-1 text-yellow-300" /> Rarity
-            </p>
-            <p>
-              {seriesInfo.seriesNumber} of {seriesInfo.totalNftsInSeries}
-            </p>
-          </div>
-          <div className="bg-purple-700 p-1 rounded">
-            <p className="font-semibold flex items-center">
-              <Heart className="w-3 h-3 mr-1 text-yellow-300" /> Charity
-            </p>
-            <p className="truncate">{seriesInfo.charityName}</p>
-          </div>
-          <div className="bg-purple-700 p-1 rounded">
-            <p className="font-semibold flex items-center">
-              <User className="w-3 h-3 mr-1 text-yellow-300" /> Creator
-            </p>
-            <p className="truncate">{seriesInfo.seriesArtistName}</p>
-          </div>
-          <div className="bg-purple-700 p-1 rounded">
-            <p className="font-semibold flex items-center">
-              <Layers className="w-3 h-3 mr-1 text-yellow-300" /> Series
-            </p>
-            <p className="truncate">{seriesInfo.seriesTitle}</p>
-          </div>
-          <div className="bg-purple-700 p-1 rounded">
-            <p className="font-semibold flex items-center">
-              <Calendar className="w-3 h-3 mr-1 text-yellow-300" /> Created
-            </p>
-            <p>{new Date(nft.timeLastUpdated).toLocaleDateString()}</p>
-          </div>
+
+        <div className="grid grid-cols-2 gap-2 text-xs mb-3">
+          <InfoItem icon={Zap} label="Card ID" value={nft.tokenId} />
+          <InfoItem
+            icon={Star}
+            label="Rarity"
+            value={`${supermint.seriesNumber} of ${supermint.totalNftsInSeries}`}
+          />
+          <InfoItem
+            icon={Heart}
+            label="Charity"
+            value={supermint.charityName}
+          />
+          <InfoItem
+            icon={User}
+            label="Creator"
+            value={supermint.seriesArtistName}
+          />
+          <InfoItem
+            icon={Layers}
+            label="Series"
+            value={supermint.seriesTitle}
+          />
+          <InfoItem
+            icon={Calendar}
+            label="Created"
+            value={new Date(nft.timeLastUpdated).toLocaleDateString()}
+          />
         </div>
-        <Separator className="bg-purple-400 my-1" />
+
+        <Separator className="bg-blue-400/30 my-2" />
+
         <div className="flex-grow">
-          <p className="font-semibold text-xs mb-1 text-yellow-300 flex items-center">
+          <p className="font-medium text-xs mb-2 text-blue-200 flex items-center">
             <FileText className="w-3 h-3 mr-1" /> Series Description
           </p>
-          <ScrollArea className="h-[50px] w-full rounded">
-            <p className="text-xs pr-2">
-              {seriesInfo.seriesDescription ||
+          <ScrollArea className="h-16 w-full rounded-lg">
+            <p className="text-xs pr-2 text-blue-100">
+              {supermint.seriesDescription ||
                 "No series description available."}
             </p>
           </ScrollArea>
         </div>
       </CardContent>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => setIsFlipped(false)}
-        className="absolute bottom-2 right-2 lg:bottom-4 lg:right-4 p-2 rounded"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        Back
-      </Button>
-    </Card>
+
+      <CardFooter className="p-2 pt-0">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleFlip}
+          className="w-full text-xs bg-blue-900/50 hover:bg-blue-800/70 border-blue-400/30 text-blue-200 hover:text-white"
+        >
+          <RotateCcw className="h-4 w-4 rotate-180 mr-2" />
+          <span>Flip</span>
+        </Button>
+      </CardFooter>
+    </div>
   );
 };
 
