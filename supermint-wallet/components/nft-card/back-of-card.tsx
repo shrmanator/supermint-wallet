@@ -1,6 +1,6 @@
 import React from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {

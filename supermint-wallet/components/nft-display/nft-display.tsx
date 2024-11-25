@@ -3,7 +3,6 @@ import NftCard from "@/components/nft-card/nft-card";
 import NftSet from "./nft-set-display";
 import { Nft } from "@/alchemy/nft-types";
 import { NftCelebrationModal } from "@/app/wallet/nft-celebration-modal";
-import { NftModal } from "@/app/wallet/nft-modal";
 
 interface NftDisplayProps {
   nfts: Nft[];

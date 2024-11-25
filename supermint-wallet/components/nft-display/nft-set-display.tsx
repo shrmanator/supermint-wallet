@@ -42,11 +42,11 @@ const NftSet: React.FC<NftSetProps> = ({
           >
             {isComplete ? (
               <>
-                <CheckCircle2 size={14} /> Complete
+                <CheckCircle2 size={14} /> Set Complete
               </>
             ) : (
               <>
-                <CircleSlash2 size={14} /> Incomplete
+                <CircleSlash2 size={14} /> Incomplete Set
               </>
             )}
           </Badge>
