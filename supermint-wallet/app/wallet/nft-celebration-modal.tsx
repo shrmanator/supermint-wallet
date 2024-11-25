@@ -78,7 +78,7 @@ export function NftCelebrationModal({
                 </h1>
               </div>
               <p className="text-purple-100 text-xs md:text-sm mt-2 text-center">
-                Your contribution has been commemorated
+                Your generosity is appreciated.
               </p>
             </div>
           </div>
