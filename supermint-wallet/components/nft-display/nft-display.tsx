@@ -83,14 +83,6 @@ const NftDisplay: React.FC<NftDisplayProps> = ({ nfts, newNfts = [] }) => {
       {newNfts.length > 0 && (
         <NftCelebrationModal isOpen={true} onClose={() => {}} nfts={newNfts} />
       )}
-
-      {selectedNft && (
-        <NftModal
-          isOpen={!!selectedNft}
-          onClose={() => setSelectedNft(null)}
-          nft={selectedNft}
-        />
-      )}
     </>
   );
 };

@@ -3,11 +3,12 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ImageIcon } from "lucide-react";
+import { ImageIcon, RotateCcw } from "lucide-react";
 import CustomMediaPlayer from "@/components/media-renderer";
 import BackOfCard from "./back-of-card";
 import { Nft } from "@/alchemy/nft-types";
 import { getNftMediaSrc } from "@/alchemy/nft-data-helpers";
+import { NftModal } from "@/app/wallet/nft-modal";
 
 interface NftCardProps {
   nft: Nft;
@@ -21,17 +22,22 @@ const NftCard: React.FC<NftCardProps> = ({
   showMetadata = true,
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Basic validation
   if (!nft?.raw?.metadata?.supermint) return null;
 
   const mediaSrc = getNftMediaSrc(nft);
-  console.log("the media source", mediaSrc);
   const { supermint } = nft.raw.metadata;
+
+  const handleDetailsClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsFlipped(!isFlipped);
+  };
 
   const MediaContent = () => (
     <div
-      className={`relative ${
+      onClick={() => setIsModalOpen(true)}
+      className={`relative cursor-pointer ${
         showMetadata && layout === "side" ? "w-1/2" : "w-full"
       } ${
         layout === "bottom" ? "rounded-t-lg" : "rounded-l-lg"
@@ -83,48 +89,70 @@ const NftCard: React.FC<NftCardProps> = ({
 
       <CardFooter className="p-2 pt-0 flex gap-2">
         <Button
-          variant="secondary"
-          size="sm"
-          className="flex-1 text-xs"
-          onClick={(e) => e.preventDefault()}
-        >
-          Transfer
-        </Button>
-        <Button
           variant="outline"
           size="sm"
-          className="flex-1 text-xs"
-          onClick={() => setIsFlipped(!isFlipped)}
+          className="flex-1 text-xs gap-2"
+          onClick={handleDetailsClick}
         >
-          Details
+          <RotateCcw className="h-4 w-4" />
+          Flip
         </Button>
       </CardFooter>
     </div>
   );
 
   return (
-    <motion.div
-      className="relative"
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-    >
-      <motion.div
-        animate={{ rotateY: isFlipped ? 180 : 0 }}
-        transition={{ duration: 0.6, type: "spring" }}
-        style={{ transformStyle: "preserve-3d" }}
+    <>
+      <div
+        className={`${isFlipped ? "z-50" : "z-0"} relative`}
+        style={{
+          perspective: 1000,
+          transition: "z-index 0ms linear 300ms",
+        }}
       >
-        <Card
-          className={`overflow-hidden ${
-            showMetadata && layout === "side" ? "flex" : ""
-          } [backface-visibility:hidden]`}
+        <motion.div
+          className="relative"
+          style={{ transformStyle: "preserve-3d" }}
+          animate={{ rotateY: isFlipped ? 180 : 0 }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
         >
-          <MediaContent />
-          {showMetadata && <InfoContent />}
-        </Card>
-        <Card className="absolute inset-0 overflow-hidden [transform:rotateY(180deg)] [backface-visibility:hidden]">
-          <BackOfCard nft={nft} setIsFlipped={setIsFlipped} />
-        </Card>
-      </motion.div>
-    </motion.div>
+          <div
+            style={{
+              backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
+            }}
+          >
+            <Card
+              className={`overflow-hidden ${
+                showMetadata && layout === "side" ? "flex" : ""
+              }`}
+            >
+              <MediaContent />
+              {showMetadata && <InfoContent />}
+            </Card>
+          </div>
+
+          <div
+            className="absolute inset-0"
+            style={{
+              backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
+              transform: "rotateY(180deg)",
+            }}
+          >
+            <Card className="overflow-hidden h-full">
+              <BackOfCard nft={nft} setIsFlipped={setIsFlipped} />
+            </Card>
+          </div>
+        </motion.div>
+      </div>
+
+      <NftModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        nft={nft}
+      />
+    </>
   );
 };
 
