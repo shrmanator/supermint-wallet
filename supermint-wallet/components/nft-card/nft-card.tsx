@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { ImageIcon, RotateCcw } from "lucide-react";
 import CustomMediaPlayer from "@/components/media-renderer";
 import BackOfCard from "./back-of-card";
@@ -43,9 +42,6 @@ const NftCard: React.FC<NftCardProps> = ({
         layout === "bottom" ? "rounded-t-lg" : "rounded-l-lg"
       } overflow-hidden`}
     >
-      <Badge variant="secondary" className="absolute top-2 left-2 z-10">
-        #{supermint.seriesNumber}
-      </Badge>
       {mediaSrc ? (
         <CustomMediaPlayer
           src={mediaSrc}

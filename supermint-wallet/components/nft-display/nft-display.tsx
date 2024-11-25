@@ -45,12 +45,6 @@ const NftDisplay: React.FC<NftDisplayProps> = ({ nfts, newNfts = [] }) => {
 
   const setEntries = Object.values(groupedNfts.sets);
 
-  const handleNftClick = (nft: Nft) => {
-    // If you need to handle NFT selection in the future,
-    // you can implement the logic here
-    console.log("NFT clicked:", nft.tokenId);
-  };
-
   return (
     <>
       <div className="flex flex-col gap-6">
@@ -64,7 +58,6 @@ const NftDisplay: React.FC<NftDisplayProps> = ({ nfts, newNfts = [] }) => {
                   key={setInfo.charityName}
                   setName={setName}
                   {...setInfo}
-                  onNftClick={handleNftClick}
                 />
               );
             })}
@@ -72,7 +65,7 @@ const NftDisplay: React.FC<NftDisplayProps> = ({ nfts, newNfts = [] }) => {
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {groupedNfts.individual.map((nft) => (
-            <div key={nft.tokenId} onClick={() => handleNftClick(nft)}>
+            <div key={nft.tokenId}>
               <NftCard nft={nft} />
             </div>
           ))}

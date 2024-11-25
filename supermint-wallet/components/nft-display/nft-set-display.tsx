@@ -13,7 +13,6 @@ interface NftSetProps {
   setSize: number;
   charityName: string;
   setName: string;
-  onNftClick: (nft: Nft) => void;
 }
 
 const NftSet: React.FC<NftSetProps> = ({
@@ -21,7 +20,6 @@ const NftSet: React.FC<NftSetProps> = ({
   setSize,
   charityName,
   setName,
-  onNftClick,
 }) => {
   const isComplete = nfts.length === setSize;
   const progressPercentage = (nfts.length / setSize) * 100;
@@ -64,11 +62,7 @@ const NftSet: React.FC<NftSetProps> = ({
 
         <div className="grid grid-cols-4 gap-3">
           {nfts.map((nft) => (
-            <div
-              key={nft.tokenId}
-              className="aspect-square overflow-hidden cursor-pointer"
-              onClick={() => onNftClick(nft)}
-            >
+            <div key={nft.tokenId} className="aspect-square overflow-hidden">
               <NftCard nft={nft} showMetadata={false} />
             </div>
           ))}
