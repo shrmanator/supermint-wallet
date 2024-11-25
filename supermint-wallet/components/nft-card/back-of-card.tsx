@@ -70,12 +70,12 @@ const BackOfCard: React.FC<BackOfCardProps> = ({ nft, setIsFlipped }) => {
 
   return (
     <div className="h-full flex flex-col">
-      <CardContent className="p-4 flex-grow flex flex-col">
+      <CardContent className="p-4 min-h-0 flex-grow flex flex-col">
         <h3 className="text-sm font-bold mb-3 text-center bg-gradient-to-r from-blue-200 to-blue-400 bg-clip-text text-transparent">
           NFT POWER CARD DETAILS
         </h3>
 
-        <div className="grid grid-cols-2 gap-2 text-xs mb-3">
+        <div className="grid grid-cols-2 gap-2 text-xs">
           <InfoItem icon={Zap} label="Card ID" value={nft.tokenId} />
           <InfoItem
             icon={Star}
@@ -106,11 +106,11 @@ const BackOfCard: React.FC<BackOfCardProps> = ({ nft, setIsFlipped }) => {
 
         <Separator className="bg-blue-400/30 my-2" />
 
-        <div className="flex-grow">
+        <div className="min-h-0 flex-shrink flex flex-col">
           <p className="font-medium text-xs mb-2 text-blue-200 flex items-center">
             <FileText className="w-3 h-3 mr-1" /> Series Description
           </p>
-          <ScrollArea className="h-16 w-full rounded-lg">
+          <ScrollArea className="flex-1 w-full rounded-lg max-h-24">
             <p className="text-xs pr-2 text-blue-100">
               {supermint.seriesDescription ||
                 "No series description available."}
@@ -119,7 +119,7 @@ const BackOfCard: React.FC<BackOfCardProps> = ({ nft, setIsFlipped }) => {
         </div>
       </CardContent>
 
-      <CardFooter className="p-2 pt-0">
+      <CardFooter className="p-2 pt-0 mt-auto">
         <Button
           variant="outline"
           size="sm"
