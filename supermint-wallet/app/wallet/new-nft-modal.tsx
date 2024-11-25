@@ -1,17 +1,12 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ChevronLeft, ChevronRight, X, Frame, Wallet } from "lucide-react";
 import { useState } from "react";
-import { NFTMediaContent } from "@/components/nft-media-display";
 import { Nft } from "@/alchemy/nft-types";
+import { NFTMediaContent } from "@/components/nft-media-display";
 
 interface NewNftModalProps {
   isOpen: boolean;
