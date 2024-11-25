@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ChevronLeft, ChevronRight, X, Frame, Wallet } from "lucide-react";
+import { ChevronLeft, ChevronRight, Frame, Wallet } from "lucide-react";
 import { useState } from "react";
 import { Nft } from "@/alchemy/nft-types";
-import { NFTMediaContent } from "@/components/nft-media-display";
+import { NFTMediaContent } from "@/app/wallet/nft-media-display";
 
 interface NewNftModalProps {
   isOpen: boolean;
@@ -37,41 +37,29 @@ export function NewNftModal({ isOpen, onClose, nfts }: NewNftModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[95vw] max-w-6xl p-0 h-[95vh] max-h-[900px] bg-background rounded-xl overflow-hidden">
+      <DialogContent className="w-[95vw] max-w-6xl p-0 h-[95vh] max-h-[900px] bg-background rounded-xl overflow-hidden flex flex-col">
         {/* Gallery Header */}
-        <div className="relative h-12 bg-background flex items-center justify-between px-4 border-b">
+        <div className="h-12 bg-background flex items-center justify-between px-4 border-b">
           <div className="flex items-center gap-2">
             <Frame className="w-5 h-5 text-muted-foreground" />
             <span className="text-sm font-medium">Gallery View</span>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            onClick={onClose}
-          >
-            <X className="h-4 w-4" />
-            <span className="sr-only">Close</span>
-          </Button>
         </div>
 
         {/* Main Content Area */}
-        <div className="flex flex-col md:grid md:grid-cols-5 h-[calc(100%-3rem)] overflow-hidden">
+        <div className="flex flex-col md:grid md:grid-cols-5 flex-1 overflow-hidden">
           {/* Art Display Section */}
-          <div className="relative md:col-span-3 h-[40vh] sm:h-[50vh] md:h-full bg-black">
-            <div className="absolute inset-3 sm:inset-4 md:inset-6">
+          <div className="md:col-span-3 h-[40vh] sm:h-[50vh] md:h-full bg-black flex items-center justify-center">
+            <div className="w-full h-full p-2 sm:p-3 md:p-4">
               <div className="w-full h-full relative">
-                {/* Decorative Frame */}
-                <div className="absolute inset-0 border-2 border-neutral-800 rounded-lg" />
+                <div className="absolute inset-0 rounded-lg" />
                 <div className="absolute inset-1 sm:inset-2 bg-black rounded-lg overflow-hidden">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <NFTMediaContent
-                      nft={currentNft}
-                      layout="full"
-                      showSeriesNumber={false}
-                      className="max-w-full max-h-full object-contain"
-                    />
-                  </div>
+                  <NFTMediaContent
+                    nft={currentNft}
+                    layout="full"
+                    showSeriesNumber={false}
+                    className="w-full h-full object-contain"
+                  />
                 </div>
               </div>
             </div>
