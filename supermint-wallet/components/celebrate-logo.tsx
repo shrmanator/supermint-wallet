@@ -79,7 +79,7 @@ const CelebrateLogo: React.FC<SuperMintLogoProps> = ({
               <span
                 className={`${textSizeClass} text-sky-600 dark:text-sky-400 leading-tight tracking-wide`}
               >
-                contributions
+                impact
               </span>
             </div>
           </div>
