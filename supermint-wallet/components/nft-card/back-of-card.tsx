@@ -13,32 +13,10 @@ import {
   FileText,
   RotateCcw,
 } from "lucide-react";
-
-interface SeriesInfo {
-  seriesNumber: number;
-  totalNftsInSeries: number;
-  charityName: string;
-  seriesArtistName: string;
-  seriesTitle: string;
-  seriesDescription?: string;
-}
-
-interface NFTMetadata {
-  supermint: SeriesInfo;
-}
-
-interface NFTRaw {
-  metadata: NFTMetadata;
-}
-
-interface NFT {
-  tokenId: string;
-  timeLastUpdated: string;
-  raw: NFTRaw;
-}
+import { Nft } from "@/alchemy/nft-types";
 
 interface BackOfCardProps {
-  nft: NFT;
+  nft: Nft;
   setIsFlipped: (value: boolean) => void;
 }
 
