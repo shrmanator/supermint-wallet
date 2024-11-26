@@ -33,7 +33,7 @@ export function WelcomeModal({
     }
   };
 
-  const message = `It will store your NFTs when you make donations.`;
+  const message = `Your wallet will store your NFTs when you make donations.`;
 
   const handleTypeEnd = () => {
     setShowCursor(false);
