@@ -70,11 +70,7 @@ const BackOfCard: React.FC<BackOfCardProps> = ({ nft, setIsFlipped }) => {
             label="Creator"
             value={supermint.seriesArtistName}
           />
-          <InfoItem
-            icon={Layers}
-            label="Title"
-            value={supermint.seriesTitle}
-          />
+          <InfoItem icon={Layers} label="Title" value={supermint.seriesTitle} />
           <InfoItem
             icon={Calendar}
             label="Created"
@@ -104,7 +100,7 @@ const BackOfCard: React.FC<BackOfCardProps> = ({ nft, setIsFlipped }) => {
           onClick={handleFlip}
           className="w-full text-xs bg-blue-900/50 hover:bg-blue-800/70 border-blue-400/30 text-blue-200 hover:text-white"
         >
-          <RotateCcw className="h-4 w-4 rotate-180 mr-2" />
+          <RotateCcw className="h-4 w-4 mr-2 transform scale-y-[-1]" />
           <span>Flip</span>
         </Button>
       </CardFooter>

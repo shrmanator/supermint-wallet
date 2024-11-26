@@ -90,7 +90,7 @@ const NftCard: React.FC<NftCardProps> = ({
           className="flex-1 text-xs gap-2"
           onClick={handleDetailsClick}
         >
-          <RotateCcw className="h-4 w-4" />
+          <RotateCcw className="h-4 w-4 transform scale-x-[-1]" />
           Flip
         </Button>
       </CardFooter>
