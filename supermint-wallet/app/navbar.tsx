@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { ConnectButton } from "thirdweb/react";
+import { ConnectButton, darkTheme } from "thirdweb/react";
 import { inAppWallet } from "thirdweb/wallets";
 import { polygon } from "thirdweb/chains";
 import { client } from "@/lib/client";
@@ -46,6 +46,14 @@ export default function NavBar() {
               />
             </div>
             <ConnectButton
+              theme={darkTheme({
+                colors: {
+                  modalBg: "hsl(0, 0%, 4%)",
+                  borderColor: "hsl(0, 0%, 98%)",
+                  separatorLine: "hsl(0, 0%, 0%)",
+                  accentText: "hsl(216, 100%, 50%)",
+                },
+              })}
               chain={polygon}
               client={client}
               wallets={wallets}
