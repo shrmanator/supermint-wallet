@@ -72,9 +72,6 @@ export function TransferModal({ isOpen, onClose }: TransferModalProps) {
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4 py-4">
-          <p>
-            <strong>From Address:</strong> {account?.address || "Not Connected"}
-          </p>
           <Input
             placeholder="To Address"
             value={toAddress}
