@@ -9,6 +9,7 @@ import { Analytics } from "@vercel/analytics/react";
 import NavBar from "@/app/navbar";
 import { CharityProvider } from "@/contexts/charity-context";
 import Footer from "@/app/footer";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const dancingScript = Dancing_Script({
@@ -84,6 +85,7 @@ export default function RootLayout({
                 {/* Add padding to prevent content from hiding behind fixed navbar */}
                 <main className="flex-grow pt-16">{children}</main>
                 <Footer />
+                <Toaster />
               </div>
             </CharityProvider>
           </ThirdwebProvider>

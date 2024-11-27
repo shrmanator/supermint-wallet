@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Frame, X } from "lucide-react";
 import { Nft } from "@/alchemy/nft-types";
-import { NFTMediaContent } from "@/app/wallet/nft-media-display";
+import { NFTMediaContent } from "@/components/nft-media-content";
 
 interface NftModalProps {
   isOpen: boolean;

@@ -6,8 +6,8 @@ import { Separator } from "@/components/ui/separator";
 import { ChevronLeft, ChevronRight, Wallet } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Nft } from "@/alchemy/nft-types";
-import { NFTMediaContent } from "@/app/wallet/nft-media-display";
 import Confetti from "react-confetti";
+import { NFTMediaContent } from "@/components/nft-media-content";
 
 interface NftCelebrationModalProps {
   isOpen: boolean;
