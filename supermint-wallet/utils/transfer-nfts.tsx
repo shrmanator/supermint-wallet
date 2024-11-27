@@ -1,43 +1,48 @@
-// lib/transferNFT.ts
-import { getContract } from "thirdweb";
+import { useSendTransaction } from "thirdweb/react";
+import { getContract, prepareContractCall } from "thirdweb";
 import { polygon } from "thirdweb/chains";
 import { client } from "@/lib/client";
 
-/**
- * Transfers an NFT from the connected wallet to a specified recipient.
- *
- * @param tokenId - The ID of the token to transfer.
- * @param recipient - The address of the recipient.
- * @param sender - The address of the sender (connected wallet).
- * @returns A promise that resolves when the transaction is complete.
- */
-export async function transferNFT(
-  tokenId: string,
-  recipient: string,
-  sender: string
-): Promise<void> {
-  try {
-    const contract = getContract({
-      client,
-      address:
-        process.env.NEXT_PUBLIC_TOKEN_MANAGEMENT_PROXY_ADDRESS ||
-        "no env var set",
-      chain: polygon,
-    });
+interface TransferERC1155Props {
+  fromAddress: string;
+  toAddress: string;
+  tokenId: bigint;
+  quantity: bigint;
+}
 
-    const transaction = {
-      to: contract.getAddress(),
-      data: contract.encoder.encode("safeTransferFrom", [
-        sender,
-        recipient,
-        tokenId,
-      ]),
-    };
+export function useTransferERC1155() {
+  const { mutate: sendTransaction, status, error } = useSendTransaction();
 
-    await client.wallet.sendTransaction(transaction);
-    console.log("NFT transferred successfully");
-  } catch (err) {
-    console.error("Error transferring NFT:", err);
-    throw err;
-  }
+  const transferERC1155 = async ({
+    fromAddress,
+    toAddress,
+    tokenId,
+    quantity,
+  }: TransferERC1155Props) => {
+    try {
+      // Initialize the contract
+      const contract = getContract({
+        client: client, // Ensure 'client' is imported from your client setup
+        address:
+          process.env.NEXT_PUBLIC_TOKEN_MANAGEMENT_PROXY_ADDRESS ||
+          "no env var set",
+        chain: polygon, // Replace with your target chain
+      });
+
+      // Prepare the transaction
+      const transaction = prepareContractCall({
+        contract,
+        method:
+          "function safeTransferFrom(address from, address to, uint256 id, uint256 amount, bytes data)",
+        params: [fromAddress, toAddress, tokenId, quantity, "0x"],
+      });
+
+      // Send the transaction
+      sendTransaction(transaction);
+    } catch (err) {
+      console.error("Transfer failed:", err);
+    }
+  };
+
+  return { transferERC1155, status, error };
 }
