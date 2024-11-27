@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import {
   Heart,
@@ -15,7 +9,6 @@ import {
   Medal,
   Diamond,
   ArrowLeftRight,
-  MousePointerClick,
 } from "lucide-react";
 import { updateNewUserStatus } from "@/actions/user";
 

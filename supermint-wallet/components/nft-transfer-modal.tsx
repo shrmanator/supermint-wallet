@@ -12,9 +12,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTransferERC1155 } from "@/utils/transfer-nfts";
-import { useActiveAccount } from "thirdweb/react"; // Import the hook
+import { useActiveAccount } from "thirdweb/react";
 import { Nft } from "@/alchemy/nft-types";
 import { useToast } from "@/hooks/use-toast";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { NFTMediaContent } from "@/components/nft-media-content";
 
 interface TransferModalProps {
   isOpen: boolean;
@@ -22,78 +24,186 @@ interface TransferModalProps {
   nft: Nft;
 }
 
-// TODO: GET TOKEN ID OF NFT!!!!
-
-export function TransferModal({ isOpen, onClose }: TransferModalProps) {
+export function TransferModal({ isOpen, onClose, nft }: TransferModalProps) {
   const [toAddress, setToAddress] = useState("");
-  const [tokenId, setTokenId] = useState("");
-
+  const [isSent, setIsSent] = useState(false);
   const { transferERC1155, status, error } = useTransferERC1155();
   const account = useActiveAccount();
-  const { toast } = useToast(); // Initialize the toast hook
+  const { toast } = useToast();
 
   const handleTransfer = async () => {
-    if (!account) {
-      console.error("No wallet connected. Cannot perform transfer.");
+    console.log("Transfer initiated", {
+      toAddress,
+      tokenId: nft.tokenId,
+      account,
+    });
+
+    if (!account?.address) {
+      console.warn("No wallet connected", { account });
       toast({
-        title: "No Wallet Connected",
-        description: "Please connect your wallet to perform the transfer.",
         variant: "destructive",
+        title: "Wallet Not Connected",
+        description: "Please connect your wallet to transfer NFTs.",
+      });
+      return;
+    }
+
+    if (!toAddress?.trim()) {
+      console.warn("No recipient address provided");
+      toast({
+        variant: "destructive",
+        title: "Missing Address",
+        description: "Please enter a recipient wallet address.",
       });
       return;
     }
 
     try {
+      console.log("Starting ERC1155 transfer", {
+        from: account.address,
+        to: toAddress,
+        tokenId: nft.tokenId,
+      });
+
       await transferERC1155({
-        toAddress,
-        tokenId: BigInt(tokenId),
+        toAddress: toAddress.trim(),
+        tokenId: BigInt(nft.tokenId),
       });
+
+      console.log("Transfer completed successfully");
+      setIsSent(true);
+
       toast({
-        title: "Transfer Successful",
-        description: `NFT with Token ID ${tokenId} has been transferred to ${toAddress}.`,
+        title: "Transfer Initiated",
+        description: `NFT sent to ${toAddress.slice(0, 6)}...${toAddress.slice(
+          -4
+        )}. Changes will take effect in about a minute, you can close this window.`,
       });
-      onClose(); // Close the modal on success
     } catch (err) {
-      console.error("Transfer failed:", err);
+      console.error("Transfer failed with error:", err);
+
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Failed to transfer NFT. Please try again.";
+
       toast({
-        title: "Transfer Failed",
-        description:
-          err instanceof Error ? err.message : "An unknown error occurred.",
         variant: "destructive",
+        title: "Transfer Failed",
+        description: errorMessage,
       });
     }
   };
 
+  console.log("TransferModal rendered", {
+    isOpen,
+    nftId: nft.tokenId,
+    nftName: nft.name,
+    accountConnected: !!account,
+    isSent,
+  });
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Transfer ERC-1155 NFT</DialogTitle>
-          <DialogDescription>
-            Transfer the NFT to another wallet by filling out the details below.
+          <DialogTitle>{isSent ? "NFT Sent!" : "Transfer NFT"}</DialogTitle>
+          <DialogDescription className="space-y-1">
+            {isSent ? (
+              <div className="flex items-center gap-2 text-sm">
+                <CheckCircle2 className="w-4 h-4 text-green-500" />
+                <span>
+                  Sent to {toAddress.slice(0, 6)}...{toAddress.slice(-4)}. Your
+                  NFT is on its way. Changes will take effect in about a minute.
+                </span>
+              </div>
+            ) : (
+              <>
+                Send this NFT to another wallet address
+                {account && (
+                  <p className="text-xs font-medium">
+                    Your wallet address is {account.address.slice(0, 6)}...
+                    {account.address.slice(-4)}
+                  </p>
+                )}
+              </>
+            )}
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-4 py-4">
-          <Input
-            placeholder="To Address"
-            value={toAddress}
-            onChange={(e) => setToAddress(e.target.value)}
-          />
-          <Input
-            placeholder="Token ID"
-            value={tokenId}
-            onChange={(e) => setTokenId(e.target.value)}
-          />
+
+        <div className="space-y-6">
+          <div className="overflow-hidden rounded-lg bg-muted/50">
+            <div className="aspect-square w-full">
+              <NFTMediaContent
+                nft={nft}
+                showSeriesNumber={true}
+                layout="full"
+                className="w-full h-full"
+              />
+            </div>
+            <div className="px-3 py-2 border-t border-muted">
+              <h3 className="font-medium">
+                {(nft.name || "Untitled NFT").replace(/ #\d+$/, "")}
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                {(
+                  nft.raw?.metadata?.supermint?.charityName || "Unknown Charity"
+                ).replace(/ #\d+$/, "")}
+              </p>
+            </div>
+          </div>
+
+          {!isSent ? (
+            <div className="space-y-2">
+              <div className="relative">
+                <Input
+                  placeholder="Recipient's wallet address"
+                  value={toAddress}
+                  onChange={(e) => {
+                    console.log("Address input changed", {
+                      value: e.target.value,
+                    });
+                    setToAddress(e.target.value);
+                  }}
+                  className="pr-8"
+                />
+                <ArrowRight className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
+              </div>
+              {toAddress && (
+                <p className="text-xs text-muted-foreground px-2">
+                  To: {toAddress.slice(0, 6)}...{toAddress.slice(-4)}
+                </p>
+              )}
+            </div>
+          ) : null}
         </div>
-        <DialogFooter>
-          <Button onClick={handleTransfer} disabled={status === "pending"}>
-            {status === "pending" ? "Transferring..." : "Transfer"}
+
+        <DialogFooter className="sm:justify-between gap-2">
+          <Button
+            variant="ghost"
+            onClick={() => {
+              console.log("Modal closed");
+              onClose();
+            }}
+          >
+            {isSent ? "Close" : "Cancel"}
           </Button>
-          <Button variant="ghost" onClick={onClose}>
-            Cancel
-          </Button>
+          {!isSent && (
+            <Button
+              onClick={handleTransfer}
+              disabled={status === "pending"}
+              className="min-w-20"
+            >
+              {status === "pending" ? "Sending..." : "Send"}
+            </Button>
+          )}
         </DialogFooter>
-        {status === "error" && <p>Error: {error?.message}</p>}
+
+        {error && (
+          <p className="text-sm text-destructive mt-2">
+            {error instanceof Error ? error.message : "Transfer failed"}
+          </p>
+        )}
       </DialogContent>
     </Dialog>
   );
