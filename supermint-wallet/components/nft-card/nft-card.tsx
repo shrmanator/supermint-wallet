@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ImageIcon, RotateCcw } from "lucide-react";
+import { ImageIcon, RotateCcw, Send } from "lucide-react";
 import CustomMediaPlayer from "@/components/media-renderer";
 import BackOfCard from "./back-of-card";
 import { Nft } from "@/alchemy/nft-types";
@@ -101,7 +101,8 @@ const NftCard: React.FC<NftCardProps> = ({
           className="flex-1 text-xs gap-2"
           onClick={() => setIsTransferModalOpen(true)}
         >
-          Transfer
+          <Send className="h-4 w-4" />
+          Send
         </Button>
       </CardFooter>
     </div>

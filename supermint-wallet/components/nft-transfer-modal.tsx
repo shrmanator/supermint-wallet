@@ -43,7 +43,7 @@ export function TransferModal({ isOpen, onClose, nft }: TransferModalProps) {
       toast({
         variant: "destructive",
         title: "Wallet Not Connected",
-        description: "Please connect your wallet to transfer NFTs.",
+        description: "Please connect your wallet to send NFTs.",
       });
       return;
     }
@@ -70,11 +70,11 @@ export function TransferModal({ isOpen, onClose, nft }: TransferModalProps) {
         tokenId: BigInt(nft.tokenId),
       });
 
-      console.log("Transfer completed successfully");
+      console.log("Sending completed successfully");
       setIsSent(true);
 
       toast({
-        title: "Transfer Initiated",
+        title: "Send Initiated",
         description: `NFT sent to ${toAddress.slice(0, 6)}...${toAddress.slice(
           -4
         )}. Changes will take effect in about a minute, you can close this window.`,
@@ -85,11 +85,11 @@ export function TransferModal({ isOpen, onClose, nft }: TransferModalProps) {
       const errorMessage =
         err instanceof Error
           ? err.message
-          : "Failed to transfer NFT. Please try again.";
+          : "Failed to send NFT. Please try again.";
 
       toast({
         variant: "destructive",
-        title: "Transfer Failed",
+        title: "Sending Failed",
         description: errorMessage,
       });
     }
@@ -107,7 +107,7 @@ export function TransferModal({ isOpen, onClose, nft }: TransferModalProps) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>{isSent ? "NFT Sent!" : "Transfer NFT"}</DialogTitle>
+          <DialogTitle>{isSent ? "NFT Sent!" : "Send NFT"}</DialogTitle>
           <DialogDescription className="space-y-1">
             {isSent ? (
               <div className="flex items-center gap-2 text-sm">
@@ -159,15 +159,8 @@ export function TransferModal({ isOpen, onClose, nft }: TransferModalProps) {
                 <Input
                   placeholder="Recipient's wallet address"
                   value={toAddress}
-                  onChange={(e) => {
-                    console.log("Address input changed", {
-                      value: e.target.value,
-                    });
-                    setToAddress(e.target.value);
-                  }}
-                  className="pr-8"
+                  onChange={(e) => setToAddress(e.target.value)}
                 />
-                <ArrowRight className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />
               </div>
               {toAddress && (
                 <p className="text-xs text-muted-foreground px-2">
@@ -201,7 +194,7 @@ export function TransferModal({ isOpen, onClose, nft }: TransferModalProps) {
 
         {error && (
           <p className="text-sm text-destructive mt-2">
-            {error instanceof Error ? error.message : "Transfer failed"}
+            {error instanceof Error ? error.message : "Sending failed"}
           </p>
         )}
       </DialogContent>
