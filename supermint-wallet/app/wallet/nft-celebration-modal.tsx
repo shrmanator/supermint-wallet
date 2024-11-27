@@ -52,13 +52,13 @@ export function NftCelebrationModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[95vw] max-w-6xl p-0 h-[95vh] max-h-[900px] bg-background rounded-xl overflow-hidden flex flex-col">
+      <DialogContent className="w-[95vw] max-w-6xl p-0 h-[90vh] md:h-[95vh] max-h-[800px] bg-background rounded-xl overflow-hidden flex flex-col">
         <DialogTitle className="sr-only">NFT Celebration View</DialogTitle>
         <div className="relative flex flex-col h-full overflow-hidden">
           {showConfetti && (
             <Confetti
               width={800}
-              height={900}
+              height={800}
               recycle={false}
               numberOfPieces={200}
               style={{
@@ -71,20 +71,20 @@ export function NftCelebrationModal({
           )}
 
           <div className="bg-gradient-to-r from-purple-500 via-purple-600 to-indigo-600 flex-shrink-0">
-            <div className="px-4 py-4 md:px-6 md:py-5 flex flex-col items-center justify-center bg-black/10">
+            <div className="px-3 py-3 md:px-6 md:py-5 flex flex-col items-center justify-center bg-black/10">
               <div className="flex items-center gap-2 text-white max-w-full">
                 <h1 className="text-sm md:text-xl font-medium leading-tight">
                   Congratulations on your NFT from {charityName}!
                 </h1>
               </div>
-              <p className="text-purple-100 text-xs md:text-sm mt-2 text-center">
+              <p className="text-purple-100 text-xs md:text-sm mt-1 md:mt-2 text-center">
                 Your generosity is appreciated.
               </p>
             </div>
           </div>
 
           <div className="flex flex-col md:grid md:grid-cols-5 flex-1 min-h-0">
-            <div className="md:col-span-3 h-[40vh] sm:h-[50vh] md:h-full bg-black flex items-center justify-center">
+            <div className="md:col-span-3 h-[35vh] sm:h-[40vh] md:h-full bg-black flex items-center justify-center">
               <div className="w-full h-full p-2 sm:p-3 md:p-4">
                 <div className="w-full h-full relative">
                   <div className="absolute inset-1 sm:inset-2 bg-black rounded-lg overflow-hidden">
@@ -100,8 +100,8 @@ export function NftCelebrationModal({
             </div>
 
             <Card className="md:col-span-2 border-none rounded-none flex-1 overflow-hidden flex flex-col">
-              <CardContent className="flex-1 p-4 sm:p-6 overflow-y-auto flex flex-col">
-                <div className="space-y-4">
+              <CardContent className="flex-1 p-3 sm:p-4 md:p-6 overflow-y-auto flex flex-col">
+                <div className="space-y-3 md:space-y-4">
                   <div className="flex items-center justify-between">
                     {supermint?.charityName && (
                       <Badge
@@ -117,13 +117,13 @@ export function NftCelebrationModal({
                       </span>
                     )}
                   </div>
-                  <h2 className="text-xl sm:text-2xl font-serif">
+                  <h2 className="text-lg sm:text-xl md:text-2xl font-serif">
                     {supermint?.seriesTitle || "Untitled NFT"}
                   </h2>
                   <div className="text-sm text-muted-foreground">
                     Artist: {supermint?.seriesArtistName || "Unknown Artist"}
                   </div>
-                  <Separator className="my-4" />
+                  <Separator className="my-2 md:my-4" />
                 </div>
 
                 <div className="flex-1 min-h-0">
@@ -135,8 +135,8 @@ export function NftCelebrationModal({
                 </div>
               </CardContent>
 
-              <div className="border-t bg-background p-4 sm:p-6">
-                <div className="flex justify-between items-center gap-4">
+              <div className="border-t bg-background p-3 sm:p-4 md:p-6">
+                <div className="flex justify-between items-center gap-3 md:gap-4">
                   {totalNfts > 1 ? (
                     <>
                       <Button
@@ -180,7 +180,7 @@ export function NftCelebrationModal({
                   )}
                 </div>
                 {totalNfts > 1 && (
-                  <div className="text-center text-sm text-muted-foreground mt-4">
+                  <div className="text-center text-sm text-muted-foreground mt-3 md:mt-4">
                     {currentIndex + 1} of {totalNfts}
                   </div>
                 )}
