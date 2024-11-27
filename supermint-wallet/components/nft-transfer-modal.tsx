@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTransferERC1155 } from "@/utils/transfer-nfts";
+import { useActiveAccount } from "thirdweb/react"; // Import the hook
 import { Nft } from "@/alchemy/nft-types";
 
 interface TransferModalProps {
@@ -21,14 +22,19 @@ interface TransferModalProps {
 }
 
 export function TransferModal({ isOpen, onClose }: TransferModalProps) {
-  const [fromAddress, setFromAddress] = useState("");
   const [toAddress, setToAddress] = useState("");
   const [tokenId, setTokenId] = useState("");
   const [quantity, setQuantity] = useState("");
 
   const { transferERC1155, status, error } = useTransferERC1155();
+  const account = useActiveAccount(); // Access the connected wallet
 
   const handleTransfer = async () => {
+    if (!account) {
+      console.error("No wallet connected. Cannot perform transfer.");
+      return;
+    }
+
     try {
       await transferERC1155({
         toAddress,
@@ -52,11 +58,9 @@ export function TransferModal({ isOpen, onClose }: TransferModalProps) {
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4 py-4">
-          <Input
-            placeholder="From Address"
-            value={fromAddress}
-            onChange={(e) => setFromAddress(e.target.value)}
-          />
+          <p>
+            <strong>From Address:</strong> {account?.address || "Not Connected"}
+          </p>
           <Input
             placeholder="To Address"
             value={toAddress}
