@@ -6,43 +6,48 @@ import { client } from "@/lib/client";
 interface TransferERC1155Props {
   toAddress: string;
   tokenId: bigint;
-  quantity: bigint;
 }
 
 export function useTransferERC1155() {
   const { mutate: sendTransaction, status, error } = useSendTransaction();
-  const account = useActiveAccount(); // Access the active account
+  const account = useActiveAccount();
 
   const transferERC1155 = async ({
     toAddress,
     tokenId,
-    quantity,
   }: TransferERC1155Props) => {
     if (!account) {
       console.error("No wallet connected. Cannot perform transfer.");
       return;
     }
 
+    if (!toAddress || !tokenId) {
+      console.error("Invalid parameters for transfer.");
+      return;
+    }
+
     try {
-      // Initialize the contract
       const contract = getContract({
         client: client,
         address: "0x4FdD394eF4a23d4Ad7303922c32295A17A570F9b",
         chain: polygon,
       });
 
-      // Prepare the transaction
       const transaction = prepareContractCall({
         contract,
         method:
           "function safeTransferFrom(address from, address to, uint256 id, uint256 amount, bytes data)",
-        params: [account.address, toAddress, tokenId, quantity, "0x"], // Use the connected wallet's address
+        params: [account.address, toAddress, tokenId, BigInt(1), "0x"], // Use BigInt constructor
       });
 
-      // Send the transaction
-      sendTransaction(transaction);
+      await sendTransaction(transaction);
+      console.log("Transaction sent successfully.");
     } catch (err) {
-      console.error("Transfer failed:", err);
+      if (err instanceof Error) {
+        console.error("Transfer failed. Error:", err.message);
+      } else {
+        console.error("An unknown error occurred during the transfer:", err);
+      }
     }
   };
 
