@@ -3,19 +3,24 @@
 import { useState } from "react";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
   DialogFooter,
-  DialogClose,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTransferERC1155 } from "@/utils/transfer-nfts";
+import { Nft } from "@/alchemy/nft-types";
 
-export function TransferModal() {
+interface TransferModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  nft: Nft;
+}
+
+export function TransferModal({ isOpen, onClose }: TransferModalProps) {
   const [fromAddress, setFromAddress] = useState("");
   const [toAddress, setToAddress] = useState("");
   const [tokenId, setTokenId] = useState("");
@@ -26,26 +31,24 @@ export function TransferModal() {
   const handleTransfer = async () => {
     try {
       await transferERC1155({
-        fromAddress,
         toAddress,
         tokenId: BigInt(tokenId),
         quantity: BigInt(quantity),
       });
+      onClose(); // Close the modal on success
     } catch (err) {
       console.error("Transfer failed:", err);
     }
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">Open Transfer Modal</Button>
-      </DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Transfer ERC-1155 NFT</DialogTitle>
           <DialogDescription>
-            Enter the details below to transfer your NFT.
+            Transfer the NFT to another address by filling out the details
+            below.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4 py-4">
@@ -74,9 +77,9 @@ export function TransferModal() {
           <Button onClick={handleTransfer} disabled={status === "pending"}>
             {status === "pending" ? "Transferring..." : "Transfer"}
           </Button>
-          <DialogClose asChild>
-            <Button variant="ghost">Cancel</Button>
-          </DialogClose>
+          <Button variant="ghost" onClick={onClose}>
+            Cancel
+          </Button>
         </DialogFooter>
         {status === "error" && <p>Error: {error?.message}</p>}
       </DialogContent>

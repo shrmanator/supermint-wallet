@@ -8,6 +8,7 @@ import BackOfCard from "./back-of-card";
 import { Nft } from "@/alchemy/nft-types";
 import { getNftMediaSrc } from "@/alchemy/nft-data-helpers";
 import { NftModal } from "@/app/wallet/nft-modal";
+import { TransferModal } from "../nft-transfer-modal";
 
 interface NftCardProps {
   nft: Nft;
@@ -21,7 +22,8 @@ const NftCard: React.FC<NftCardProps> = ({
   showMetadata = true,
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isNftModalOpen, setIsNftModalOpen] = useState(false);
+  const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
 
   if (!nft?.raw?.metadata?.supermint) return null;
 
@@ -35,7 +37,7 @@ const NftCard: React.FC<NftCardProps> = ({
 
   const MediaContent = () => (
     <div
-      onClick={() => setIsModalOpen(true)}
+      onClick={() => setIsNftModalOpen(true)}
       className={`relative cursor-pointer ${
         showMetadata && layout === "side" ? "w-1/2" : "w-full"
       } ${
@@ -93,6 +95,14 @@ const NftCard: React.FC<NftCardProps> = ({
           <RotateCcw className="h-4 w-4 transform scale-x-[-1]" />
           Flip
         </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex-1 text-xs gap-2"
+          onClick={() => setIsTransferModalOpen(true)}
+        >
+          Transfer
+        </Button>
       </CardFooter>
     </div>
   );
@@ -144,8 +154,14 @@ const NftCard: React.FC<NftCardProps> = ({
       </div>
 
       <NftModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isNftModalOpen}
+        onClose={() => setIsNftModalOpen(false)}
+        nft={nft}
+      />
+
+      <TransferModal
+        isOpen={isTransferModalOpen}
+        onClose={() => setIsTransferModalOpen(false)}
         nft={nft}
       />
     </>
