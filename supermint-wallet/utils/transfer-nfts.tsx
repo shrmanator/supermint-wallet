@@ -27,9 +27,7 @@ export function useTransferERC1155() {
       // Initialize the contract
       const contract = getContract({
         client: client,
-        address:
-          process.env.NEXT_PUBLIC_TOKEN_MANAGEMENT_PROXY_ADDRESS ||
-          "no env var set",
+        address: "0x4FdD394eF4a23d4Ad7303922c32295A17A570F9b",
         chain: polygon,
       });
 
