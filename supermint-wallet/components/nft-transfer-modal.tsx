@@ -22,6 +22,8 @@ interface TransferModalProps {
   nft: Nft;
 }
 
+// TODO: GET TOKEN ID OF NFT!!!!
+
 export function TransferModal({ isOpen, onClose }: TransferModalProps) {
   const [toAddress, setToAddress] = useState("");
   const [tokenId, setTokenId] = useState("");
