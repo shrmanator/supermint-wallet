@@ -122,8 +122,7 @@ export function TransferModal({ isOpen, onClose, nft }: TransferModalProps) {
                 Send this NFT to another wallet address
                 {account && (
                   <p className="text-xs font-medium">
-                    Your wallet address is {account.address.slice(0, 6)}...
-                    {account.address.slice(-4)}
+                    Your public wallet address is {account.address}
                   </p>
                 )}
               </>
