@@ -15,7 +15,7 @@ import { useTransferERC1155 } from "@/utils/transfer-nfts";
 import { useActiveAccount } from "thirdweb/react";
 import { Nft } from "@/alchemy/nft-types";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { NFTMediaContent } from "@/components/nft-media-content";
 
 interface TransferModalProps {
