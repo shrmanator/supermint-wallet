@@ -3,9 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Frame, X } from "lucide-react";
+import { Frame, X, Diamond } from "lucide-react";
 import { Nft } from "@/alchemy/nft-types";
 import { NFTMediaContent } from "@/components/nft-media-content";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface NftModalProps {
   isOpen: boolean;
@@ -13,12 +14,27 @@ interface NftModalProps {
   nft: Nft;
 }
 
+const getRarityInfo = (totalSupply: number) => {
+  if (totalSupply <= 100) {
+    return { label: "Legendary", stars: "⭐⭐⭐⭐", color: "text-yellow-400" };
+  } else if (totalSupply <= 500) {
+    return { label: "Epic", stars: "⭐⭐⭐", color: "text-purple-500" };
+  } else if (totalSupply <= 1000) {
+    return { label: "Rare", stars: "⭐⭐", color: "text-blue-500" };
+  }
+  return { label: "Common", stars: "⭐", color: "text-gray-500" };
+};
+
 export function NftModal({ isOpen, onClose, nft }: NftModalProps) {
   if (!nft) return null;
 
   const { supermint } = nft.raw.metadata;
   const displayCount = supermint
     ? `${supermint.seriesNumber} of ${supermint.totalNftsInSeries}`
+    : null;
+
+  const rarityInfo = supermint?.totalNftsInSeries
+    ? getRarityInfo(supermint.totalNftsInSeries)
     : null;
 
   return (
@@ -60,27 +76,47 @@ export function NftModal({ isOpen, onClose, nft }: NftModalProps) {
                       {supermint.charityName}
                     </Badge>
                   )}
-                  {displayCount && (
-                    <span className="text-sm text-muted-foreground">
-                      {displayCount}
-                    </span>
-                  )}
+                </div>
+
+                <div className="bg-muted/50 rounded-lg p-3">
+                  <h3 className="text-sm font-medium mb-2">NFT Rarity Level</h3>
+                  <div className="flex items-center gap-4">
+                    {rarityInfo && (
+                      <div className="flex items-center gap-1.5">
+                        <Diamond className={`w-4 h-4 ${rarityInfo.color}`} />
+                        <span className="text-sm font-medium">
+                          {rarityInfo.label} {rarityInfo.stars}
+                        </span>
+                      </div>
+                    )}
+                    {displayCount && (
+                      <span className="text-sm text-muted-foreground border-l pl-4">
+                        {displayCount}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    The rarity of this NFT is determined by the total supply
+                    available in the series.
+                  </p>
                 </div>
 
                 <h2 className="text-lg sm:text-xl md:text-2xl font-serif">
                   {supermint?.seriesTitle || "Untitled NFT"}
                 </h2>
 
+                <div className="text-sm text-muted-foreground">
+                  Artist: {supermint?.seriesArtistName || "Unknown Artist"}
+                </div>
+
                 <Separator className="my-2 md:my-4" />
               </div>
 
-              <div className="flex-1 min-h-0">
-                <div className="h-full overflow-y-auto pr-2">
-                  <div className="prose prose-sm text-muted-foreground">
-                    <p>{nft?.description || "No description available"}</p>
-                  </div>
+              <ScrollArea className="flex-1">
+                <div className="prose prose-sm text-muted-foreground pr-4">
+                  <p>{nft?.description || "No description available"}</p>
                 </div>
-              </div>
+              </ScrollArea>
             </CardContent>
 
             <div className="border-t bg-background p-3 sm:p-4 md:p-6">
@@ -95,3 +131,5 @@ export function NftModal({ isOpen, onClose, nft }: NftModalProps) {
     </Dialog>
   );
 }
+
+export default NftModal;
