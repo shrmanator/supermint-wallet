@@ -163,8 +163,8 @@ export function NftCelebrationModal({
                   <Separator className="my-2 md:my-4" />
                 </div>
 
-                <ScrollArea className="flex-1 min-h-0">
-                  <div className="prose prose-sm text-muted-foreground pr-4">
+                <ScrollArea className="max-h-40 overflow-y-auto">
+                  <div className="prose prose-sm text-muted-foreground">
                     <p>
                       {currentNft?.description || "No description available"}
                     </p>
