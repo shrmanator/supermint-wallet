@@ -39,7 +39,9 @@ const NftSet: React.FC<NftSetProps> = ({
           </CardTitle>
           <Badge
             variant={isComplete ? "default" : "secondary"}
-            className="flex items-center gap-1"
+            className={`flex items-center gap-1 ${
+              isComplete ? "bg-green-500 text-white" : ""
+            }`}
           >
             {isComplete ? (
               <>
