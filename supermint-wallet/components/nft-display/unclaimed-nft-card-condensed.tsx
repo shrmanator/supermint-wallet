@@ -83,7 +83,12 @@ const CondensedUnclaimedNftCard: React.FC<CondensedUnclaimedNftCardProps> = ({
         ref={canvasRef}
         className="absolute inset-0 w-full h-full opacity-20"
       />
-      <CardContent className="relative flex flex-col items-center justify-center text-center">
+      <CardContent
+        className={cn(
+          "relative flex flex-col items-center justify-center text-center p-2",
+          "max-w-[90%] mx-auto" // Constrain the width on smaller screens
+        )}
+      >
         <motion.div
           animate={controls}
           className={cn(
@@ -93,8 +98,13 @@ const CondensedUnclaimedNftCard: React.FC<CondensedUnclaimedNftCardProps> = ({
         >
           <Lock className="h-4 w-4 text-muted-foreground" />
         </motion.div>
-        <p className="text-xs font-medium leading-tight text-muted-foreground">
-          Donate to complete set
+        <p
+          className={cn(
+            "text-xs font-medium leading-tight text-muted-foreground",
+            "break-words" // Ensure long text breaks onto the next line
+          )}
+        >
+          Donate to unlock
         </p>
       </CardContent>
     </Card>
