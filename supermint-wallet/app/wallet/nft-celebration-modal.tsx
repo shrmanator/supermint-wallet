@@ -3,17 +3,29 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ChevronLeft, ChevronRight, Wallet } from "lucide-react";
+import { ChevronLeft, ChevronRight, Wallet, Diamond } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Nft } from "@/alchemy/nft-types";
 import Confetti from "react-confetti";
 import { NFTMediaContent } from "@/components/nft-media-content";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface NftCelebrationModalProps {
   isOpen: boolean;
   onClose: () => void;
   nfts: Nft[];
 }
+
+const getRarityInfo = (totalSupply: number) => {
+  if (totalSupply <= 100) {
+    return { label: "Legendary", stars: "⭐⭐⭐⭐", color: "text-yellow-400" };
+  } else if (totalSupply <= 500) {
+    return { label: "Epic", stars: "⭐⭐⭐", color: "text-purple-500" };
+  } else if (totalSupply <= 1000) {
+    return { label: "Rare", stars: "⭐⭐", color: "text-blue-500" };
+  }
+  return { label: "Common", stars: "⭐", color: "text-gray-500" };
+};
 
 export function NftCelebrationModal({
   isOpen,
@@ -50,6 +62,10 @@ export function NftCelebrationModal({
     ? `${supermint.seriesNumber} of ${supermint.totalNftsInSeries}`
     : null;
 
+  const rarityInfo = supermint?.totalNftsInSeries
+    ? getRarityInfo(supermint.totalNftsInSeries)
+    : null;
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="w-[95vw] max-w-6xl p-0 h-[90vh] md:h-[95vh] max-h-[800px] bg-background rounded-xl overflow-hidden flex flex-col">
@@ -60,7 +76,7 @@ export function NftCelebrationModal({
               width={800}
               height={800}
               recycle={false}
-              numberOfPieces={200}
+              numberOfPieces={250}
               style={{
                 position: "fixed",
                 top: "50%",
@@ -111,12 +127,33 @@ export function NftCelebrationModal({
                         {supermint.charityName}
                       </Badge>
                     )}
-                    {displayCount && (
-                      <span className="text-sm text-muted-foreground">
-                        {displayCount}
-                      </span>
-                    )}
                   </div>
+
+                  <div className="bg-muted/50 rounded-lg p-3">
+                    <h3 className="text-sm font-medium mb-2">
+                      NFT Rarity Level
+                    </h3>
+                    <div className="flex items-center gap-4">
+                      {rarityInfo && (
+                        <div className="flex items-center gap-1.5">
+                          <Diamond className={`w-4 h-4 ${rarityInfo.color}`} />
+                          <span className="text-sm font-medium">
+                            {rarityInfo.label} {rarityInfo.stars}
+                          </span>
+                        </div>
+                      )}
+                      {displayCount && (
+                        <span className="text-sm text-muted-foreground border-l pl-4">
+                          {displayCount}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      The rarity of this NFT is determined by the total supply
+                      available in the series.
+                    </p>
+                  </div>
+
                   <h2 className="text-lg sm:text-xl md:text-2xl font-serif">
                     {supermint?.seriesTitle || "Untitled NFT"}
                   </h2>
@@ -126,13 +163,13 @@ export function NftCelebrationModal({
                   <Separator className="my-2 md:my-4" />
                 </div>
 
-                <div className="flex-1 min-h-0">
-                  <div className="prose prose-sm text-muted-foreground">
+                <ScrollArea className="flex-1 min-h-0">
+                  <div className="prose prose-sm text-muted-foreground pr-4">
                     <p>
                       {currentNft?.description || "No description available"}
                     </p>
                   </div>
-                </div>
+                </ScrollArea>
               </CardContent>
 
               <div className="border-t bg-background p-3 sm:p-4 md:p-6">
