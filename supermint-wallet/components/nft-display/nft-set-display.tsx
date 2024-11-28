@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import CondensedUnclaimedNftCard from "./unclaimed-nft-card-condensed";
 import { cn } from "@/lib/utils";
 import { Nft } from "@/alchemy/nft-types";
+import { useCharityUrl } from "@/contexts/charity-context"; // Ensure this path is correct
 
 interface NftSetProps {
   nfts: Nft[];
@@ -28,6 +29,14 @@ const NftSet: React.FC<NftSetProps> = ({
   const progressPercentage = (uniqueLength / setSize) * 100;
   const unknownCount = setSize - uniqueLength;
 
+  // Fetch the charity's URL using the hook
+  const charityUrl = useCharityUrl(charityName);
+
+  // Ensure URL includes protocol
+  const normalizedCharityUrl = charityUrl?.startsWith("http")
+    ? charityUrl
+    : `https://${charityUrl}`;
+
   return (
     <Card className="shadow-md">
       <CardHeader className="pb-2">
@@ -35,7 +44,18 @@ const NftSet: React.FC<NftSetProps> = ({
           <CardTitle className="text-muted-foreground font-normal text-md truncate">
             <span className="text-muted-foreground">{setName}</span>
             <span className="text-muted-foreground mx-1 font-light">by</span>
-            <span className="font-regular text-primary">{charityName}</span>
+            {charityUrl ? (
+              <a
+                href={normalizedCharityUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-regular text-primary underline hover:text-primary/80"
+              >
+                {charityName}
+              </a>
+            ) : (
+              <span className="font-regular text-primary">{charityName}</span>
+            )}
           </CardTitle>
           <Badge
             variant={isComplete ? "default" : "secondary"}
@@ -57,7 +77,7 @@ const NftSet: React.FC<NftSetProps> = ({
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground mt-2 mb-3 font-light">
-          Collected {uniqueLength} / {setSize} series from this set
+          Collected {uniqueLength} / {setSize} from this set
         </p>
 
         <Progress
