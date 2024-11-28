@@ -3,6 +3,7 @@ import NftCard from "@/components/nft-card/nft-card";
 import NftSet from "./nft-set-display";
 import { Nft } from "@/alchemy/nft-types";
 import { NftCelebrationModal } from "@/app/wallet/nft-celebration-modal";
+import { useDuplicateNfts } from "@/hooks/use-check-duplicate-nft";
 
 interface NftDisplayProps {
   nfts: Nft[];
@@ -10,6 +11,48 @@ interface NftDisplayProps {
 }
 
 const NftDisplay: React.FC<NftDisplayProps> = ({ nfts, newNfts = [] }) => {
+  const { duplicateGroups } = useDuplicateNfts(nfts);
+
+  // Create map of original NFTs and their copy counts
+  const { uniqueNfts, copyCounts } = useMemo(() => {
+    const counts = new Map<string, number>();
+    const originals = new Map<string, Nft>();
+
+    duplicateGroups.forEach((group) => {
+      const key = JSON.stringify({
+        seriesTitle: group[0].raw?.metadata?.supermint?.seriesTitle,
+        seriesArtistName: group[0].raw?.metadata?.supermint?.seriesArtistName,
+        setName: group[0].raw?.metadata?.supermint?.setName,
+        image: group[0].raw?.metadata?.image,
+      });
+      counts.set(key, group.length);
+      originals.set(key, group[0]);
+    });
+
+    const uniqueNfts = nfts.filter((nft) => {
+      const key = JSON.stringify({
+        seriesTitle: nft.raw?.metadata?.supermint?.seriesTitle,
+        seriesArtistName: nft.raw?.metadata?.supermint?.seriesArtistName,
+        setName: nft.raw?.metadata?.supermint?.setName,
+        image: nft.raw?.metadata?.image,
+      });
+      // Keep only the first occurrence of each unique NFT
+      return !counts.has(key) || originals.get(key)?.tokenId === nft.tokenId;
+    });
+
+    return { uniqueNfts, copyCounts: counts };
+  }, [nfts, duplicateGroups]);
+
+  const getCopyCount = (nft: Nft) => {
+    const key = JSON.stringify({
+      seriesTitle: nft.raw?.metadata?.supermint?.seriesTitle,
+      seriesArtistName: nft.raw?.metadata?.supermint?.seriesArtistName,
+      setName: nft.raw?.metadata?.supermint?.setName,
+      image: nft.raw?.metadata?.image,
+    });
+    return copyCounts.get(key) || 1;
+  };
+
   const groupedNfts = useMemo(() => {
     const sets = new Map<
       string,
@@ -21,7 +64,7 @@ const NftDisplay: React.FC<NftDisplayProps> = ({ nfts, newNfts = [] }) => {
     >();
     const individual: Nft[] = [];
 
-    nfts.forEach((nft) => {
+    uniqueNfts.forEach((nft) => {
       const setInfo = nft.raw.metadata.supermint;
       if (setInfo?.isInSet && setInfo.setName) {
         const existing = sets.get(setInfo.setName);
@@ -51,7 +94,7 @@ const NftDisplay: React.FC<NftDisplayProps> = ({ nfts, newNfts = [] }) => {
       }));
 
     return { sets: sortedSets, individual };
-  }, [nfts]);
+  }, [uniqueNfts]);
 
   return (
     <>
@@ -72,7 +115,7 @@ const NftDisplay: React.FC<NftDisplayProps> = ({ nfts, newNfts = [] }) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {groupedNfts.individual.map((nft) => (
             <div key={nft.tokenId}>
-              <NftCard nft={nft} />
+              <NftCard nft={nft} duplicateCount={getCopyCount(nft)} />
             </div>
           ))}
         </div>

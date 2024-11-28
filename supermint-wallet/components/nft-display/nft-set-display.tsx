@@ -52,7 +52,7 @@ const NftSet: React.FC<NftSetProps> = ({
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground mt-2 mb-3 font-light">
-          Collected {nfts.length} / {setSize} NFTs
+          Collected {nfts.length} / {setSize} series from this set
         </p>
 
         <Progress

@@ -14,12 +14,14 @@ interface NftCardProps {
   nft: Nft;
   layout?: "side" | "bottom";
   showMetadata?: boolean;
+  duplicateCount?: number;
 }
 
 const NftCard: React.FC<NftCardProps> = ({
   nft,
   layout = "bottom",
   showMetadata = true,
+  duplicateCount = 1,
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isNftModalOpen, setIsNftModalOpen] = useState(false);
@@ -44,6 +46,11 @@ const NftCard: React.FC<NftCardProps> = ({
         layout === "bottom" ? "rounded-t-lg" : "rounded-l-lg"
       } overflow-hidden`}
     >
+      {duplicateCount > 1 && (
+        <div className="absolute top-2 left-2 bg-black/75 text-white px-2 py-1 rounded-md text-sm z-10">
+          x{duplicateCount}
+        </div>
+      )}
       {mediaSrc ? (
         <CustomMediaPlayer
           src={mediaSrc}

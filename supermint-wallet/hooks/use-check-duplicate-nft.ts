@@ -6,14 +6,12 @@ export const useDuplicateNfts = (nfts: Nft[]) => {
     const duplicates = new Map<string, Nft[]>();
 
     nfts.forEach((nft) => {
+      const supermint = nft.raw?.metadata?.supermint;
       const key = JSON.stringify({
-        contract: nft.contract,
-        name: nft.name,
-        description: nft.description,
-        tokenUri: nft.tokenUri,
-        image: nft.image,
-        raw: nft.raw,
-        collection: nft.collection,
+        seriesTitle: supermint?.seriesTitle,
+        seriesArtistName: supermint?.seriesArtistName,
+        setName: supermint?.setName,
+        image: nft.raw?.metadata?.image,
       });
 
       if (!duplicates.has(key)) {
