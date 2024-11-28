@@ -135,7 +135,7 @@ export function TransferModal({ isOpen, onClose, nft }: TransferModalProps) {
             <div className="aspect-square w-full">
               <NFTMediaContent
                 nft={nft}
-                showSeriesNumber={true}
+                showSeriesNumber={false}
                 layout="full"
                 className="w-full h-full"
               />
