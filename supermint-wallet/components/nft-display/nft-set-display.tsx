@@ -13,6 +13,7 @@ interface NftSetProps {
   setSize: number;
   charityName: string;
   setName: string;
+  duplicateCounts?: Map<string, number>;
 }
 
 const NftSet: React.FC<NftSetProps> = ({
@@ -20,10 +21,12 @@ const NftSet: React.FC<NftSetProps> = ({
   setSize,
   charityName,
   setName,
+  duplicateCounts = new Map(),
 }) => {
-  const isComplete = nfts.length === setSize;
-  const progressPercentage = (nfts.length / setSize) * 100;
-  const unknownCount = setSize - nfts.length;
+  const uniqueLength = nfts.length;
+  const isComplete = uniqueLength === setSize;
+  const progressPercentage = (uniqueLength / setSize) * 100;
+  const unknownCount = setSize - uniqueLength;
 
   return (
     <Card className="shadow-md">
@@ -52,7 +55,7 @@ const NftSet: React.FC<NftSetProps> = ({
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground mt-2 mb-3 font-light">
-          Collected {nfts.length} / {setSize} series from this set
+          Collected {uniqueLength} / {setSize} series from this set
         </p>
 
         <Progress
@@ -63,7 +66,11 @@ const NftSet: React.FC<NftSetProps> = ({
         <div className="grid grid-cols-4 gap-3">
           {nfts.map((nft) => (
             <div key={nft.tokenId} className="aspect-square overflow-hidden">
-              <NftCard nft={nft} showMetadata={false} />
+              <NftCard
+                nft={nft}
+                showMetadata={false}
+                duplicateCount={duplicateCounts.get(nft.tokenId) || 1}
+              />
             </div>
           ))}
           {Array.from({ length: unknownCount }).map((_, index) => (
