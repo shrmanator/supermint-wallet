@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Lock } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { motion, useAnimation } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useCharityUrl } from "@/contexts/charity-context";
@@ -96,12 +96,12 @@ const CondensedUnclaimedNftCard: React.FC<CondensedUnclaimedNftCardProps> = ({
             "border border-muted-foreground/20"
           )}
         >
-          <Lock className="h-4 w-4 text-muted-foreground" />
+          <ExternalLink className="h-4 w-4 text-muted-foreground" />
         </motion.div>
         <p
           className={cn(
             "text-xs font-medium leading-tight text-muted-foreground",
-            "break-words" // Ensure long text breaks onto the next line
+            "break-words"
           )}
         >
           Donate to unlock
