@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { ExternalLink } from "lucide-react";
 import { motion, useAnimation } from "framer-motion";
 import { cn } from "@/lib/utils";

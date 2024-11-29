@@ -74,29 +74,31 @@ const NftSet: React.FC<NftSetProps> = ({
       </CardHeader>
 
       <Separator className="bg-white/10" />
-
       <CardContent className="pt-4">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {nfts.map((nft) => (
-            <div
-              key={nft.tokenId}
-              className="aspect-square rounded-lg overflow-hidden"
-            >
-              <NftCard
-                nft={nft}
-                showMetadata={false}
-                duplicateCount={duplicateCounts.get(nft.tokenId) || 1}
-              />
-            </div>
-          ))}
-          {Array.from({ length: unknownCount }).map((_, index) => (
-            <div
-              key={`unclaimed-${index}`}
-              className="aspect-square rounded-lg overflow-hidden"
-            >
-              <CondensedUnclaimedNftCard charityName={charityName} />
-            </div>
-          ))}
+        {/* Horizontal Scrolling Container for Mobile */}
+        <div className="overflow-x-auto sm:overflow-visible">
+          <div className="flex gap-3 sm:grid sm:grid-cols-4">
+            {nfts.map((nft) => (
+              <div
+                key={nft.tokenId}
+                className="aspect-square min-w-[140px] sm:min-w-0 overflow-hidden"
+              >
+                <NftCard
+                  nft={nft}
+                  showMetadata={false}
+                  duplicateCount={duplicateCounts.get(nft.tokenId) || 1}
+                />
+              </div>
+            ))}
+            {Array.from({ length: unknownCount }).map((_, index) => (
+              <div
+                key={`unclaimed-${index}`}
+                className="aspect-square flex items-center justify-center min-w-[140px] sm:min-w-0 overflow-hidden"
+              >
+                <CondensedUnclaimedNftCard charityName={charityName} />
+              </div>
+            ))}
+          </div>
         </div>
       </CardContent>
     </Card>
