@@ -26,7 +26,7 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   title: "SuperMint Wallet",
   description:
-    "Transforming donations into collectible digital assets. SuperMint lets charities reward donors with unique NFTs, driving engagement and impact through cutting-edge blockchain technology.",
+    "SuperMint Wallet is a space for donors to admire, trade, showcase, and share their unique and often rare or highly sought-after NFTs, celebrating their impact—all powered by cutting-edge blockchain technology.",
 };
 
 export default function RootLayout({
@@ -41,7 +41,7 @@ export default function RootLayout({
         <meta name="twitter:title" content="SuperMint Wallet" />
         <meta
           name="twitter:description"
-          content="Transforming donations into collectible digital assets. SuperMint lets charities reward donors with unique NFTs, driving engagement and impact through cutting-edge blockchain technology."
+          content="SuperMint Wallet is a space for donors to admire, trade, showcase, and share their unique and often rare or highly sought-after NFTs, celebrating their impact—all powered by cutting-edge blockchain technology."
         />
         <meta
           name="twitter:image"
@@ -50,7 +50,7 @@ export default function RootLayout({
         <meta property="og:title" content="SuperMint Wallet" />
         <meta
           property="og:description"
-          content="Transforming donations into collectible digital assets. SuperMint lets charities reward donors with unique NFTs, driving engagement and impact through cutting-edge blockchain technology."
+          content="SuperMint Wallet is a space for donors to admire, trade, showcase, and share their unique and often rare or highly sought-after NFTs, celebrating their impact—all powered by cutting-edge blockchain technology."
         />
         <meta
           property="og:image"
