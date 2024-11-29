@@ -54,8 +54,16 @@ const NftSet: React.FC<NftSetProps> = ({
               )}
             </div>
           </div>
-          <Badge variant={isComplete ? "default" : "secondary"} className="h-6">
-            {isComplete ? "Set Complete" : "Set Incomplete"}
+          <Badge
+            variant="outline"
+            className={cn(
+              "h-6 font-semibold",
+              isComplete
+                ? "bg-gradient-to-r from-yellow-500/30 via-emerald-500/30 to-blue-500/30 text-white border-yellow-500/50"
+                : "bg-white/10 text-white/60 border-white/20"
+            )}
+          >
+            {isComplete ? "✨ Set Complete! ✨" : "Set Incomplete"}
           </Badge>
         </div>
 
@@ -67,7 +75,9 @@ const NftSet: React.FC<NftSetProps> = ({
             value={progressPercentage}
             className={cn(
               "h-1",
-              isComplete ? "[&>div]:bg-white" : "bg-white/10 [&>div]:bg-white"
+              isComplete
+                ? "bg-black/40 [&>div]:bg-gradient-to-r [&>div]:from-yellow-500 [&>div]:via-emerald-500 [&>div]:to-blue-500"
+                : "bg-white/10 [&>div]:bg-white/20"
             )}
           />
         </div>
