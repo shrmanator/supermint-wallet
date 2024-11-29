@@ -24,8 +24,9 @@ const CondensedUnclaimedNftCard: React.FC<CondensedUnclaimedNftCardProps> = ({
     if (!ctx) return;
 
     const resizeCanvas = () => {
-      canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-      canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
       ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
     };
 
@@ -39,6 +40,8 @@ const CondensedUnclaimedNftCard: React.FC<CondensedUnclaimedNftCardProps> = ({
       size: Math.random() * 1 + 0.3,
     }));
 
+    let animationFrame: number;
+
     function animate() {
       if (!canvas || !ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -51,12 +54,13 @@ const CondensedUnclaimedNftCard: React.FC<CondensedUnclaimedNftCardProps> = ({
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
         ctx.fill();
       });
-      requestAnimationFrame(animate);
+      animationFrame = requestAnimationFrame(animate);
     }
     animate();
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);
+      cancelAnimationFrame(animationFrame);
     };
   }, []);
 
@@ -74,39 +78,31 @@ const CondensedUnclaimedNftCard: React.FC<CondensedUnclaimedNftCardProps> = ({
   return (
     <Card
       className={cn(
-        "relative flex items-center justify-center w-full h-full cursor-pointer",
-        "hover:shadow-md transition-shadow duration-200"
+        "w-full h-full",
+        "bg-black/40 border-white/10",
+        "hover:shadow-md transition-shadow duration-200 cursor-pointer"
       )}
       onClick={handleCardClick}
     >
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full opacity-20"
-      />
-      <CardContent
-        className={cn(
-          "relative flex flex-col items-center justify-center text-center p-2",
-          "max-w-[90%] mx-auto" // Constrain the width on smaller screens
-        )}
-      >
-        <motion.div
-          animate={controls}
-          className={cn(
-            "flex items-center justify-center w-9 h-9 rounded-full mb-2",
-            "border border-muted-foreground/20"
-          )}
-        >
-          <ExternalLink className="h-4 w-4 text-muted-foreground" />
-        </motion.div>
-        <p
-          className={cn(
-            "text-xs font-medium leading-tight text-muted-foreground",
-            "break-words"
-          )}
-        >
-          Donate to unlock
-        </p>
-      </CardContent>
+      <div className="relative w-full h-full">
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full opacity-20"
+        />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="flex flex-col items-center max-w-[80%]">
+            <motion.div
+              animate={controls}
+              className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center mb-2"
+            >
+              <ExternalLink className="h-4 w-4 text-white/60" />
+            </motion.div>
+            <p className="text-xs text-white/60 text-center">
+              Donate to unlock an NFT
+            </p>
+          </div>
+        </div>
+      </div>
     </Card>
   );
 };
