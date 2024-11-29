@@ -55,13 +55,13 @@ const NftSet: React.FC<NftSetProps> = ({
             </div>
           </div>
           <Badge variant={isComplete ? "default" : "secondary"} className="h-6">
-            {isComplete ? "Complete" : "Incomplete"}
+            {isComplete ? "Set Complete" : "Set Incomplete"}
           </Badge>
         </div>
 
         <div className="space-y-2">
           <div className="text-sm text-white/60">
-            {uniqueLength} / {setSize} collected
+            Collected {uniqueLength} / {setSize} from this set
           </div>
           <Progress
             value={progressPercentage}
@@ -75,13 +75,12 @@ const NftSet: React.FC<NftSetProps> = ({
 
       <Separator className="bg-white/10" />
       <CardContent className="pt-4">
-        {/* Horizontal Scrolling Container for Mobile */}
-        <div className="overflow-x-auto sm:overflow-visible">
-          <div className="flex gap-3 sm:grid sm:grid-cols-4">
+        <div className="overflow-x-auto touch-pan-x sm:overflow-visible px-1">
+          <div className="flex gap-3 sm:grid sm:grid-cols-4 min-w-fit sm:min-w-0 scroll-smooth">
             {nfts.map((nft) => (
               <div
                 key={nft.tokenId}
-                className="aspect-square min-w-[140px] sm:min-w-0 overflow-hidden"
+                className="w-[140px] aspect-square sm:w-auto"
               >
                 <NftCard
                   nft={nft}
@@ -93,7 +92,7 @@ const NftSet: React.FC<NftSetProps> = ({
             {Array.from({ length: unknownCount }).map((_, index) => (
               <div
                 key={`unclaimed-${index}`}
-                className="aspect-square flex items-center justify-center min-w-[140px] sm:min-w-0 overflow-hidden"
+                className="w-[140px] aspect-square sm:w-auto flex items-center justify-center"
               >
                 <CondensedUnclaimedNftCard charityName={charityName} />
               </div>
